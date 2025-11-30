@@ -1,0 +1,10 @@
+/* Tailwind base, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Add your custom styles here */
+body {
+    /* Example: default background color */
+    background-color: #f9fafb;
+}
