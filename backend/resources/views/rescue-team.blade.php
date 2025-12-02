@@ -153,10 +153,10 @@
 
             <!-- Desktop Menu -->
             <nav class="items-center hidden gap-6 text-sm font-medium text-white md:flex">
-                <a href="{{ url('/') }}" class="transition hover:text-yellow-300">HOME</a>
-                <a href="{{ route('rescue-team.dashboard') }}" class="transition hover:text-yellow-300 text-yellow-300">MY ASSIGNMENTS</a>
-                <a href="#reports" class="transition hover:text-yellow-300">ANIMAL REPORTS</a>
-                <a href="#animals" class="transition hover:text-yellow-300">ANIMALS</a>
+    
+                <a href="{{ url('/rescue-team') }}" class="transition hover:text-yellow-300 text-yellow-300">DASHBOARD</a>
+                <a href="{{ route('rescue.reports') }}" class="transition hover:text-yellow-300">ANIMAL REPORTS</a>
+                <a href="{{ route('rescue.animals') }}" class="transition hover:text-yellow-300">ANIMALS</a>
                 <a href="#adoptions" class="transition hover:text-yellow-300">ADOPTIONS</a>
 
                 <!-- User dropdown -->
@@ -187,14 +187,13 @@
         </div>
 
         <!-- Mobile menu -->
-        <div class="hidden md:hidden" id="mobileMenu">
+        <div class="md:hidden hidden" id="mobileMenu">
             <div class="px-5 py-4 space-y-4 bg-[#0b2447]">
-                <a href="{{ url('/') }}" class="block py-2">Home</a>
-                <a href="{{ route('rescue-team.dashboard') }}" class="block py-2 text-yellow-300">My Assignments</a>
-                <a href="#reports" class="block py-2">Reports</a>
-                <a href="#animals" class="block py-2">Animals</a>
-                <a href="#adoptions" class="block py-2">Adoptions</a>
-                <a href="#logout" class="block py-2 text-red-400">Logout</a>
+                <a href="{{ url('/') }}" class="block transition hover:text-yellow-300">HOME</a>
+                <a href="{{ route('rescue.dashboard') }}" class="block transition hover:text-yellow-300 text-yellow-300">DASHBOARD</a>
+                <a href="{{ route('rescue.reports') }}" class="block transition hover:text-yellow-300">ANIMAL REPORTS</a>
+                <a href="{{ route('rescue.animals') }}" class="block transition hover:text-yellow-300">ANIMALS</a>
+                <a href="{{ route('rescue.adoptions') }}" class="block transition hover:text-yellow-300">ADOPTIONS</a>
             </div>
         </div>
     </header>
@@ -601,45 +600,49 @@
     </footer>
 
     <script>
-        // Set current year in footer
-        document.getElementById('year').textContent = new Date().getFullYear();
+       // ADD THIS CODE - Hash-based navigation for SPA
+function navigateTo(section) {
+    console.log('Navigating to:', section);
+    
+    // Update URL hash without page reload
+    window.location.hash = section;
+    
+    // Show the corresponding section
+    showSection(section);
+}
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+function showSection(section) {
+    console.log('Showing section:', section);
+    
+    // Hide all sections first (you'll need to add sections to your HTML)
+    document.querySelectorAll('.dashboard-section').forEach(div => {
+        div.style.display = 'none';
+    });
+    
+    // Show the selected section
+    const target = document.getElementById(section + '-section');
+    if (target) {
+        target.style.display = 'block';
+    }
+}
 
-        // Dropdown functionality
-        document.querySelectorAll('.dropdown-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const dropdown = this.closest('.relative').querySelector('.dropdown');
-                dropdown.classList.toggle('hidden');
-            });
-        });
+// Handle initial load
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if there's a hash in the URL
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+        navigateTo(hash);
+    }
+});
 
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.dropdown').forEach(dropdown => {
-                dropdown.classList.add('hidden');
-            });
-        });
-
-        // Demo functionality for buttons
-        document.querySelectorAll('.primary-btn, .success-btn, .warning-btn').forEach(btn => {
-            if (btn.textContent.includes('Accept') || btn.textContent.includes('Update') || btn.textContent.includes('Mark')) {
-                btn.addEventListener('click', function(e) {
-                    if (!this.classList.contains('no-alert')) {
-                        e.preventDefault();
-                        const action = this.textContent.trim();
-                        alert(`[Demo] ${action} - This would be connected to your backend in production.`);
-                    }
-                });
-            }
-        });
+// Handle hash changes
+window.addEventListener('hashchange', function() {
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+        showSection(hash);
+    }
+});
     </script>
+    
 </body>
 </html>

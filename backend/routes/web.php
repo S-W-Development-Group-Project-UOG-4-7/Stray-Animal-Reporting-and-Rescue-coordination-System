@@ -6,7 +6,36 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Add this route
+// Main rescue team page
 Route::get('/rescue-team', function () {
     return view('rescue-team');
-})->name('rescue-team.dashboard');
+});
+
+// Rescue team section routes
+Route::prefix('rescue')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('rescue-team');
+    })->name('rescue.dashboard');
+    
+    Route::get('/reports', function () {
+        return view('rescue-reports');
+    })->name('rescue.reports');
+    
+    Route::get('/assignments', function () {
+        return view('rescue-assignments');
+    })->name('rescue.assignments');
+    
+    Route::get('/animals', function () {
+        return view('rescue-animals');
+    })->name('rescue.animals');
+    
+    Route::get('/adoptions', function () {
+        return view('rescue-adoptions');  // Make sure blade file name matches
+    })->name('rescue.adoptions');
+
+});
+Route::get('/adoption', [AdoptionController::class, 'index']);
+// REMOVE THIS DUPLICATE:
+// Route::get('/animals', function () {
+//     return view('animals');
+// });
