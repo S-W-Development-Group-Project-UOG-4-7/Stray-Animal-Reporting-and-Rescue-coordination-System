@@ -157,25 +157,7 @@
                 <a href="{{ url('/rescue-team') }}" class="transition hover:text-yellow-300 text-yellow-300">DASHBOARD</a>
                 <a href="{{ route('rescue.reports') }}" class="transition hover:text-yellow-300">ANIMAL REPORTS</a>
                 <a href="{{ route('rescue.animals') }}" class="transition hover:text-yellow-300">ANIMALS</a>
-                <a href="#adoptions" class="transition hover:text-yellow-300">ADOPTIONS</a>
-
-                <!-- User dropdown -->
-                <div class="relative ml-4">
-                    <button class="flex items-center gap-2 dropdown-btn">
-                        <div class="w-8 h-8 bg-[#0ea5e9] rounded-full flex items-center justify-center">
-                            <span class="font-semibold">RT</span>
-                        </div>
-                        <span>Rescue Team</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div class="absolute right-0 hidden w-48 mt-2 rounded shadow-lg dropdown bg-blue-500/90 backdrop-blur-sm">
-                        <a href="#profile" class="block px-4 py-2 transition hover:bg-blue-400">My Profile</a>
-                        <a href="#settings" class="block px-4 py-2 transition hover:bg-blue-400">Settings</a>
-                        <a href="#logout" class="block px-4 py-2 transition hover:bg-red-400">Logout</a>
-                    </div>
-                </div>
+                <a href="{{ route('rescue.adoptions') }}" class="transition hover:text-yellow-300">ADOPTIONS</a>
             </nav>
 
             <!-- Mobile menu button -->
@@ -374,9 +356,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Animal 1 -->
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1558944350-b2ec1b2a4b5a?q=80&w=400&auto=format&fit=crop" 
-                         alt="Buddy - Dog" 
-                         class="w-full h-48 object-cover rounded-lg mb-4">
+                    <img src="{{ asset('Buddy.jpg') }}" alt="Buddy"
+                    class="w-full h-48 object-cover rounded-lg mb-4">
+
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="font-bold text-lg">Buddy</h3>
@@ -403,7 +385,8 @@
                 
                 <!-- Animal 2 -->
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=400&auto=format&fit=crop" 
+                    <img src="{{ asset('Mittens.jpg') }}" 
+ 
                          alt="Mittens - Cat" 
                          class="w-full h-48 object-cover rounded-lg mb-4">
                     <div class="flex justify-between items-start">
@@ -432,7 +415,8 @@
                 
                 <!-- Animal 3 -->
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1514888286974-6d03bde4ba4?q=80&w=400&auto=format&fit=crop" 
+                    <img src="{{ asset('Rocky.jpg') }}" 
+ 
                          alt="Rocky - Dog" 
                          class="w-full h-48 object-cover rounded-lg mb-4">
                     <div class="flex justify-between items-start">

@@ -3,1118 +3,937 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafePaws - Adoption</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    <title>SafePaws — Adoption Management</title>
+    
+    <!-- Laravel Vite directive -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Tailwind CSS as backup -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style type="text/tailwindcss">
+        /* Reuse same styles from animal-reports */
+        @keyframes paw-touch {
+            0%,
+            80%,
+            100% {
+                opacity: 0;
+                transform: translateY(0) scale(1);
+            }
+            10%,
+            50% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.1);
+            }
         }
 
-        :root {
-            --primary: #1a365d;
-            --secondary: #2d74da;
-            --accent: #e53e3e;
-            --light: #f7fafc;
-            --dark: #2d3748;
-            --gray: #718096;
-            --light-blue: #ebf8ff;
+        .animate-paw {
+            animation: paw-touch 2s infinite;
         }
+
+        /* Buttons */
+        .primary-btn {
+            @apply bg-[#0ea5e9] hover:bg-[#0891b2] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition duration-300;
+        }
+        .outline-btn {
+            @apply border border-[#0ea5e9] text-[#0ea5e9] hover:bg-[#0ea5e9] hover:text-white px-5 py-2 rounded-md font-medium transition duration-300;
+        }
+        
+        .success-btn {
+            @apply bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium transition duration-300;
+        }
+        .warning-btn {
+            @apply bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition duration-300;
+        }
+        .danger-btn {
+            @apply bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md font-medium transition duration-300;
+        }
+        
+        .approve-btn {
+            @apply bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white px-6 py-3 rounded-md font-bold inline-flex items-center gap-2 transition duration-300 shadow-lg shadow-green-500/25;
+        }
+
+        /* Card styles */
+        .card {
+            @apply bg-white/5 p-6 md:p-8 rounded-xl shadow-md border border-white/10;
+        }
+        
+        .adoption-card {
+            @apply bg-white/5 p-4 rounded-xl shadow-md border border-white/10 hover:border-[#0ea5e9]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#0ea5e9]/10;
+        }
+
+        /* Status badges */
+        .status-badge {
+            @apply px-3 py-1 text-xs font-semibold rounded-full;
+        }
+        .status-pending { @apply bg-yellow-500/20 text-yellow-300; }
+        .status-approved { @apply bg-green-500/20 text-green-300; }
+        .status-rejected { @apply bg-red-500/20 text-red-300; }
+        .status-completed { @apply bg-blue-500/20 text-blue-300; }
+        .status-review { @apply bg-purple-500/20 text-purple-300; }
+        .status-homecheck { @apply bg-orange-500/20 text-orange-300; }
 
         body {
-            background-color: #f5f7fa;
-            color: var(--dark);
-            line-height: 1.6;
+            background-color: #071331;
+            font-family: system-ui, -apple-system, sans-serif;
         }
 
-        /* Header & Navigation - Dark Blue Theme */
-        header {
-            background: var(--primary);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        /* Table styles */
+        .table-container {
+            @apply overflow-x-auto rounded-lg border border-white/10;
         }
-
-        .top-bar {
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            padding: 6px 20px;
-            font-size: 0.85rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .top-bar i {
-            margin-right: 5px;
-            color: var(--secondary);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            background: var(--secondary);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-        }
-
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            letter-spacing: 0.5px;
-        }
-
-        .logo-text span {
-            color: var(--secondary);
-        }
-
-        nav {
-            flex-grow: 1;
-            margin-left: 40px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2px;
-        }
-
-        .nav-links li {
-            position: relative;
-        }
-
-        .nav-links a {
-            display: block;
-            padding: 14px 20px;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border-radius: 4px;
-            font-size: 0.95rem;
-        }
-
-        .nav-links a:hover {
-            color: white;
-            background: rgba(45, 116, 218, 0.2);
-        }
-
-        .nav-links a.active {
-            color: white;
-            background: var(--secondary);
-        }
-
-        .nav-icons {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-left: 20px;
-        }
-
-        .nav-icons i {
-            font-size: 1.2rem;
-            color: white;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .nav-icons i:hover {
-            color: var(--secondary);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: white;
-            cursor: pointer;
-        }
-
-        .user-profile img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 2px solid var(--secondary);
-        }
-
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light-blue);
-        }
-
-        .page-title {
-            font-size: 2.2rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .page-title i {
-            color: var(--accent);
-            background: rgba(229, 62, 62, 0.1);
-            padding: 12px;
-            border-radius: 50%;
-        }
-
-        .filter-bar {
-            display: flex;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 20px;
-            border-left: 5px solid var(--secondary);
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-width: 180px;
-        }
-
-        .filter-group label {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        select, input {
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 1rem;
-            background: white;
-            color: var(--dark);
-            transition: border 0.3s;
-        }
-
-        select:focus, input:focus {
-            outline: none;
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(45, 116, 218, 0.1);
-        }
-
-        .search-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 25px;
-            font-weight: 600;
-            cursor: pointer;
-            align-self: flex-end;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .search-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-
-        /* Animal Cards */
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--light-blue);
-        }
-
-        .animals-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-
-        .animal-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-        }
-
-        .animal-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-            border-color: var(--secondary);
-        }
-
-        .animal-img-container {
-            height: 220px;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .animal-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .animal-card:hover .animal-img {
-            transform: scale(1.05);
-        }
-
-        .animal-status {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--accent);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+        
+        .dashboard-table {
+            @apply min-w-full bg-white/5;
         }
-
-        .animal-info {
-            padding: 25px;
-        }
-
-        .animal-name {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .animal-breed {
-            color: var(--secondary);
-            font-size: 1rem;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .animal-description {
-            color: var(--gray);
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .animal-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .detail-icon {
-            background: var(--light-blue);
-            color: var(--secondary);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .detail-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .detail-label {
-            color: var(--gray);
-            font-size: 0.8rem;
-        }
-
-        .detail-value {
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .adopt-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 14px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .adopt-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-
-        /* Adoption Process */
-        .process-section {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-            margin-bottom: 50px;
-            border-top: 5px solid var(--secondary);
-        }
-
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .process-step {
-            text-align: center;
-            padding: 25px;
-            border-radius: 10px;
-            background: var(--light-blue);
-            transition: transform 0.3s;
-        }
-
-        .process-step:hover {
-            transform: translateY(-5px);
-        }
-
-        .step-number {
-            background: var(--primary);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 20px;
-        }
-
-        .step-title {
-            color: var(--primary);
-            margin-bottom: 12px;
-            font-size: 1.3rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary);
-            color: white;
-            padding: 50px 20px 20px;
-            margin-top: 60px;
+        
+        .dashboard-table thead {
+            @apply bg-white/10;
         }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h3 {
-            font-size: 1.4rem;
-            margin-bottom: 25px;
-            color: white;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-section h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--secondary);
-        }
-
-        .footer-section p {
-            margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.7;
-        }
-
-        .footer-contact i {
-            color: var(--secondary);
-            margin-right: 10px;
-            width: 20px;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary);
-            padding-left: 5px;
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px;
-            padding: 35px;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            animation: modalFade 0.3s;
-        }
-
-        @keyframes modalFade {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: var(--gray);
-            transition: color 0.3s;
+        
+        .dashboard-table th {
+            @apply px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider;
         }
-
-        .close-modal:hover {
-            color: var(--accent);
+        
+        .dashboard-table td {
+            @apply px-6 py-4 whitespace-nowrap text-sm text-gray-200;
         }
-
-        .modal-title {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        
+        .dashboard-table tbody tr {
+            @apply hover:bg-white/10 border-b border-white/5 transition duration-150;
         }
-
-        .form-group {
-            margin-bottom: 20px;
+        
+        .urgent-row {
+            @apply bg-gradient-to-r from-yellow-900/10 to-orange-900/10 hover:from-yellow-900/20 hover:to-orange-900/20;
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 0.95rem;
+        
+        .approved-row {
+            @apply bg-gradient-to-r from-green-900/10 to-emerald-900/10 hover:from-green-900/20 hover:to-emerald-900/20;
         }
 
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: #f8fafc;
-            transition: all 0.3s;
+        /* Filter styles */
+        .filter-card {
+            @apply bg-white/5 p-4 rounded-lg border border-white/10;
         }
-
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--secondary);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(45, 116, 218, 0.1);
+        
+        .filter-label {
+            @apply block text-sm font-medium text-gray-300 mb-1;
         }
-
-        .submit-application {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 16px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
+        
+        .filter-select {
+            @apply bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#0ea5e9];
         }
-
-        .submit-application:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
+        
+        .filter-input {
+            @apply bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#0ea5e9];
         }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            nav {
-                margin-left: 0;
-                width: 100%;
-            }
-            
-            .nav-links {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .animals-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
+        
+        /* Alert styles */
+        .alert-banner {
+            @apply bg-gradient-to-r from-[#0ea5e9] to-blue-500 text-white p-4 rounded-lg mb-6 shadow-lg;
         }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            
-            .filter-group {
-                min-width: 100%;
-            }
-            
-            .process-grid {
-                grid-template-columns: 1fr;
-            }
+        
+        /* Progress bar */
+        .progress-bar {
+            @apply h-2 bg-white/10 rounded-full overflow-hidden;
         }
-
-        .url-display {
-            font-size: 0.85rem;
-            color: var(--gray);
-            background: var(--light-blue);
-            padding: 8px 15px;
-            border-radius: 6px;
-            border-left: 4px solid var(--secondary);
-            margin-top: 10px;
-            font-family: monospace;
+        
+        .progress-fill {
+            @apply h-full bg-gradient-to-r from-green-500 to-blue-500 transition-all duration-500;
         }
     </style>
 </head>
-<body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="top-bar">
-            <div><i class="fas fa-phone"></i> (123) 456-7890 | <i class="fas fa-envelope"></i> contact@safepaws.org</div>
-            <div><i class="fas fa-clock"></i> Mon-Fri: 9AM-6PM, Sat: 10AM-4PM</div>
-        </div>
-        <div class="header-content">
-            <a href="/" class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-paw"></i>
-                </div>
-                <div class="logo-text">Safe<span>Paws</span></div>
+<body class="text-white">
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-[#071331]/95 backdrop-blur-sm border-b border-white/10">
+        <div class="flex items-center justify-between px-5 py-4 mx-auto max-w-7xl md:px-12">
+            <!-- Logo -->
+            <a href="{{ url('/') }}" class="flex items-center gap-3">
+                <svg width="42" height="42" viewBox="0 0 64 64" fill="none">
+                    <rect width="64" height="64" rx="12" fill="#0ea5e9"></rect>
+                    <path d="M34.5 36c4-1 8.5 0 11 3 2.5 3 1.8 7.4-0.6 10.7C43.9 53 39.6 54 34.5 54c-5 0-9.7-1-12.6-3.8C17.2 47.4 16.4 43 18.9 40c2.7-3.2 6.9-4.2 11.6-4z" fill="#fff"></path>
+                    <circle cx="22.5" cy="20.5" r="6" fill="#fff"></circle>
+                    <circle cx="31.5" cy="14.5" r="5" fill="#fff"></circle>
+                    <circle cx="43.5" cy="18.5" r="4.5" fill="#fff"></circle>
+                </svg>
+                <span class="text-xl font-semibold text-white">SafePaws</span>
             </a>
-            
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/dashboard">Dashboard</a></li>
-                    <li><a href="/animal-reports">Animal Reports</a></li>
-                    <li><a href="/animals">Animals</a></li>
-                    <li><a href="/adoption" class="active">Adoption</a></li>
-                    <li><a href="/rescue-team">Rescue Team</a></li>
-                </ul>
-            </nav>
-            
-            <div class="nav-icons">
-                <i class="fas fa-search" title="Search"></i>
-                <i class="fas fa-bell" title="Notifications"></i>
-                <div class="user-profile">
-                    <i class="fas fa-user-circle"></i>
-                    <span>User</span>
+
+            <!-- Desktop Menu -->
+            <nav class="items-center hidden gap-6 text-sm font-medium text-white md:flex">
+                <!-- Rescue Team Navigation -->
+                <a href="{{ url('/rescue-team') }}" class="transition hover:text-yellow-300">DASHBOARD</a>
+                <a href="{{ route('rescue.reports') }}" class="transition hover:text-yellow-300">ANIMAL REPORTS</a>
+                <a href="{{ route('rescue.animals') }}" class="transition hover:text-yellow-300">ANIMALS</a>
+                <a href="{{ route('rescue.adoptions') }}" class="transition hover:text-yellow-300 text-yellow-300">ADOPTIONS</a>
+
+                <!-- User dropdown -->
+                <div class="relative ml-4">
+                    <button class="flex items-center gap-2 dropdown-btn">
+                        <div class="w-8 h-8 bg-[#0ea5e9] rounded-full flex items-center justify-center">
+                            <span class="font-semibold">RT</span>
+                        </div>
+                        <span>Rescue Team</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 hidden w-48 mt-2 rounded shadow-lg dropdown bg-blue-500/90 backdrop-blur-sm">
+                        <a href="#profile" class="block px-4 py-2 transition hover:bg-blue-400">My Profile</a>
+                        <a href="#settings" class="block px-4 py-2 transition hover:bg-blue-400">Settings</a>
+                        <a href="#logout" class="block px-4 py-2 transition hover:bg-red-400">Logout</a>
+                    </div>
                 </div>
+            </nav>
+
+            <!-- Mobile menu button -->
+            <button class="md:hidden" id="mobileMenuBtn">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobileMenu">
+            <div class="px-5 py-4 space-y-4 bg-[#0b2447]">
+                <a href="{{ url('/rescue-team') }}" class="block py-2">Dashboard</a>
+                <a href="{{ route('rescue.reports') }}" class="block py-2">Animal Reports</a>
+                <a href="{{ route('rescue.animals') }}" class="block py-2">Animals</a>
+                <a href="{{ route('rescue.adoptions') }}" class="block py-2 text-yellow-300">Adoptions</a>
+                <a href="#logout" class="block py-2 text-red-400">Logout</a>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <div class="container">
-        <div class="page-header">
-            <h1 class="page-title"><i class="fas fa-heart"></i> Find Your New Best Friend</h1>
-            <div class="url-display">Current URL: 127.0.0.1:8000/adoption</div>
-        </div>
-
-        <p style="font-size: 1.1rem; margin-bottom: 30px; color: var(--gray); line-height: 1.7;">Browse our adorable animals looking for their forever homes. Each one has been cared for by our rescue team and is ready to become part of your family. Use the filters below to find your perfect match.</p>
-
-        <!-- Filter Section -->
-        <div class="filter-bar">
-            <div class="filter-group">
-                <label for="animal-type"><i class="fas fa-paw"></i> Animal Type</label>
-                <select id="animal-type">
-                    <option value="all">All Animals</option>
-                    <option value="dog">Dogs</option>
-                    <option value="cat">Cats</option>
-                    <option value="rabbit">Rabbits</option>
-                    <option value="bird">Birds</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="age"><i class="fas fa-birthday-cake"></i> Age</label>
-                <select id="age">
-                    <option value="all">Any Age</option>
-                    <option value="puppy">Puppy/Kitten (0-1 year)</option>
-                    <option value="young">Young (1-3 years)</option>
-                    <option value="adult">Adult (3-8 years)</option>
-                    <option value="senior">Senior (8+ years)</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="size"><i class="fas fa-weight"></i> Size</label>
-                <select id="size">
-                    <option value="all">Any Size</option>
-                    <option value="small">Small (0-20 lbs)</option>
-                    <option value="medium">Medium (20-50 lbs)</option>
-                    <option value="large">Large (50+ lbs)</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="gender"><i class="fas fa-venus-mars"></i> Gender</label>
-                <select id="gender">
-                    <option value="all">Any Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-            <button class="search-btn"><i class="fas fa-search"></i> Search Animals</button>
-        </div>
-
-        <!-- Animals Grid -->
-        <h2 class="section-title">Animals Available for Adoption</h2>
-        <div class="animals-grid">
-            <!-- Animal Card 1 -->
-            <div class="animal-card">
-                <div class="animal-img-container">
-                    <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Golden Retriever" class="animal-img">
-                    <div class="animal-status">Available</div>
-                </div>
-                <div class="animal-info">
-                    <h3 class="animal-name">Max <span style="color: var(--accent); font-size: 1rem;">#SP001</span></h3>
-                    <p class="animal-breed">Golden Retriever</p>
-                    <p class="animal-description">Friendly and energetic, loves playing fetch and going for long walks. Great with kids and other pets. Vaccinated and neutered.</p>
-                    <div class="animal-details">
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-birthday-cake"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Age</span>
-                                <span class="detail-value">3 years</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-weight"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Size</span>
-                                <span class="detail-value">Large</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-venus-mars"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Gender</span>
-                                <span class="detail-value">Male</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-home"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Location</span>
-                                <span class="detail-value">Kennel A</span>
-                            </div>
-                        </div>
+    <main class="max-w-7xl mx-auto px-5 py-8">
+        <!-- Adoption Management Banner -->
+        <div class="alert-banner mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div>
+                        <h2 class="text-xl font-bold">🏠 ADOPTION MANAGEMENT</h2>
+                        <p class="text-sm opacity-90">Manage adoption applications, schedule home checks, and approve adoptions</p>
                     </div>
-                    <button class="adopt-btn" data-animal="Max"><i class="fas fa-heart"></i> Adopt Max</button>
                 </div>
-            </div>
-
-            <!-- Animal Card 2 -->
-            <div class="animal-card">
-                <div class="animal-img-container">
-                    <img src="https://images.unsplash.com/photo-1514888286974-6d03bde4ba04?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tabby Cat" class="animal-img">
-                    <div class="animal-status">Available</div>
-                </div>
-                <div class="animal-info">
-                    <h3 class="animal-name">Luna <span style="color: var(--accent); font-size: 1rem;">#SP002</span></h3>
-                    <p class="animal-breed">Tabby Cat</p>
-                    <p class="animal-description">A calm and affectionate cat who enjoys lounging in sunny spots and gentle petting. Litter trained, vaccinated, and spayed.</p>
-                    <div class="animal-details">
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-birthday-cake"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Age</span>
-                                <span class="detail-value">2 years</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-weight"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Size</span>
-                                <span class="detail-value">Small</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-venus-mars"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Gender</span>
-                                <span class="detail-value">Female</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-home"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Location</span>
-                                <span class="detail-value">Cat Room B</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="adopt-btn" data-animal="Luna"><i class="fas fa-heart"></i> Adopt Luna</button>
-                </div>
-            </div>
-
-            <!-- Animal Card 3 -->
-            <div class="animal-card">
-                <div class="animal-img-container">
-                    <img src="https://images.unsplash.com/photo-1593627010886-d34828365da7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Rabbit" class="animal-img">
-                    <div class="animal-status">Available</div>
-                </div>
-                <div class="animal-info">
-                    <h3 class="animal-name">Coco <span style="color: var(--accent); font-size: 1rem;">#SP003</span></h3>
-                    <p class="animal-breed">Holland Lop Rabbit</p>
-                    <p class="animal-description">A gentle and curious rabbit who enjoys exploring and munching on fresh vegetables. Already spayed and litter trained.</p>
-                    <div class="animal-details">
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-birthday-cake"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Age</span>
-                                <span class="detail-value">1 year</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-weight"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Size</span>
-                                <span class="detail-value">Small</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-venus-mars"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Gender</span>
-                                <span class="detail-value">Female</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-icon"><i class="fas fa-home"></i></div>
-                            <div class="detail-text">
-                                <span class="detail-label">Location</span>
-                                <span class="detail-value">Small Pets Area</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="adopt-btn" data-animal="Coco"><i class="fas fa-heart"></i> Adopt Coco</button>
-                </div>
+                <button class="approve-btn" onclick="processBatchAdoptions()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    BATCH PROCESS
+                </button>
             </div>
         </div>
 
-        <!-- Adoption Process -->
-        <div class="process-section">
-            <h2 class="section-title">Our Adoption Process</h2>
-            <div class="process-grid">
-                <div class="process-step">
-                    <div class="step-number">1</div>
-                    <h3 class="step-title">Browse & Select</h3>
-                    <p>View our available animals online or visit our shelter to meet them in person.</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">2</div>
-                    <h3 class="step-title">Submit Application</h3>
-                    <p>Complete our adoption application form either online or at the shelter.</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">3</div>
-                    <h3 class="step-title">Screening & Meet</h3>
-                    <p>Our team reviews your application and schedules a meet-and-greet.</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">4</div>
-                    <h3 class="step-title">Home Check & Finalize</h3>
-                    <p>We conduct a home visit and finalize the adoption paperwork.</p>
-                </div>
-            </div>
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-white">Adoption Management</h1>
+            <p class="text-gray-300 mt-2">Review adoption applications, schedule home checks, and manage the adoption process for rescued animals.</p>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>SafePaws</h3>
-                <p>Providing shelter, care, and new beginnings for animals in need since 2010. Our mission is to rescue, rehabilitate, and rehome animals while promoting responsible pet ownership.</p>
-                <div class="footer-contact">
-                    <p><i class="fas fa-map-marker-alt"></i> 123 Rescue Street, Animal City, AC 12345</p>
-                    <p><i class="fas fa-phone"></i> (123) 456-7890</p>
-                    <p><i class="fas fa-envelope"></i> contact@safepaws.org</p>
+        <!-- Adoption Statistics -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
+            <div class="filter-card">
+                <div class="text-2xl font-bold text-yellow-300">18</div>
+                <div class="text-sm text-gray-300">Pending Review</div>
+            </div>
+            <div class="filter-card">
+                <div class="text-2xl font-bold text-orange-300">6</div>
+                <div class="text-sm text-gray-300">Home Checks Needed</div>
+            </div>
+            <div class="filter-card">
+                <div class="text-2xl font-bold text-green-300">12</div>
+                <div class="text-sm text-gray-300">Ready for Approval</div>
+            </div>
+            <div class="filter-card">
+                <div class="text-2xl font-bold text-blue-300">24</div>
+                <div class="text-sm text-gray-300">Adopted This Month</div>
+            </div>
+            <div class="filter-card bg-gradient-to-r from-green-900/30 to-emerald-900/30">
+                <div class="text-2xl font-bold text-green-300">156</div>
+                <div class="text-sm text-green-200">Total Adopted</div>
+            </div>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="card mb-6">
+            <h2 class="text-xl font-bold mb-4">Filter Adoption Applications</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <!-- Status Filter -->
+                <div>
+                    <label class="filter-label">Adoption Status</label>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending Review</option>
+                        <option value="homecheck">Home Check Scheduled</option>
+                        <option value="approved">Ready for Approval</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="completed">Completed</option>
+                    </select>
                 </div>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="/"><i class="fas fa-chevron-right"></i> Home</a></li>
-                    <li><a href="/dashboard"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
-                    <li><a href="/animal-reports"><i class="fas fa-chevron-right"></i> Animal Reports</a></li>
-                    <li><a href="/animals"><i class="fas fa-chevron-right"></i> Animals</a></li>
-                    <li><a href="/adoption"><i class="fas fa-chevron-right"></i> Adoption</a></li>
-                    <li><a href="/rescue-team"><i class="fas fa-chevron-right"></i> Rescue Team</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Adoption Resources</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Adoption Requirements</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Adoption Fees</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Pet Care Guides</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Volunteer Opportunities</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Donate</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>&copy; 2023 SafePaws Animal Rescue. All rights reserved. | Current URL: 127.0.0.1:8000/adoption</p>
-        </div>
-    </footer>
-
-    <!-- Adoption Application Modal -->
-    <div class="modal" id="adoptionModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 class="modal-title"><i class="fas fa-file-alt"></i> Adoption Application</h2>
-            <p>You're applying to adopt <span id="selectedAnimal" style="font-weight: bold; color: var(--secondary);">Max</span>. Please fill out the form below.</p>
-            
-            <div class="form-group">
-                <label for="applicantName">Full Name *</label>
-                <input type="text" id="applicantName" placeholder="Enter your full name" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="applicantEmail">Email Address *</label>
-                <input type="email" id="applicantEmail" placeholder="Enter your email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="applicantPhone">Phone Number *</label>
-                <input type="tel" id="applicantPhone" placeholder="Enter your phone number" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="applicantAddress">Home Address *</label>
-                <input type="text" id="applicantAddress" placeholder="Enter your address" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="housingType">Housing Type *</label>
-                <select id="housingType" required>
-                    <option value="">Select housing type</option>
-                    <option value="house">House</option>
-                    <option value="apartment">Apartment</option>
-                    <option value="condo">Condo</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="applicantExperience">Previous Pet Experience</label>
-                <textarea id="applicantExperience" rows="3" placeholder="Tell us about your experience with pets"></textarea>
-            </div>
-            
-            <button class="submit-application"><i class="fas fa-paper-plane"></i> Submit Application</button>
-        </div>
-    </div>
-
-    <script>
-        // Modal functionality
-        const adoptButtons = document.querySelectorAll('.adopt-btn');
-        const modal = document.getElementById('adoptionModal');
-        const closeModal = document.querySelector('.close-modal');
-        const selectedAnimalSpan = document.getElementById('selectedAnimal');
-        
-        adoptButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const animalName = button.getAttribute('data-animal');
-                selectedAnimalSpan.textContent = animalName;
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            });
-        });
-        
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-        
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-        
-        // Form submission
-        const submitBtn = document.querySelector('.submit-application');
-        submitBtn.addEventListener('click', () => {
-            const name = document.getElementById('applicantName').value;
-            const email = document.getElementById('applicantEmail').value;
-            const phone = document.getElementById('applicantPhone').value;
-            const address = document.getElementById('applicantAddress').value;
-            const housing = document.getElementById('housingType').value;
-            
-            if (name && email && phone && address && housing) {
-                alert(`Thank you, ${name}! Your application for ${selectedAnimalSpan.textContent} has been submitted. We'll contact you at ${email} within 2-3 business days.`);
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
                 
-                // Reset form
-                document.getElementById('applicantName').value = '';
-                document.getElementById('applicantEmail').value = '';
-                document.getElementById('applicantPhone').value = '';
-                document.getElementById('applicantAddress').value = '';
-                document.getElementById('housingType').value = '';
-                document.getElementById('applicantExperience').value = '';
+                <!-- Animal Type Filter -->
+                <div>
+                    <label class="filter-label">Animal Type</label>
+                    <select class="filter-select" id="animalTypeFilter">
+                        <option value="">All Types</option>
+                        <option value="dog">Dog</option>
+                        <option value="cat">Cat</option>
+                        <option value="rabbit">Rabbit</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <!-- Priority Filter -->
+                <div>
+                    <label class="filter-label">Priority</label>
+                    <select class="filter-select" id="priorityFilter">
+                        <option value="">All Priorities</option>
+                        <option value="high">High Priority</option>
+                        <option value="normal">Normal</option>
+                        <option value="urgent">Urgent Approval</option>
+                    </select>
+                </div>
+                
+                <!-- Date Filter -->
+                <div>
+                    <label class="filter-label">Application Date</label>
+                    <input type="date" class="filter-input" id="dateFilter">
+                </div>
+                
+                <!-- Team Member Filter -->
+                <div>
+                    <label class="filter-label">Assigned To</label>
+                    <select class="filter-select" id="assignedFilter">
+                        <option value="">All Team Members</option>
+                        <option value="john">John (Team Lead)</option>
+                        <option value="sarah">Sarah</option>
+                        <option value="mike">Mike</option>
+                        <option value="unassigned">Unassigned</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex gap-3 mt-4">
+                <button class="primary-btn" onclick="applyAdoptionFilters()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                    </svg>
+                    Apply Filters
+                </button>
+                <button class="outline-btn" onclick="clearAdoptionFilters()">Clear Filters</button>
+                <button class="success-btn" onclick="exportAdoptionData()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Export Data
+                </button>
+                <button class="warning-btn" onclick="scheduleHomeChecks()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    Schedule Home Checks
+                </button>
+            </div>
+        </div>
+
+        <!-- Adoption Applications Table -->
+        <div class="card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold">Adoption Applications</h2>
+                <div class="flex gap-2">
+                    <button class="primary-btn text-sm" onclick="createAdoptionRecord()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Create Record
+                    </button>
+                    <button class="outline-btn text-sm" onclick="refreshApplications()">Refresh</button>
+                    <button class="approve-btn text-sm" onclick="approveSelected()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Approve Selected
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th class="w-12">
+                                <input type="checkbox" class="rounded">
+                            </th>
+                            <th>Application ID</th>
+                            <th>Applicant</th>
+                            <th>Animal</th>
+                            <th>Status</th>
+                            <th>Applied</th>
+                            <th>Assigned To</th>
+                            <th>Priority</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Urgent Application -->
+                        <tr class="urgent-row">
+                            <td><input type="checkbox" class="rounded" checked></td>
+                            <td class="font-medium">#ADP-1042</td>
+                            <td>
+                                <div class="font-medium">Sarah Johnson</div>
+                                <div class="text-xs text-gray-400">Family of 4, House with yard</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Buddy (Dog)</div>
+                                        <div class="text-xs text-gray-400">#SP045 • Golden Retriever</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-homecheck">Home Check Scheduled</span></td>
+                            <td>
+                                <div class="text-white">Nov 14, 2023</div>
+                                <div class="text-xs text-gray-400">3 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-[#0ea5e9] rounded-full flex items-center justify-center text-xs">J</div>
+                                    <span>John (Team Lead)</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">URGENT</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs success-btn px-3 py-1" onclick="approveAdoption('ADP-1042')">
+                                        Approve
+                                    </button>
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewApplication('ADP-1042')">
+                                        View
+                                    </button>
+                                    <button class="text-xs warning-btn px-3 py-1" onclick="rescheduleHomeCheck('ADP-1042')">
+                                        Reschedule
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Pending Application -->
+                        <tr>
+                            <td><input type="checkbox" class="rounded"></td>
+                            <td class="font-medium">#ADP-1041</td>
+                            <td>
+                                <div class="font-medium">Michael Chen</div>
+                                <div class="text-xs text-gray-400">Single, Apartment</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Whiskers (Cat)</div>
+                                        <div class="text-xs text-gray-400">#SP039 • Tabby</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-pending">Pending Review</span></td>
+                            <td>
+                                <div class="text-white">Nov 12, 2023</div>
+                                <div class="text-xs text-gray-400">5 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs">S</div>
+                                    <span>Sarah</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-yellow-500 rounded-full">NORMAL</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="assignToMe('ADP-1041')">
+                                        Assign to Me
+                                    </button>
+                                    <button class="text-xs outline-btn px-3 py-1" onclick="viewApplication('ADP-1041')">
+                                        Review
+                                    </button>
+                                    <button class="text-xs danger-btn px-3 py-1" onclick="rejectApplication('ADP-1041')">
+                                        Reject
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Approved Application -->
+                        <tr class="approved-row">
+                            <td><input type="checkbox" class="rounded"></td>
+                            <td class="font-medium">#ADP-1040</td>
+                            <td>
+                                <div class="font-medium">Emma Wilson</div>
+                                <div class="text-xs text-gray-400">Family of 3, House</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Rocky (Dog)</div>
+                                        <div class="text-xs text-gray-400">#SP038 • German Shepherd Mix</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-approved">Ready for Pickup</span></td>
+                            <td>
+                                <div class="text-white">Nov 10, 2023</div>
+                                <div class="text-xs text-gray-400">7 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">M</div>
+                                    <span>Mike</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">READY</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs success-btn px-3 py-1" onclick="completeAdoption('ADP-1040')">
+                                        Complete
+                                    </button>
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewApplication('ADP-1040')">
+                                        Details
+                                    </button>
+                                    <button class="text-xs outline-btn px-3 py-1" onclick="sendReminder('ADP-1040')">
+                                        Remind
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Completed Adoption -->
+                        <tr>
+                            <td><input type="checkbox" class="rounded"></td>
+                            <td class="font-medium">#ADP-1039</td>
+                            <td>
+                                <div class="font-medium">Robert Davis</div>
+                                <div class="text-xs text-gray-400">Retired, House with yard</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Charlie (Dog)</div>
+                                        <div class="text-xs text-gray-400">#SP037 • Labrador</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td>
+                                <div class="text-white">Nov 8, 2023</div>
+                                <div class="text-xs text-gray-400">9 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-[#0ea5e9] rounded-full flex items-center justify-center text-xs">J</div>
+                                    <span>John (Team Lead)</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-blue-500 rounded-full">DONE</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewApplication('ADP-1039')">
+                                        View Record
+                                    </button>
+                                    <button class="text-xs outline-btn px-3 py-1" onclick="followUp('ADP-1039')">
+                                        Follow-up
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Rejected Application -->
+                        <tr>
+                            <td><input type="checkbox" class="rounded"></td>
+                            <td class="font-medium">#ADP-1038</td>
+                            <td>
+                                <div class="font-medium">James Miller</div>
+                                <div class="text-xs text-gray-400">Student, Small apartment</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Luna (Cat)</div>
+                                        <div class="text-xs text-gray-400">#SP036 • Siamese</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-rejected">Rejected</span></td>
+                            <td>
+                                <div class="text-white">Nov 5, 2023</div>
+                                <div class="text-xs text-gray-400">12 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs">S</div>
+                                    <span>Sarah</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-gray-500 rounded-full">CLOSED</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewApplication('ADP-1038')">
+                                        View Reason
+                                    </button>
+                                    <button class="text-xs outline-btn px-3 py-1" onclick="reopenApplication('ADP-1038')">
+                                        Reopen
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Bulk Actions & Pagination -->
+            <div class="flex items-center justify-between mt-6">
+                <div class="flex items-center gap-3">
+                    <button class="outline-btn text-sm" onclick="bulkAssign()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Bulk Assign
+                    </button>
+                    <button class="outline-btn text-sm" onclick="exportSelected()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Export Selected
+                    </button>
+                    <button class="approve-btn text-sm" onclick="processBatchAdoptions()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Batch Approve
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="px-3 py-1 rounded bg-white/10 hover:bg-white/20">1</button>
+                    <button class="px-3 py-1 rounded hover:bg-white/10">2</button>
+                    <button class="px-3 py-1 rounded hover:bg-white/10">3</button>
+                    <span class="text-gray-400">...</span>
+                    <button class="px-3 py-1 rounded hover:bg-white/10">Next →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Adoption Process Statistics -->
+        <div class="card mt-6">
+            <h2 class="text-xl font-bold mb-4">Adoption Process Statistics</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-blue-900/20 p-4 rounded-lg">
+                    <h3 class="font-bold text-blue-300 mb-2">Average Processing Time</h3>
+                    <div class="text-2xl font-bold">4.2 days</div>
+                    <p class="text-sm text-gray-300">From application to approval</p>
+                    <div class="progress-bar mt-2">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                </div>
+                
+                <div class="bg-green-900/20 p-4 rounded-lg">
+                    <h3 class="font-bold text-green-300 mb-2">Success Rate</h3>
+                    <div class="text-2xl font-bold">92%</div>
+                    <p class="text-sm text-gray-300">Applications completed successfully</p>
+                    <div class="progress-bar mt-2">
+                        <div class="progress-fill" style="width: 92%"></div>
+                    </div>
+                </div>
+                
+                <div class="bg-purple-900/20 p-4 rounded-lg">
+                    <h3 class="font-bold text-purple-300 mb-2">Team Performance</h3>
+                    <div class="text-2xl font-bold">18/month</div>
+                    <p class="text-sm text-gray-300">Average adoptions per team member</p>
+                    <div class="progress-bar mt-2">
+                        <div class="progress-fill" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Upcoming Home Checks -->
+        <div class="card mt-6">
+            <h2 class="text-xl font-bold mb-4">Upcoming Home Checks</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-yellow-900/20 p-4 rounded-lg">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="font-bold text-white">Today, 2:00 PM</h3>
+                            <p class="text-sm text-gray-300">Sarah Johnson • Buddy (Dog)</p>
+                        </div>
+                        <span class="status-badge status-homecheck">Scheduled</span>
+                    </div>
+                    <div class="text-sm text-gray-300">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>123 Main St, Cityville</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            <span>Assigned to: John (Team Lead)</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button class="text-xs primary-btn flex-1" onclick="startHomeCheck('ADP-1042')">
+                            Start Checklist
+                        </button>
+                        <button class="text-xs outline-btn flex-1" onclick="rescheduleHomeCheck('ADP-1042')">
+                            Reschedule
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-900/20 p-4 rounded-lg">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="font-bold text-white">Tomorrow, 10:00 AM</h3>
+                            <p class="text-sm text-gray-300">Lisa Parker • Mittens (Cat)</p>
+                        </div>
+                        <span class="status-badge status-review">Confirmed</span>
+                    </div>
+                    <div class="text-sm text-gray-300">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>456 Oak Ave, Townsville</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            <span>Assigned to: Sarah</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button class="text-xs primary-btn flex-1" onclick="prepareChecklist('ADP-1043')">
+                            Prepare
+                        </button>
+                        <button class="text-xs outline-btn flex-1" onclick="contactApplicant('ADP-1043')">
+                            Contact
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Dropdown functionality
+        document.querySelectorAll('.dropdown-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.closest('.relative').querySelector('.dropdown');
+                dropdown.classList.toggle('hidden');
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                dropdown.classList.add('hidden');
+            });
+        });
+
+        // ====================
+        // ADOPTION MANAGEMENT FUNCTIONS
+        // ====================
+        
+        function applyAdoptionFilters() {
+            const status = document.getElementById('statusFilter').value;
+            const animalType = document.getElementById('animalTypeFilter').value;
+            const priority = document.getElementById('priorityFilter').value;
+            const assigned = document.getElementById('assignedFilter').value;
+            
+            const filters = [];
+            if (status) filters.push(`Status: ${status}`);
+            if (animalType) filters.push(`Animal Type: ${animalType}`);
+            if (priority) filters.push(`Priority: ${priority}`);
+            if (assigned) filters.push(`Assigned To: ${assigned}`);
+            
+            if (filters.length > 0) {
+                alert(`Applying adoption filters:\n${filters.join('\n')}\n\nFiltering applications...`);
             } else {
-                alert('Please fill in all required fields marked with *.');
+                alert('Showing all adoption applications...');
+            }
+        }
+        
+        function clearAdoptionFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('animalTypeFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            document.getElementById('assignedFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            
+            alert('All filters cleared. Showing all applications.');
+        }
+        
+        function exportAdoptionData() {
+            alert('📊 Exporting adoption data to CSV...\n\nFile: SafePaws_Adoption_Report.csv\n\nIncludes all application data, status, and team assignments.');
+        }
+        
+        function scheduleHomeChecks() {
+            const count = prompt("How many home checks to schedule?", "5");
+            if (count) {
+                alert(`📅 Scheduling ${count} home checks...\n\nHome checks will be scheduled for the next 7 days.\nTeam members will be assigned automatically.\nApplicants will receive email notifications.`);
+            }
+        }
+        
+        function createAdoptionRecord() {
+            alert("Creating new adoption record...\n\nThis opens a form to manually create an adoption record for:\n- Direct adoptions from shelter\n- Foster-to-adopt cases\n- Special circumstances");
+        }
+        
+        function refreshApplications() {
+            alert("Refreshing adoption applications data...\n\nFetching latest updates from database.");
+        }
+        
+        function approveSelected() {
+            alert("Approving selected adoption applications...\n\nSelected applications will be:\n- Moved to 'Ready for Pickup'\n- Applicants notified via email\n- Animals marked as 'Adopted'\n- Records updated in system");
+        }
+        
+        function processBatchAdoptions() {
+            alert("🚀 PROCESSING BATCH ADOPTIONS\n\nBatch actions initiated:\n1. Bulk approval of selected applications\n2. Automated email notifications\n3. Animal status updates\n4. Documentation generation\n5. Follow-up scheduling");
+        }
+        
+        function viewApplication(appId) {
+            alert(`Viewing adoption application ${appId}\n\nOpening detailed view with:\n- Applicant information\n- Animal details\n- Application history\n- Notes and comments\n- Documents and forms`);
+        }
+        
+        function approveAdoption(appId) {
+            alert(`✅ APPROVING ADOPTION ${appId}\n\nActions:\n1. Application approved\n2. Applicant notified\n3. Pickup scheduled\n4. Animal status updated to 'Adopted'\n5. Documentation sent`);
+        }
+        
+        function assignToMe(appId) {
+            alert(`👤 Assigning application ${appId} to you...\n\nYou are now responsible for:\n- Reviewing application\n- Contacting applicant\n- Scheduling home check\n- Making final recommendation`);
+        }
+        
+        function rejectApplication(appId) {
+            const reason = prompt("Enter reason for rejection:", "Insufficient space for animal");
+            if (reason) {
+                alert(`❌ REJECTING APPLICATION ${appId}\n\nReason: ${reason}\n\nApplication will be:\n- Moved to 'Rejected' status\n- Applicant notified with reason\n- Record kept for future reference`);
+            }
+        }
+        
+        function completeAdoption(appId) {
+            alert(`🏁 COMPLETING ADOPTION ${appId}\n\nMarking adoption as completed:\n1. Animal handed over to adopter\n2. Final paperwork signed\n3. Follow-up scheduled (30 days)\n4. Record archived\n5. Success story logged`);
+        }
+        
+        function rescheduleHomeCheck(appId) {
+            const newDate = prompt("Enter new date for home check (YYYY-MM-DD):", "2023-11-20");
+            const newTime = prompt("Enter new time (HH:MM):", "14:00");
+            
+            if (newDate && newTime) {
+                alert(`📅 RESCHEDULING HOME CHECK ${appId}\n\nNew date: ${newDate} at ${newTime}\n\nApplicant will be notified automatically.\nCalendar updated.`);
+            }
+        }
+        
+        function sendReminder(appId) {
+            alert(`📨 SENDING REMINDER ${appId}\n\nReminder email sent to applicant:\n- Pickup date reminder\n- Required documents\n- Shelter contact information\n- FAQ link`);
+        }
+        
+        function followUp(appId) {
+            alert(`📞 SCHEDULING FOLLOW-UP ${appId}\n\n30-day follow-up scheduled:\n- Welfare check call\n- Photo request\n- Support offered\n- Feedback collected`);
+        }
+        
+        function reopenApplication(appId) {
+            alert(`🔄 REOPENING APPLICATION ${appId}\n\nApplication reopened for review.\nStatus changed to 'Pending Review'.\nAssigned to original team member.`);
+        }
+        
+        function bulkAssign() {
+            alert("Bulk assigning selected applications to team members...\n\nApplications will be distributed evenly among available team members.");
+        }
+        
+        function exportSelected() {
+            alert("Exporting selected adoption applications...\n\nSelected records will be exported as PDF and CSV files.");
+        }
+        
+        function startHomeCheck(appId) {
+            alert(`🏠 STARTING HOME CHECK ${appId}\n\nOpening home check checklist:\n1. Safety assessment\n2. Space evaluation\n3. Family meeting\n4. Animal introduction\n5. Documentation`);
+        }
+        
+        function prepareChecklist(appId) {
+            alert(`📋 PREPARING HOME CHECKLIST ${appId}\n\nPreparing documents:\n- Checklist form\n- Safety guidelines\n- Animal profile\n- Contact information\n- Maps and directions`);
+        }
+        
+        function contactApplicant(appId) {
+            alert(`📞 CONTACTING APPLICANT ${appId}\n\nCalling applicant to confirm home check appointment.\nAvailable communication methods:\n- Phone call\n- SMS\n- Email\n- WhatsApp`);
+        }
+
+        // Demo functionality for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            if (!btn.onclick) {
+                btn.addEventListener('click', function(e) {
+                    if (this.textContent.includes('View') || 
+                        this.textContent.includes('Details') || 
+                        this.textContent.includes('Review')) {
+                        e.preventDefault();
+                        const action = this.textContent.trim();
+                        alert(`[Demo] ${action} - This would trigger the full feature in production.`);
+                    }
+                });
             }
         });
         
-        // Filter button functionality
-        const searchBtn = document.querySelector('.search-btn');
-        searchBtn.addEventListener('click', () => {
-            const type = document.getElementById('animal-type').value;
-            const age = document.getElementById('age').value;
-            const size = document.getElementById('size').value;
-            const gender = document.getElementById('gender').value;
-            
-            // Show filtered results animation
-            const animalCards = document.querySelectorAll('.animal-card');
-            animalCards.forEach(card => {
-                card.style.opacity = '0.5';
-                card.style.transform = 'scale(0.95)';
-            });
-            
-            setTimeout(() => {
-                animalCards.forEach(card => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'scale(1)';
-                });
-                alert(`Showing results for: ${type !== 'all' ? type : 'all'} animals, ${age !== 'all' ? age : 'any'} age, ${size !== 'all' ? size : 'any'} size, ${gender !== 'all' ? gender : 'any'} gender.`);
-            }, 300);
-        });
-        
-        // Add active state to current page in nav
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentPage = window.location.pathname;
-            const navLinks = document.querySelectorAll('.nav-links a');
+        // Set active nav link
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('nav a');
             
             navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPage) {
-                    link.classList.add('active');
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('text-yellow-300');
                 } else {
-                    link.classList.remove('active');
+                    link.classList.remove('text-yellow-300');
                 }
             });
         });

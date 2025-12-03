@@ -147,6 +147,16 @@
             @apply bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#0ea5e9];
         }
         
+        /* FIX: Make dropdown options visible */
+        .filter-select option {
+            @apply bg-[#071331] text-white;
+        }
+        
+        /* Fix for all dropdowns */
+        select option {
+            @apply bg-[#071331] text-white;
+        }
+        
         .filter-input {
             @apply bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#0ea5e9];
         }
@@ -173,6 +183,15 @@
         .progress-fill {
             @apply h-full bg-gradient-to-r from-green-500 to-blue-500 transition-all duration-500;
         }
+        
+        /* Additional fixes for better visibility */
+        .text-visible {
+            @apply text-gray-200;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            @apply text-gray-100;
+        }
     </style>
 </head>
 <body class="text-white">
@@ -193,7 +212,7 @@
 
             <!-- Desktop Menu -->
             <nav class="items-center hidden gap-6 text-sm font-medium text-white md:flex">
-                <a href="{{ url('/') }}" class="transition hover:text-yellow-300">HOME</a>
+                
                 <a href="{{ url('/rescue-team') }}" class="transition hover:text-yellow-300">DASHBOARD</a>
                 <a href="{{ route('rescue.reports') }}" class="transition hover:text-yellow-300 text-yellow-300">ANIMAL REPORTS</a>
                 <a href="{{ route('rescue.animals') }}" class="transition hover:text-yellow-300">ANIMALS</a>
@@ -329,8 +348,8 @@
             <!-- Progress -->
             <div>
                 <div class="flex justify-between text-sm mb-1">
-                    <span>Rescue Progress</span>
-                    <span>25%</span>
+                    <span class="text-gray-300">Rescue Progress</span>
+                    <span class="text-gray-300">25%</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 25%"></div>
@@ -346,10 +365,10 @@
                 <div>
                     <label class="filter-label">Emergency Type</label>
                     <select class="filter-select" id="emergencyFilter">
-                        <option value="">All Reports</option>
-                        <option value="flood">Flood Emergency</option>
-                        <option value="critical">Critical Only</option>
-                        <option value="veterinary">Vet Required</option>
+                        <option value="" class="text-white bg-[#071331]">All Reports</option>
+                        <option value="flood" class="text-white bg-[#071331]">Flood Emergency</option>
+                        <option value="critical" class="text-white bg-[#071331]">Critical Only</option>
+                        <option value="veterinary" class="text-white bg-[#071331]">Vet Required</option>
                     </select>
                 </div>
                 
@@ -357,12 +376,12 @@
                 <div>
                     <label class="filter-label">Status</label>
                     <select class="filter-select">
-                        <option value="">All Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="assigned">Assigned</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="resolved">Resolved</option>
-                        <option value="urgent">Urgent</option>
+                        <option value="" class="text-white bg-[#071331]">All Status</option>
+                        <option value="pending" class="text-white bg-[#071331]">Pending</option>
+                        <option value="assigned" class="text-white bg-[#071331]">Assigned</option>
+                        <option value="in_progress" class="text-white bg-[#071331]">In Progress</option>
+                        <option value="resolved" class="text-white bg-[#071331]">Resolved</option>
+                        <option value="urgent" class="text-white bg-[#071331]">Urgent</option>
                     </select>
                 </div>
                 
@@ -370,11 +389,11 @@
                 <div>
                     <label class="filter-label">Animal Type</label>
                     <select class="filter-select">
-                        <option value="">All Types</option>
-                        <option value="dog">Dog</option>
-                        <option value="cat">Cat</option>
-                        <option value="livestock">Livestock</option>
-                        <option value="other">Other</option>
+                        <option value="" class="text-white bg-[#071331]">All Types</option>
+                        <option value="dog" class="text-white bg-[#071331]">Dog</option>
+                        <option value="cat" class="text-white bg-[#071331]">Cat</option>
+                        <option value="livestock" class="text-white bg-[#071331]">Livestock</option>
+                        <option value="other" class="text-white bg-[#071331]">Other</option>
                     </select>
                 </div>
                 
@@ -382,10 +401,10 @@
                 <div>
                     <label class="filter-label">Priority</label>
                     <select class="filter-select">
-                        <option value="">All Priorities</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
+                        <option value="" class="text-white bg-[#071331]">All Priorities</option>
+                        <option value="high" class="text-white bg-[#071331]">High</option>
+                        <option value="medium" class="text-white bg-[#071331]">Medium</option>
+                        <option value="low" class="text-white bg-[#071331]">Low</option>
                     </select>
                 </div>
                 
@@ -423,15 +442,15 @@
         <!-- Reports Statistics -->
         <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
             <div class="filter-card">
-                <div class="text-2xl font-bold">24</div>
+                <div class="text-2xl font-bold text-white">24</div>
                 <div class="text-sm text-gray-300">Pending Reports</div>
             </div>
             <div class="filter-card">
-                <div class="text-2xl font-bold">18</div>
+                <div class="text-2xl font-bold text-white">18</div>
                 <div class="text-sm text-gray-300">Assigned</div>
             </div>
             <div class="filter-card">
-                <div class="text-2xl font-bold">6</div>
+                <div class="text-2xl font-bold text-white">6</div>
                 <div class="text-sm text-gray-300">Urgent</div>
             </div>
             <div class="filter-card bg-gradient-to-r from-blue-900/30 to-cyan-900/30">
@@ -439,7 +458,7 @@
                 <div class="text-sm text-blue-200">Flood Reports</div>
             </div>
             <div class="filter-card">
-                <div class="text-2xl font-bold">42</div>
+                <div class="text-2xl font-bold text-white">42</div>
                 <div class="text-sm text-gray-300">Total Today</div>
             </div>
         </div>
@@ -447,7 +466,7 @@
         <!-- Reports Table -->
         <div class="card">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold">All Incoming Reports</h2>
+                <h2 class="text-xl font-bold text-white">All Incoming Reports</h2>
                 <div class="flex gap-2">
                     <button class="primary-btn text-sm" onclick="createNewReport()">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -557,7 +576,7 @@
                                 <div class="flex items-center gap-2">
                                     <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 a3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                                         </svg>
                                     </div>
                                     <span>Dog</span>
@@ -661,36 +680,36 @@
                 </div>
                 
                 <div class="flex items-center gap-2">
-                    <button class="px-3 py-1 rounded bg-white/10 hover:bg-white/20">1</button>
-                    <button class="px-3 py-1 rounded hover:bg-white/10">2</button>
-                    <button class="px-3 py-1 rounded hover:bg-white/10">3</button>
+                    <button class="px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white">1</button>
+                    <button class="px-3 py-1 rounded hover:bg-white/10 text-white">2</button>
+                    <button class="px-3 py-1 rounded hover:bg-white/10 text-white">3</button>
                     <span class="text-gray-400">...</span>
-                    <button class="px-3 py-1 rounded hover:bg-white/10">Next →</button>
+                    <button class="px-3 py-1 rounded hover:bg-white/10 text-white">Next →</button>
                 </div>
             </div>
         </div>
         
         <!-- Veterinary Coordination Section -->
         <div class="card mt-6">
-            <h2 class="text-xl font-bold mb-4">Veterinary Association Coordination</h2>
+            <h2 class="text-xl font-bold mb-4 text-white">Veterinary Association Coordination</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-green-900/20 p-4 rounded-lg">
                     <h3 class="font-bold text-green-300 mb-2">Available Veterinarians</h3>
-                    <div class="text-2xl font-bold">24</div>
+                    <div class="text-2xl font-bold text-white">24</div>
                     <p class="text-sm text-gray-300">On standby for flood response</p>
                     <button class="text-xs success-btn mt-2 w-full" onclick="deployVets()">Deploy to Flood Zones</button>
                 </div>
                 
                 <div class="bg-blue-900/20 p-4 rounded-lg">
                     <h3 class="font-bold text-blue-300 mb-2">Emergency Supplies</h3>
-                    <div class="text-2xl font-bold">✓ Ready</div>
+                    <div class="text-2xl font-bold text-white">✓ Ready</div>
                     <p class="text-sm text-gray-300">Medical kits, boats, rescue equipment</p>
                     <button class="text-xs primary-btn mt-2 w-full" onclick="manageSupplies()">Manage Inventory</button>
                 </div>
                 
                 <div class="bg-purple-900/20 p-4 rounded-lg">
                     <h3 class="font-bold text-purple-300 mb-2">Coordination Center</h3>
-                    <div class="text-2xl font-bold">Active</div>
+                    <div class="text-2xl font-bold text-white">Active</div>
                     <p class="text-sm text-gray-300">24/7 emergency hotline: 011-234-5678</p>
                     <button class="text-xs outline-btn mt-2 w-full" onclick="openCoordinationCenter()">Open Center</button>
                 </div>

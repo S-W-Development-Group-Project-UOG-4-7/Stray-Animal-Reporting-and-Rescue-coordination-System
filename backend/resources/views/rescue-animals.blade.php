@@ -130,6 +130,16 @@
             @apply bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#0ea5e9];
         }
         
+        /* FIX: Make dropdown options visible */
+        .filter-select option {
+            @apply bg-[#071331] text-white;
+        }
+        
+        /* Fix for all dropdowns */
+        select option {
+            @apply bg-[#071331] text-white;
+        }
+        
         .filter-input {
             @apply bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#0ea5e9];
         }
@@ -155,6 +165,15 @@
         .cat-icon { @apply bg-pink-500/20 text-pink-300; }
         .rabbit-icon { @apply bg-purple-500/20 text-purple-300; }
         .other-icon { @apply bg-gray-500/20 text-gray-300; }
+        
+        /* Additional fixes for better visibility */
+        h1, h2, h3, h4, h5, h6 {
+            @apply text-gray-100;
+        }
+        
+        p, span, div {
+            @apply text-gray-200;
+        }
     </style>
 </head>
 <body class="text-white">
@@ -239,7 +258,7 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold">42</div>
+                        <div class="text-2xl font-bold text-white">42</div>
                         <div class="text-sm text-gray-300">Total Animals</div>
                     </div>
                 </div>
@@ -253,7 +272,7 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold">24</div>
+                        <div class="text-2xl font-bold text-white">24</div>
                         <div class="text-sm text-gray-300">Available for Adoption</div>
                     </div>
                 </div>
@@ -267,7 +286,7 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold">8</div>
+                        <div class="text-2xl font-bold text-white">8</div>
                         <div class="text-sm text-gray-300">Medical Care</div>
                     </div>
                 </div>
@@ -281,7 +300,7 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold">6</div>
+                        <div class="text-2xl font-bold text-white">6</div>
                         <div class="text-sm text-gray-300">In Quarantine</div>
                     </div>
                 </div>
@@ -296,11 +315,11 @@
                 <div>
                     <label class="filter-label">Animal Type</label>
                     <select class="filter-select" id="animalTypeFilter">
-                        <option value="">All Types</option>
-                        <option value="dog">Dog</option>
-                        <option value="cat">Cat</option>
-                        <option value="rabbit">Rabbit</option>
-                        <option value="other">Other</option>
+                        <option value="" class="text-white bg-[#071331]">All Types</option>
+                        <option value="dog" class="text-white bg-[#071331]">Dog</option>
+                        <option value="cat" class="text-white bg-[#071331]">Cat</option>
+                        <option value="rabbit" class="text-white bg-[#071331]">Rabbit</option>
+                        <option value="other" class="text-white bg-[#071331]">Other</option>
                     </select>
                 </div>
                 
@@ -308,11 +327,11 @@
                 <div>
                     <label class="filter-label">Status</label>
                     <select class="filter-select" id="statusFilter">
-                        <option value="">All Status</option>
-                        <option value="available">Available</option>
-                        <option value="adopted">Adopted</option>
-                        <option value="medical">Medical Care</option>
-                        <option value="quarantine">Quarantine</option>
+                        <option value="" class="text-white bg-[#071331]">All Status</option>
+                        <option value="available" class="text-white bg-[#071331]">Available</option>
+                        <option value="adopted" class="text-white bg-[#071331]">Adopted</option>
+                        <option value="medical" class="text-white bg-[#071331]">Medical Care</option>
+                        <option value="quarantine" class="text-white bg-[#071331]">Quarantine</option>
                     </select>
                 </div>
                 
@@ -320,9 +339,9 @@
                 <div>
                     <label class="filter-label">Gender</label>
                     <select class="filter-select" id="genderFilter">
-                        <option value="">All Genders</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="" class="text-white bg-[#071331]">All Genders</option>
+                        <option value="male" class="text-white bg-[#071331]">Male</option>
+                        <option value="female" class="text-white bg-[#071331]">Female</option>
                     </select>
                 </div>
                 
@@ -330,11 +349,11 @@
                 <div>
                     <label class="filter-label">Age</label>
                     <select class="filter-select" id="ageFilter">
-                        <option value="">All Ages</option>
-                        <option value="puppy_kitten">Puppy/Kitten (0-1 yr)</option>
-                        <option value="young">Young (1-3 yrs)</option>
-                        <option value="adult">Adult (3-8 yrs)</option>
-                        <option value="senior">Senior (8+ yrs)</option>
+                        <option value="" class="text-white bg-[#071331]">All Ages</option>
+                        <option value="puppy_kitten" class="text-white bg-[#071331]">Puppy/Kitten (0-1 yr)</option>
+                        <option value="young" class="text-white bg-[#071331]">Young (1-3 yrs)</option>
+                        <option value="adult" class="text-white bg-[#071331]">Adult (3-8 yrs)</option>
+                        <option value="senior" class="text-white bg-[#071331]">Senior (8+ yrs)</option>
                     </select>
                 </div>
             </div>
@@ -387,7 +406,7 @@
                     </svg>
                     Grid View
                 </button>
-                <button id="tableViewBtn" class="px-4 py-2 rounded bg-white/10 hover:bg-white/20">
+                <button id="tableViewBtn" class="px-4 py-2 rounded bg-white/10 hover:bg-white/20 text-white">
                     <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
@@ -395,7 +414,7 @@
                 </button>
             </div>
             <div class="text-sm text-gray-400">
-                Showing <span id="animalCount">8</span> animals
+                Showing <span id="animalCount" class="text-white">8</span> animals
             </div>
         </div>
 
@@ -416,7 +435,7 @@
                 <div class="p-4">
                     <div class="flex items-start justify-between mb-2">
                         <div>
-                            <h3 class="text-lg font-bold">Max</h3>
+                            <h3 class="text-lg font-bold text-white">Max</h3>
                             <p class="text-sm text-gray-400">Golden Retriever • 2 years</p>
                         </div>
                         <div class="animal-type-icon dog-icon">
@@ -430,11 +449,11 @@
                     <div class="grid grid-cols-2 gap-3 mb-4">
                         <div class="text-center p-2 bg-white/5 rounded">
                             <div class="text-xs text-gray-400">Gender</div>
-                            <div class="font-medium">Male</div>
+                            <div class="font-medium text-white">Male</div>
                         </div>
                         <div class="text-center p-2 bg-white/5 rounded">
                             <div class="text-xs text-gray-400">Weight</div>
-                            <div class="font-medium">28 kg</div>
+                            <div class="font-medium text-white">28 kg</div>
                         </div>
                     </div>
                     
@@ -454,8 +473,8 @@
             <!-- Animal Card 2 -->
             <div class="animal-card">
                 <div class="relative">
-                    <img 
-                        src="https://images.unsplash.com/photo-1514888286974-6d03bdeacba8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                    <img src="{{ asset('Luna.jpg') }}" 
+
                         alt="Luna" 
                         class="animal-image"
                     >
@@ -466,7 +485,7 @@
                 <div class="p-4">
                     <div class="flex items-start justify-between mb-2">
                         <div>
-                            <h3 class="text-lg font-bold">Luna</h3>
+                            <h3 class="text-lg font-bold text-white">Luna</h3>
                             <p class="text-sm text-gray-400">Domestic Cat • 1.5 years</p>
                         </div>
                         <div class="animal-type-icon cat-icon">
@@ -480,11 +499,11 @@
                     <div class="grid grid-cols-2 gap-3 mb-4">
                         <div class="text-center p-2 bg-white/5 rounded">
                             <div class="text-xs text-gray-400">Gender</div>
-                            <div class="font-medium">Female</div>
+                            <div class="font-medium text-white">Female</div>
                         </div>
                         <div class="text-center p-2 bg-white/5 rounded">
                             <div class="text-xs text-gray-400">Weight</div>
-                            <div class="font-medium">4.2 kg</div>
+                            <div class="font-medium text-white">4.2 kg</div>
                         </div>
                     </div>
                     
@@ -511,7 +530,7 @@
                 <div class="p-4">
                     <div class="flex items-start justify-between mb-2">
                         <div>
-                            <h3 class="text-lg font-bold">Rocky</h3>
+                            <h3 class="text-lg font-bold text-white">Rocky</h3>
                             <p class="text-sm text-gray-400">German Shepherd • 4 years</p>
                         </div>
                         <div class="animal-type-icon dog-icon">
@@ -525,11 +544,11 @@
                     <div class="grid grid-cols-2 gap-3 mb-4">
                         <div class="text-center p-2 bg-white/5 rounded">
                             <div class="text-xs text-gray-400">Gender</div>
-                            <div class="font-medium">Male</div>
+                            <div class="font-medium text-white">Male</div>
                         </div>
                         <div class="text-center p-2 bg-white/5 rounded">
                             <div class="text-xs text-gray-400">Weight</div>
-                            <div class="font-medium">34 kg</div>
+                            <div class="font-medium text-white">34 kg</div>
                         </div>
                     </div>
                     
@@ -549,8 +568,8 @@
             <!-- Animal Card 4 -->
             <div class="animal-card">
                 <div class="relative">
-                    <img 
-                        src="https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                   <img src="{{ asset('Thumper.jpg') }}" 
+ 
                         alt="Thumper" 
                         class="animal-image"
                     >
@@ -561,7 +580,7 @@
                 <div class="p-4">
                     <div class="flex items-start justify-between mb-2">
                         <div>
-                            <h3 class="text-lg font-bold">Thumper</h3>
+                            <h3 class="text-lg font-bold text-white">Thumper</h3>
                             <p class="text-sm text-gray-400">Mini Lop Rabbit • 8 months</p>
                         </div>
                         <div class="animal-type-icon rabbit-icon">
@@ -575,11 +594,11 @@
                     <div class="grid grid-cols-2 gap-3 mb-4">
                         <div class="text-center p-2 bg-white/5 rounded">
                             <div class="text-xs text-gray-400">Gender</div>
-                            <div class="font-medium">Female</div>
+                            <div class="font-medium text-white">Female</div>
                         </div>
                         <div class="text-center p-2 bg-white/5 rounded">
                             <div class="text-xs text-gray-400">Weight</div>
-                            <div class="font-medium">1.8 kg</div>
+                            <div class="font-medium text-white">1.8 kg</div>
                         </div>
                     </div>
                     
@@ -622,15 +641,15 @@
                                     <div class="w-8 h-8 rounded-full overflow-hidden">
                                         <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover">
                                     </div>
-                                    <span>Max</span>
+                                    <span class="text-white">Max</span>
                                 </div>
                             </td>
-                            <td>Dog</td>
-                            <td>Golden Retriever</td>
-                            <td>2 years</td>
-                            <td>Male</td>
+                            <td class="text-white">Dog</td>
+                            <td class="text-white">Golden Retriever</td>
+                            <td class="text-white">2 years</td>
+                            <td class="text-white">Male</td>
                             <td><span class="status-badge status-available">Available</span></td>
-                            <td>2023-10-15</td>
+                            <td class="text-white">2023-10-15</td>
                             <td>
                                 <div class="flex gap-2">
                                     <button class="text-xs primary-btn px-3 py-1" onclick="viewAnimal('SP-0012')">View</button>
@@ -648,15 +667,15 @@
                                     <div class="w-8 h-8 rounded-full overflow-hidden">
                                         <img src="https://images.unsplash.com/photo-1514888286974-6d03bdeacba8?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover">
                                     </div>
-                                    <span>Luna</span>
+                                    <span class="text-white">Luna</span>
                                 </div>
                             </td>
-                            <td>Cat</td>
-                            <td>Domestic Shorthair</td>
-                            <td>1.5 years</td>
-                            <td>Female</td>
+                            <td class="text-white">Cat</td>
+                            <td class="text-white">Domestic Shorthair</td>
+                            <td class="text-white">1.5 years</td>
+                            <td class="text-white">Female</td>
                             <td><span class="status-badge status-adopted">Adopted</span></td>
-                            <td>2023-09-22</td>
+                            <td class="text-white">2023-09-22</td>
                             <td>
                                 <div class="flex gap-2">
                                     <button class="text-xs outline-btn px-3 py-1" onclick="viewAnimal('SP-0015')">History</button>
@@ -677,15 +696,15 @@
             </div>
             
             <div class="flex items-center gap-2">
-                <button class="px-3 py-1 rounded bg-white/10 hover:bg-white/20 disabled:opacity-50" disabled>
+                <button class="px-3 py-1 rounded bg-white/10 hover:bg-white/20 disabled:opacity-50 text-white" disabled>
                     ← Previous
                 </button>
                 <button class="px-3 py-1 rounded bg-[#0ea5e9] text-white">1</button>
-                <button class="px-3 py-1 rounded hover:bg-white/10">2</button>
-                <button class="px-3 py-1 rounded hover:bg-white/10">3</button>
+                <button class="px-3 py-1 rounded hover:bg-white/10 text-white">2</button>
+                <button class="px-3 py-1 rounded hover:bg-white/10 text-white">3</button>
                 <span class="text-gray-400">...</span>
-                <button class="px-3 py-1 rounded hover:bg-white/10">6</button>
-                <button class="px-3 py-1 rounded hover:bg-white/10">
+                <button class="px-3 py-1 rounded hover:bg-white/10 text-white">6</button>
+                <button class="px-3 py-1 rounded hover:bg-white/10 text-white">
                     Next →
                 </button>
             </div>

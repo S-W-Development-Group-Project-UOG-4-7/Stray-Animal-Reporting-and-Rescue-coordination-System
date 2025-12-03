@@ -39,3 +39,11 @@ Route::get('/adoption', [AdoptionController::class, 'index']);
 // Route::get('/animals', function () {
 //     return view('animals');
 // });
+Route::get('/register',[AuthController::class,'showRegister'])->name('register');
+Route::post('/register',[AuthController::class,'register'])->name('register.post');
+Route::get('/login',[AuthController::class,'showLogin'])->name('login');
+Route::post('/login',[AuthController::class,'login'])->name('login.post');
+Route::get('/logout',[AuthController::class,'logout'])->name('logout');
+Route::get('/rescue/dashboard', function(){
+    return "Welcome Rescue Team!";
+})->middleware('auth');
