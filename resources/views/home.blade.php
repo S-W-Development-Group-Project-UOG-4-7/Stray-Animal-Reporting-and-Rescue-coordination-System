@@ -5,15 +5,17 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>SafePaws — A Better World for Every Paw</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <style type="text/tailwindcss">
+      @vite('resources/css/app.css')
+<style>
             @keyframes paw-touch {
                 0%,
-                80%,
-                100% {
-                    opacity: 0;
-                    transform: translateY(0) scale(1);
-                }
+                80
+                
+
+
+
+
+
                 10%,
                 50% {
                     opacity: 1;
@@ -856,4 +858,4 @@
             }
         </script>
     </body>
-</html>
+</html
