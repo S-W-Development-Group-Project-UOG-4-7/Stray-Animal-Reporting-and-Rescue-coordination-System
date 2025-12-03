@@ -31,13 +31,42 @@
         }
 
         /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
         }
 
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out;
+        }
+
         .animate-pulse-slow {
             animation: pulse 2s infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
 
         /* Status Badges */
@@ -153,6 +182,10 @@
         .nav-link.active {
             @apply bg-[#0ea5e9]/20 text-[#0ea5e9] border-l-4 border-[#0ea5e9];
         }
+        
+        .nav-link i {
+            @apply w-5 text-center;
+        }
 
         /* Progress Steps */
         .progress-step {
@@ -178,12 +211,29 @@
         .step-completed .step-line {
             @apply bg-green-500;
         }
+
+        /* Stats Cards */
+        .stats-card {
+            @apply glass-card p-6 hover-lift;
+        }
+        
+        .stats-icon {
+            @apply w-12 h-12 rounded-lg flex items-center justify-center text-white text-xl;
+        }
+        
+        .stats-value {
+            @apply text-2xl font-bold mt-2;
+        }
+        
+        .stats-label {
+            @apply text-gray-300 text-sm mt-1;
+        }
     </style>
 </head>
 <body class="min-h-screen">
     <!-- Main Container -->
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
+        <!-- Sidebar (Complete from Dashboard) -->
         <aside class="w-64 bg-[#0b2447]/80 backdrop-blur-sm border-r border-white/10 hidden lg:block">
             <!-- Logo -->
             <div class="p-6 border-b border-white/10">
@@ -193,7 +243,7 @@
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-white">SafePaws</h1>
-                        <p class="text-xs text-gray-400">Rescue Operations</p>
+                        <p class="text-xs text-gray-400">Admin Dashboard</p>
                     </div>
                 </a>
             </div>
@@ -219,30 +269,41 @@
                 <a href="{{ url('/adoptions') }}" class="nav-link">
                     <i class="fas fa-home"></i>
                     <span>Adoptions</span>
+                    <span class="ml-auto bg-green-500 text-white text-xs px-2 py-1 rounded-full">12</span>
                 </a>
                 
-                <a href="{{ url('/teams') }}" class="nav-link">
+                <a href="{{ url('/users') }}" class="nav-link">
                     <i class="fas fa-users"></i>
-                    <span>Rescue Teams</span>
+                    <span>Users & Teams</span>
                 </a>
                 
-                <a href="{{ url('/equipment') }}" class="nav-link">
-                    <i class="fas fa-tools"></i>
-                    <span>Equipment</span>
+                <a href="{{ url('/veterinarians') }}" class="nav-link">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Vet Collaborators</span>
                 </a>
                 
-                <a href="{{ url('/map') }}" class="nav-link">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Live Map</span>
+                <a href="{{ url('/donations') }}" class="nav-link">
+                    <i class="fas fa-donate"></i>
+                    <span>Donations</span>
+                </a>
+                
+                <a href="{{ url('/ecommerce') }}" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>E-commerce</span>
                 </a>
                 
                 <a href="{{ url('/analytics') }}" class="nav-link">
                     <i class="fas fa-chart-bar"></i>
                     <span>Analytics</span>
                 </a>
+                
+                <a href="{{ url('/settings') }}" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
             </nav>
 
-            <!-- User Profile -->
+            <!-- User Profile with Dropdown -->
             <div class="absolute bottom-0 w-64 p-4 border-t border-white/10">
                 <div class="flex items-center gap-3">
                     <img src="https://ui-avatars.com/api/?name=Rescue+Lead&background=0ea5e9&color=fff" 
@@ -250,6 +311,16 @@
                     <div class="flex-1">
                         <h4 class="text-sm font-semibold text-white">Rescue Lead</h4>
                         <p class="text-xs text-gray-400">Operations Manager</p>
+                    </div>
+                    <div class="relative">
+                        <button class="text-gray-400 hover:text-white dropdown-toggle">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="absolute bottom-full right-0 mb-2 w-48 bg-[#0b2447] border border-white/10 rounded-lg shadow-lg hidden dropdown-menu">
+                            <a href="{{ url('/profile') }}" class="block px-4 py-2 text-sm hover:bg-white/10">Profile</a>
+                            <a href="{{ url('/settings') }}" class="block px-4 py-2 text-sm hover:bg-white/10">Settings</a>
+                            <a href="{{ url('/logout') }}" class="block w-full text-left px-4 py-2 text-sm hover:bg-red-500/20 text-red-400">Logout</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -273,6 +344,37 @@
                     
                     <!-- Right Side Actions -->
                     <div class="flex items-center gap-4">
+                        <!-- Notifications -->
+                        <div class="relative">
+                            <button class="text-gray-300 hover:text-white relative dropdown-toggle">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">5</span>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-80 bg-[#0b2447] border border-white/10 rounded-lg shadow-lg hidden dropdown-menu">
+                                <div class="p-4 border-b border-white/10">
+                                    <h3 class="font-semibold text-white">Rescue Notifications</h3>
+                                </div>
+                                <div class="max-h-64 overflow-y-auto">
+                                    <a href="#" class="block px-4 py-3 hover:bg-white/10 border-b border-white/5">
+                                        <p class="text-sm text-white">Team Alpha arrived on scene</p>
+                                        <p class="text-xs text-gray-400">5 minutes ago</p>
+                                    </a>
+                                    <a href="#" class="block px-4 py-3 hover:bg-white/10 border-b border-white/5">
+                                        <p class="text-sm text-white">New rescue request received</p>
+                                        <p class="text-xs text-gray-400">15 minutes ago</p>
+                                    </a>
+                                    <a href="#" class="block px-4 py-3 hover:bg-white/10 border-b border-white/5">
+                                        <p class="text-sm text-white">Equipment restock needed</p>
+                                        <p class="text-xs text-gray-400">1 hour ago</p>
+                                    </a>
+                                </div>
+                                <a href="{{ url('/notifications') }}" class="block px-4 py-3 text-center text-sm text-[#0ea5e9] hover:bg-white/10">
+                                    View All Notifications
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Actions -->
                         <a href="{{ url('/rescues/create') }}" class="btn-primary">
                             <i class="fas fa-plus"></i>
                             New Rescue Mission
@@ -289,63 +391,63 @@
             <main class="p-6">
                 <!-- Stats Overview -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                    <div class="stats-card">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">8</div>
-                                <div class="text-sm text-gray-400">Active Missions</div>
+                                <div class="stats-icon bg-blue-500/20 text-blue-400">
+                                    <i class="fas fa-ambulance"></i>
+                                </div>
+                                <div class="stats-value text-white">8</div>
+                                <div class="stats-label">Active Missions</div>
                             </div>
-                            <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-ambulance text-blue-400 text-xl"></i>
+                            <div class="text-green-400">
+                                <i class="fas fa-arrow-up"></i> 2 new today
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-green-400">
-                            <i class="fas fa-arrow-up"></i> 2 new today
                         </div>
                     </div>
                     
-                    <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                    <div class="stats-card">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">12</div>
-                                <div class="text-sm text-gray-400">Teams Active</div>
+                                <div class="stats-icon bg-green-500/20 text-green-400">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="stats-value text-white">12</div>
+                                <div class="stats-label">Teams Active</div>
                             </div>
-                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-users text-green-400 text-xl"></i>
+                            <div class="text-green-400">
+                                <i class="fas fa-check-circle"></i> 4 available
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-green-400">
-                            <i class="fas fa-check-circle"></i> 4 available
                         </div>
                     </div>
                     
-                    <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                    <div class="stats-card">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">3</div>
-                                <div class="text-sm text-gray-400">Urgent Cases</div>
+                                <div class="stats-icon bg-red-500/20 text-red-400">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="stats-value text-white">3</div>
+                                <div class="stats-label">Urgent Cases</div>
                             </div>
-                            <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-exclamation-triangle text-red-400 text-xl"></i>
+                            <div class="text-red-400">
+                                <i class="fas fa-clock"></i> Immediate
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-red-400">
-                            <i class="fas fa-clock"></i> Immediate attention
                         </div>
                     </div>
                     
-                    <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                    <div class="stats-card">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">89</div>
-                                <div class="text-sm text-gray-400">Total Rescues</div>
+                                <div class="stats-icon bg-purple-500/20 text-purple-400">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="stats-value text-white">89</div>
+                                <div class="stats-label">Total Rescues</div>
                             </div>
-                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-heart text-purple-400 text-xl"></i>
+                            <div class="text-green-400">
+                                <i class="fas fa-arrow-up"></i> 12 this week
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-green-400">
-                            <i class="fas fa-arrow-up"></i> 12 this week
                         </div>
                     </div>
                 </div>
@@ -355,14 +457,14 @@
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-lg font-semibold text-white">Active Rescue Missions</h3>
                         <div class="flex gap-2">
-                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-2">
+                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]">
                                 <option>All Status</option>
                                 <option>Dispatched</option>
                                 <option>En Route</option>
                                 <option>On Scene</option>
                                 <option>In Progress</option>
                             </select>
-                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-2">
+                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]">
                                 <option>All Teams</option>
                                 <option>Team Alpha</option>
                                 <option>Team Bravo</option>
@@ -373,7 +475,7 @@
                     
                     <div class="space-y-6">
                         <!-- Mission 1 -->
-                        <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                        <div class="p-4 bg-white/5 rounded-lg border border-white/10 animate-fadeIn">
                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div class="flex-1">
                                     <div class="flex items-center gap-3 mb-2">
@@ -464,7 +566,7 @@
                         </div>
                         
                         <!-- Mission 2 -->
-                        <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                        <div class="p-4 bg-white/5 rounded-lg border border-white/10 animate-fadeIn" style="animation-delay: 0.1s">
                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div class="flex-1">
                                     <div class="flex items-center gap-3 mb-2">
@@ -498,6 +600,7 @@
                                         On Scene
                                     </span>
                                     <span class="status-badge priority-medium">
+                                        <i class="fas fa-exclamation-triangle"></i>
                                         Medium Priority
                                     </span>
                                 </div>
@@ -554,7 +657,7 @@
                         </div>
                         
                         <!-- Mission 3 -->
-                        <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                        <div class="p-4 bg-white/5 rounded-lg border border-white/10 animate-fadeIn" style="animation-delay: 0.2s">
                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div class="flex-1">
                                     <div class="flex items-center gap-3 mb-2">
@@ -886,21 +989,22 @@
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 bg-[#0ea5e9] rounded-lg flex items-center justify-center">
-                                <i class="fas fa-ambulance text-white"></i>
+                                <i class="fas fa-paw text-white"></i>
                             </div>
                             <div>
-                                <div class="font-semibold text-white">SafePaws Rescue Ops</div>
-                                <div class="text-xs text-gray-400">Saving lives every day • © 2023</div>
+                                <div class="font-semibold text-white">SafePaws Rescue Operations</div>
+                                <div class="text-xs text-gray-400">Saving lives every day • © 2023 All rights reserved</div>
                             </div>
                         </div>
                         
                         <div class="flex items-center gap-4 text-sm text-gray-400">
-                            <div class="flex items-center gap-1">
+                            <a href="{{ url('/') }}" class="hover:text-white transition-colors">Dashboard</a>
+                            <a href="{{ url('/reports') }}" class="hover:text-white transition-colors">Reports</a>
+                            <a href="{{ url('/help') }}" class="hover:text-white transition-colors">Help Center</a>
+                            <div class="flex items-center gap-1 text-red-400">
                                 <i class="fas fa-phone"></i>
                                 <span>Emergency: 911</span>
                             </div>
-                            <a href="{{ url('/contact') }}" class="hover:text-white transition-colors">Contact</a>
-                            <a href="{{ url('/help') }}" class="hover:text-white transition-colors">Help</a>
                         </div>
                     </div>
                 </div>
@@ -908,113 +1012,112 @@
         </div>
     </div>
 
-    <!-- Mobile Menu Script -->
+    <!-- Mobile Sidebar (Hidden by default) -->
+    <div id="mobileSidebar" class="fixed inset-0 z-50 hidden lg:hidden">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black/50" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar Content -->
+        <div class="absolute left-0 top-0 bottom-0 w-64 bg-[#0b2447] transform -translate-x-full transition-transform duration-300" id="sidebarContent">
+            <div class="p-4 border-b border-white/10">
+                <div class="flex items-center justify-between">
+                    <a href="{{ url('/') }}" class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-[#0ea5e9] rounded-xl flex items-center justify-center">
+                            <i class="fas fa-paw text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-white">SafePaws</h1>
+                            <p class="text-xs text-gray-400">Admin Dashboard</p>
+                        </div>
+                    </a>
+                    <button id="closeSidebar" class="text-gray-400 hover:text-white">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <nav class="p-4 space-y-1">
+                <a href="{{ url('/') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ url('/reports') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-flag"></i>
+                    <span>Animal Reports</span>
+                </a>
+                <a href="{{ url('/rescues') }}" class="nav-link active" onclick="closeMobileSidebar()">
+                    <i class="fas fa-ambulance"></i>
+                    <span>Rescue Operations</span>
+                </a>
+                <a href="{{ url('/adoptions') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-home"></i>
+                    <span>Adoptions</span>
+                </a>
+                <a href="{{ url('/users') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-users"></i>
+                    <span>Users & Teams</span>
+                </a>
+                <a href="{{ url('/veterinarians') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Vet Collaborators</span>
+                </a>
+            </nav>
+            
+            <!-- Mobile User Profile -->
+            <div class="p-4 border-t border-white/10">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Rescue+Lead&background=0ea5e9&color=fff" 
+                         alt="Rescue Lead" class="w-10 h-10 rounded-full">
+                    <div>
+                        <h4 class="text-sm font-semibold text-white">Rescue Lead</h4>
+                        <p class="text-xs text-gray-400">Operations Manager</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Mobile sidebar functionality
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', function() {
-                // Create mobile sidebar if it doesn't exist
-                if (!document.getElementById('mobileSidebarContent')) {
-                    const sidebarHTML = `
-                        <div class="fixed inset-0 z-50 lg:hidden" id="mobileSidebar">
-                            <div class="absolute inset-0 bg-black/50" id="sidebarOverlay"></div>
-                            <div class="absolute left-0 top-0 bottom-0 w-64 bg-[#0b2447] transform -translate-x-full transition-transform duration-300" id="mobileSidebarContent">
-                                <div class="p-4 border-b border-white/10">
-                                    <div class="flex items-center justify-between">
-                                        <a href="{{ url('/') }}" class="flex items-center gap-3">
-                                            <div class="w-10 h-10 bg-[#0ea5e9] rounded-xl flex items-center justify-center">
-                                                <i class="fas fa-paw text-white text-lg"></i>
-                                            </div>
-                                            <div>
-                                                <h1 class="text-xl font-bold text-white">SafePaws</h1>
-                                                <p class="text-xs text-gray-400">Rescue Operations</p>
-                                            </div>
-                                        </a>
-                                        <button id="closeSidebar" class="text-gray-400 hover:text-white">
-                                            <i class="fas fa-times text-xl"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <nav class="p-4 space-y-1">
-                                    <a href="{{ url('/') }}" class="nav-link">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                        <span>Dashboard</span>
-                                    </a>
-                                    <a href="{{ url('/reports') }}" class="nav-link">
-                                        <i class="fas fa-flag"></i>
-                                        <span>Animal Reports</span>
-                                    </a>
-                                    <a href="{{ url('/rescues') }}" class="nav-link active">
-                                        <i class="fas fa-ambulance"></i>
-                                        <span>Rescue Operations</span>
-                                    </a>
-                                    <a href="{{ url('/adoptions') }}" class="nav-link">
-                                        <i class="fas fa-home"></i>
-                                        <span>Adoptions</span>
-                                    </a>
-                                </nav>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.insertAdjacentHTML('beforeend', sidebarHTML);
-                    
-                    // Add event listeners for the new sidebar
-                    const sidebarOverlay = document.getElementById('sidebarOverlay');
-                    const closeSidebar = document.getElementById('closeSidebar');
-                    const sidebarContent = document.getElementById('mobileSidebarContent');
-                    
-                    function openMobileSidebar() {
-                        document.getElementById('mobileSidebar').classList.remove('hidden');
-                        setTimeout(() => {
-                            sidebarContent.classList.remove('-translate-x-full');
-                        }, 10);
-                    }
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarContent = document.getElementById('sidebarContent');
+        const closeSidebar = document.getElementById('closeSidebar');
 
-                    function closeMobileSidebar() {
-                        sidebarContent.classList.add('-translate-x-full');
-                        setTimeout(() => {
-                            document.getElementById('mobileSidebar').classList.add('hidden');
-                        }, 300);
-                    }
-
-                    mobileMenuBtn.addEventListener('click', openMobileSidebar);
-                    closeSidebar.addEventListener('click', closeMobileSidebar);
-                    sidebarOverlay.addEventListener('click', closeMobileSidebar);
-                    
-                    // Open the sidebar
-                    openMobileSidebar();
-                } else {
-                    // Toggle existing sidebar
-                    const sidebar = document.getElementById('mobileSidebar');
-                    const sidebarContent = document.getElementById('mobileSidebarContent');
-                    
-                    if (sidebar.classList.contains('hidden')) {
-                        sidebar.classList.remove('hidden');
-                        setTimeout(() => {
-                            sidebarContent.classList.remove('-translate-x-full');
-                        }, 10);
-                    } else {
-                        sidebarContent.classList.add('-translate-x-full');
-                        setTimeout(() => {
-                            sidebar.classList.add('hidden');
-                        }, 300);
-                    }
-                }
-            });
+        function openMobileSidebar() {
+            mobileSidebar.classList.remove('hidden');
+            setTimeout(() => {
+                sidebarContent.classList.remove('-translate-x-full');
+            }, 10);
         }
 
-        // Update active nav link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.getAttribute('href') === '#') {
-                    e.preventDefault();
-                }
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
+        function closeMobileSidebar() {
+            sidebarContent.classList.add('-translate-x-full');
+            setTimeout(() => {
+                mobileSidebar.classList.add('hidden');
+            }, 300);
+        }
+
+        // Event listeners
+        mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        if (closeSidebar) closeSidebar.addEventListener('click', closeMobileSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+        // Dropdown functionality
+        document.querySelectorAll('.dropdown-toggle').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.nextElementSibling;
+                dropdown.classList.toggle('hidden');
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
+                dropdown.classList.add('hidden');
             });
         });
 
@@ -1025,6 +1128,22 @@
                 setTimeout(() => {
                     this.style.transform = '';
                 }, 150);
+            });
+        });
+
+        // Update active nav link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Close mobile sidebar if open
+                if (window.innerWidth < 1024) {
+                    closeMobileSidebar();
+                }
             });
         });
 
@@ -1044,6 +1163,13 @@
                         mission.style.boxShadow = '';
                     }, 1000);
                 }
+            });
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.animate-fadeIn').forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
             });
         });
     </script>

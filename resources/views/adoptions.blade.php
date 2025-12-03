@@ -40,6 +40,26 @@
             animation: fadeIn 0.3s ease-out;
         }
 
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
         /* Status Badges */
         .status-badge {
             @apply px-3 py-1 text-xs font-semibold rounded-full inline-flex items-center gap-1;
@@ -148,6 +168,10 @@
         .nav-link.active {
             @apply bg-[#0ea5e9]/20 text-[#0ea5e9] border-l-4 border-[#0ea5e9];
         }
+        
+        .nav-link i {
+            @apply w-5 text-center;
+        }
 
         /* Animal Cards */
         .animal-card {
@@ -190,12 +214,29 @@
         .step-completed .step-line {
             @apply bg-green-500;
         }
+
+        /* Stats Cards */
+        .stats-card {
+            @apply glass-card p-6 hover-lift;
+        }
+        
+        .stats-icon {
+            @apply w-12 h-12 rounded-lg flex items-center justify-center text-white text-xl;
+        }
+        
+        .stats-value {
+            @apply text-2xl font-bold mt-2;
+        }
+        
+        .stats-label {
+            @apply text-gray-300 text-sm mt-1;
+        }
     </style>
 </head>
 <body class="min-h-screen">
     <!-- Main Container -->
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
+        <!-- Sidebar (Complete from Dashboard) -->
         <aside class="w-64 bg-[#0b2447]/80 backdrop-blur-sm border-r border-white/10 hidden lg:block">
             <!-- Logo -->
             <div class="p-6 border-b border-white/10">
@@ -205,7 +246,7 @@
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-white">SafePaws</h1>
-                        <p class="text-xs text-gray-400">Adoption Center</p>
+                        <p class="text-xs text-gray-400">Admin Dashboard</p>
                     </div>
                 </a>
             </div>
@@ -233,28 +274,38 @@
                     <span class="ml-auto bg-green-500 text-white text-xs px-2 py-1 rounded-full">12</span>
                 </a>
                 
-                <a href="{{ url('/animals') }}" class="nav-link">
-                    <i class="fas fa-heart"></i>
-                    <span>Available Animals</span>
+                <a href="{{ url('/users') }}" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Users & Teams</span>
                 </a>
                 
-                <a href="{{ url('/applicants') }}" class="nav-link">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Applicants</span>
+                <a href="{{ url('/veterinarians') }}" class="nav-link">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Vet Collaborators</span>
                 </a>
                 
-                <a href="{{ url('/foster') }}" class="nav-link">
-                    <i class="fas fa-hands-helping"></i>
-                    <span>Foster Homes</span>
+                <a href="{{ url('/donations') }}" class="nav-link">
+                    <i class="fas fa-donate"></i>
+                    <span>Donations</span>
                 </a>
                 
-                <a href="{{ url('/success-stories') }}" class="nav-link">
-                    <i class="fas fa-star"></i>
-                    <span>Success Stories</span>
+                <a href="{{ url('/ecommerce') }}" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>E-commerce</span>
+                </a>
+                
+                <a href="{{ url('/analytics') }}" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                
+                <a href="{{ url('/settings') }}" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
                 </a>
             </nav>
 
-            <!-- User Profile -->
+            <!-- User Profile with Dropdown -->
             <div class="absolute bottom-0 w-64 p-4 border-t border-white/10">
                 <div class="flex items-center gap-3">
                     <img src="https://ui-avatars.com/api/?name=Adoption+Officer&background=0ea5e9&color=fff" 
@@ -262,6 +313,16 @@
                     <div class="flex-1">
                         <h4 class="text-sm font-semibold text-white">Adoption Officer</h4>
                         <p class="text-xs text-gray-400">Adoption Coordinator</p>
+                    </div>
+                    <div class="relative">
+                        <button class="text-gray-400 hover:text-white dropdown-toggle">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="absolute bottom-full right-0 mb-2 w-48 bg-[#0b2447] border border-white/10 rounded-lg shadow-lg hidden dropdown-menu">
+                            <a href="{{ url('/profile') }}" class="block px-4 py-2 text-sm hover:bg-white/10">Profile</a>
+                            <a href="{{ url('/settings') }}" class="block px-4 py-2 text-sm hover:bg-white/10">Settings</a>
+                            <a href="{{ url('/logout') }}" class="block w-full text-left px-4 py-2 text-sm hover:bg-red-500/20 text-red-400">Logout</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -285,6 +346,37 @@
                     
                     <!-- Right Side Actions -->
                     <div class="flex items-center gap-4">
+                        <!-- Notifications -->
+                        <div class="relative">
+                            <button class="text-gray-300 hover:text-white relative dropdown-toggle">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">8</span>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-80 bg-[#0b2447] border border-white/10 rounded-lg shadow-lg hidden dropdown-menu">
+                                <div class="p-4 border-b border-white/10">
+                                    <h3 class="font-semibold text-white">Adoption Notifications</h3>
+                                </div>
+                                <div class="max-h-64 overflow-y-auto">
+                                    <a href="#" class="block px-4 py-3 hover:bg-white/10 border-b border-white/5">
+                                        <p class="text-sm text-white">New application received</p>
+                                        <p class="text-xs text-gray-400">30 minutes ago</p>
+                                    </a>
+                                    <a href="#" class="block px-4 py-3 hover:bg-white/10 border-b border-white/5">
+                                        <p class="text-sm text-white">Home check scheduled</p>
+                                        <p class="text-xs text-gray-400">2 hours ago</p>
+                                    </a>
+                                    <a href="#" class="block px-4 py-3 hover:bg-white/10">
+                                        <p class="text-sm text-white">Adoption completed</p>
+                                        <p class="text-xs text-gray-400">1 day ago</p>
+                                    </a>
+                                </div>
+                                <a href="{{ url('/notifications') }}" class="block px-4 py-3 text-center text-sm text-[#0ea5e9] hover:bg-white/10">
+                                    View All Notifications
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Actions -->
                         <a href="{{ url('/adoptions/create') }}" class="btn-primary">
                             <i class="fas fa-plus"></i>
                             New Adoption
@@ -301,63 +393,63 @@
             <main class="p-6">
                 <!-- Stats Overview -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                    <div class="stats-card">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">67</div>
-                                <div class="text-sm text-gray-400">Total Adoptions</div>
+                                <div class="stats-icon bg-green-500/20 text-green-400">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="stats-value text-white">67</div>
+                                <div class="stats-label">Total Adoptions</div>
                             </div>
-                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-home text-green-400 text-xl"></i>
+                            <div class="text-green-400">
+                                <i class="fas fa-arrow-up"></i> 12 this month
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-green-400">
-                            <i class="fas fa-arrow-up"></i> 12 this month
                         </div>
                     </div>
                     
-                    <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                    <div class="stats-card">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">15</div>
-                                <div class="text-sm text-gray-400">Pending Applications</div>
+                                <div class="stats-icon bg-yellow-500/20 text-yellow-400">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stats-value text-white">15</div>
+                                <div class="stats-label">Pending Applications</div>
                             </div>
-                            <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-clock text-yellow-400 text-xl"></i>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-exclamation-circle"></i> Needs review
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-yellow-400">
-                            <i class="fas fa-exclamation-circle"></i> Needs review
                         </div>
                     </div>
                     
-                    <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                    <div class="stats-card">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">28</div>
-                                <div class="text-sm text-gray-400">Available Animals</div>
+                                <div class="stats-icon bg-blue-500/20 text-blue-400">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="stats-value text-white">28</div>
+                                <div class="stats-label">Available Animals</div>
                             </div>
-                            <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-heart text-blue-400 text-xl"></i>
+                            <div class="text-blue-400">
+                                <i class="fas fa-paw"></i> Ready for homes
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-blue-400">
-                            <i class="fas fa-paw"></i> Ready for homes
                         </div>
                     </div>
                     
-                    <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                    <div class="stats-card">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">42</div>
-                                <div class="text-sm text-gray-400">Active Applicants</div>
+                                <div class="stats-icon bg-purple-500/20 text-purple-400">
+                                    <i class="fas fa-user-friends"></i>
+                                </div>
+                                <div class="stats-value text-white">42</div>
+                                <div class="stats-label">Active Applicants</div>
                             </div>
-                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-user-friends text-purple-400 text-xl"></i>
+                            <div class="text-purple-400">
+                                <i class="fas fa-users"></i> Seeking pets
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-purple-400">
-                            <i class="fas fa-users"></i> Seeking pets
                         </div>
                     </div>
                 </div>
@@ -367,13 +459,13 @@
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-lg font-semibold text-white">Pending Adoption Applications</h3>
                         <div class="flex gap-2">
-                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-2">
+                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]">
                                 <option>All Status</option>
                                 <option>Under Review</option>
                                 <option>Home Check</option>
                                 <option>Approved</option>
                             </select>
-                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-2">
+                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]">
                                 <option>All Animals</option>
                                 <option>Dogs</option>
                                 <option>Cats</option>
@@ -396,7 +488,7 @@
                             </thead>
                             <tbody>
                                 <!-- Application 1 -->
-                                <tr>
+                                <tr class="animate-fadeIn">
                                     <td class="font-medium">#AD-1048</td>
                                     <td>
                                         <div class="flex items-center gap-3">
@@ -445,7 +537,7 @@
                                 </tr>
                                 
                                 <!-- Application 2 -->
-                                <tr>
+                                <tr class="animate-fadeIn" style="animation-delay: 0.1s">
                                     <td class="font-medium">#AD-1047</td>
                                     <td>
                                         <div class="flex items-center gap-3">
@@ -494,7 +586,7 @@
                                 </tr>
                                 
                                 <!-- Application 3 -->
-                                <tr>
+                                <tr class="animate-fadeIn" style="animation-delay: 0.2s">
                                     <td class="font-medium">#AD-1046</td>
                                     <td>
                                         <div class="flex items-center gap-3">
@@ -540,7 +632,7 @@
                                 </tr>
                                 
                                 <!-- Application 4 -->
-                                <tr>
+                                <tr class="animate-fadeIn" style="animation-delay: 0.3s">
                                     <td class="font-medium">#AD-1045</td>
                                     <td>
                                         <div class="flex items-center gap-3">
@@ -614,7 +706,7 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Animal 1 -->
-                        <div class="animal-card">
+                        <div class="animal-card animate-fadeIn">
                             <img src="https://images.unsplash.com/photo-1558944350-b2ec1b2a4b5a?q=80&w=400&auto=format&fit=crop" 
                                  alt="Buddy" 
                                  class="animal-image">
@@ -652,7 +744,7 @@
                         </div>
                         
                         <!-- Animal 2 -->
-                        <div class="animal-card">
+                        <div class="animal-card animate-fadeIn" style="animation-delay: 0.1s">
                             <img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=400&auto=format&fit=crop" 
                                  alt="Mittens" 
                                  class="animal-image">
@@ -690,7 +782,7 @@
                         </div>
                         
                         <!-- Animal 3 -->
-                        <div class="animal-card">
+                        <div class="animal-card animate-fadeIn" style="animation-delay: 0.2s">
                             <img src="https://images.unsplash.com/photo-1514888286974-6d03bde4ba4?q=80&w=400&auto=format&fit=crop" 
                                  alt="Rocky" 
                                  class="animal-image">
@@ -895,21 +987,22 @@
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 bg-[#0ea5e9] rounded-lg flex items-center justify-center">
-                                <i class="fas fa-home text-white"></i>
+                                <i class="fas fa-paw text-white"></i>
                             </div>
                             <div>
-                                <div class="font-semibold text-white">SafePaws Adoption Center</div>
-                                <div class="text-xs text-gray-400">Creating forever families • © 2023</div>
+                                <div class="font-semibold text-white">SafePaws Adoption Management</div>
+                                <div class="text-xs text-gray-400">Creating forever families • © 2023 All rights reserved</div>
                             </div>
                         </div>
                         
                         <div class="flex items-center gap-4 text-sm text-gray-400">
-                            <div class="flex items-center gap-1">
+                            <a href="{{ url('/') }}" class="hover:text-white transition-colors">Dashboard</a>
+                            <a href="{{ url('/reports') }}" class="hover:text-white transition-colors">Reports</a>
+                            <a href="{{ url('/help') }}" class="hover:text-white transition-colors">Help Center</a>
+                            <div class="flex items-center gap-1 text-blue-400">
                                 <i class="fas fa-phone"></i>
-                                <span>Adoption Line: (555) 123-4567</span>
+                                <span>Adoption: (555) 123-4567</span>
                             </div>
-                            <a href="{{ url('/contact') }}" class="hover:text-white transition-colors">Contact</a>
-                            <a href="{{ url('/faq') }}" class="hover:text-white transition-colors">FAQ</a>
                         </div>
                     </div>
                 </div>
@@ -917,113 +1010,112 @@
         </div>
     </div>
 
-    <!-- Mobile Menu Script -->
+    <!-- Mobile Sidebar (Hidden by default) -->
+    <div id="mobileSidebar" class="fixed inset-0 z-50 hidden lg:hidden">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black/50" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar Content -->
+        <div class="absolute left-0 top-0 bottom-0 w-64 bg-[#0b2447] transform -translate-x-full transition-transform duration-300" id="sidebarContent">
+            <div class="p-4 border-b border-white/10">
+                <div class="flex items-center justify-between">
+                    <a href="{{ url('/') }}" class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-[#0ea5e9] rounded-xl flex items-center justify-center">
+                            <i class="fas fa-paw text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-white">SafePaws</h1>
+                            <p class="text-xs text-gray-400">Admin Dashboard</p>
+                        </div>
+                    </a>
+                    <button id="closeSidebar" class="text-gray-400 hover:text-white">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <nav class="p-4 space-y-1">
+                <a href="{{ url('/') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ url('/reports') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-flag"></i>
+                    <span>Animal Reports</span>
+                </a>
+                <a href="{{ url('/rescues') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-ambulance"></i>
+                    <span>Rescue Operations</span>
+                </a>
+                <a href="{{ url('/adoptions') }}" class="nav-link active" onclick="closeMobileSidebar()">
+                    <i class="fas fa-home"></i>
+                    <span>Adoptions</span>
+                </a>
+                <a href="{{ url('/users') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-users"></i>
+                    <span>Users & Teams</span>
+                </a>
+                <a href="{{ url('/veterinarians') }}" class="nav-link" onclick="closeMobileSidebar()">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Vet Collaborators</span>
+                </a>
+            </nav>
+            
+            <!-- Mobile User Profile -->
+            <div class="p-4 border-t border-white/10">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Adoption+Officer&background=0ea5e9&color=fff" 
+                         alt="Adoption Officer" class="w-10 h-10 rounded-full">
+                    <div>
+                        <h4 class="text-sm font-semibold text-white">Adoption Officer</h4>
+                        <p class="text-xs text-gray-400">Adoption Coordinator</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Mobile sidebar functionality
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', function() {
-                // Create mobile sidebar if it doesn't exist
-                if (!document.getElementById('mobileSidebarContent')) {
-                    const sidebarHTML = `
-                        <div class="fixed inset-0 z-50 lg:hidden" id="mobileSidebar">
-                            <div class="absolute inset-0 bg-black/50" id="sidebarOverlay"></div>
-                            <div class="absolute left-0 top-0 bottom-0 w-64 bg-[#0b2447] transform -translate-x-full transition-transform duration-300" id="mobileSidebarContent">
-                                <div class="p-4 border-b border-white/10">
-                                    <div class="flex items-center justify-between">
-                                        <a href="{{ url('/') }}" class="flex items-center gap-3">
-                                            <div class="w-10 h-10 bg-[#0ea5e9] rounded-xl flex items-center justify-center">
-                                                <i class="fas fa-paw text-white text-lg"></i>
-                                            </div>
-                                            <div>
-                                                <h1 class="text-xl font-bold text-white">SafePaws</h1>
-                                                <p class="text-xs text-gray-400">Adoption Center</p>
-                                            </div>
-                                        </a>
-                                        <button id="closeSidebar" class="text-gray-400 hover:text-white">
-                                            <i class="fas fa-times text-xl"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <nav class="p-4 space-y-1">
-                                    <a href="{{ url('/') }}" class="nav-link">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                        <span>Dashboard</span>
-                                    </a>
-                                    <a href="{{ url('/reports') }}" class="nav-link">
-                                        <i class="fas fa-flag"></i>
-                                        <span>Animal Reports</span>
-                                    </a>
-                                    <a href="{{ url('/rescues') }}" class="nav-link">
-                                        <i class="fas fa-ambulance"></i>
-                                        <span>Rescue Operations</span>
-                                    </a>
-                                    <a href="{{ url('/adoptions') }}" class="nav-link active">
-                                        <i class="fas fa-home"></i>
-                                        <span>Adoptions</span>
-                                    </a>
-                                </nav>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.insertAdjacentHTML('beforeend', sidebarHTML);
-                    
-                    // Add event listeners for the new sidebar
-                    const sidebarOverlay = document.getElementById('sidebarOverlay');
-                    const closeSidebar = document.getElementById('closeSidebar');
-                    const sidebarContent = document.getElementById('mobileSidebarContent');
-                    
-                    function openMobileSidebar() {
-                        document.getElementById('mobileSidebar').classList.remove('hidden');
-                        setTimeout(() => {
-                            sidebarContent.classList.remove('-translate-x-full');
-                        }, 10);
-                    }
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarContent = document.getElementById('sidebarContent');
+        const closeSidebar = document.getElementById('closeSidebar');
 
-                    function closeMobileSidebar() {
-                        sidebarContent.classList.add('-translate-x-full');
-                        setTimeout(() => {
-                            document.getElementById('mobileSidebar').classList.add('hidden');
-                        }, 300);
-                    }
-
-                    mobileMenuBtn.addEventListener('click', openMobileSidebar);
-                    closeSidebar.addEventListener('click', closeMobileSidebar);
-                    sidebarOverlay.addEventListener('click', closeMobileSidebar);
-                    
-                    // Open the sidebar
-                    openMobileSidebar();
-                } else {
-                    // Toggle existing sidebar
-                    const sidebar = document.getElementById('mobileSidebar');
-                    const sidebarContent = document.getElementById('mobileSidebarContent');
-                    
-                    if (sidebar.classList.contains('hidden')) {
-                        sidebar.classList.remove('hidden');
-                        setTimeout(() => {
-                            sidebarContent.classList.remove('-translate-x-full');
-                        }, 10);
-                    } else {
-                        sidebarContent.classList.add('-translate-x-full');
-                        setTimeout(() => {
-                            sidebar.classList.add('hidden');
-                        }, 300);
-                    }
-                }
-            });
+        function openMobileSidebar() {
+            mobileSidebar.classList.remove('hidden');
+            setTimeout(() => {
+                sidebarContent.classList.remove('-translate-x-full');
+            }, 10);
         }
 
-        // Update active nav link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.getAttribute('href') === '#') {
-                    e.preventDefault();
-                }
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
+        function closeMobileSidebar() {
+            sidebarContent.classList.add('-translate-x-full');
+            setTimeout(() => {
+                mobileSidebar.classList.add('hidden');
+            }, 300);
+        }
+
+        // Event listeners
+        mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        if (closeSidebar) closeSidebar.addEventListener('click', closeMobileSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+        // Dropdown functionality
+        document.querySelectorAll('.dropdown-toggle').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.nextElementSibling;
+                dropdown.classList.toggle('hidden');
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
+                dropdown.classList.add('hidden');
             });
         });
 
@@ -1034,6 +1126,22 @@
                 setTimeout(() => {
                     this.style.transform = '';
                 }, 150);
+            });
+        });
+
+        // Update active nav link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Close mobile sidebar if open
+                if (window.innerWidth < 1024) {
+                    closeMobileSidebar();
+                }
             });
         });
 
@@ -1065,6 +1173,13 @@
         document.querySelectorAll('.animal-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.classList.add('animate-fadeIn');
+            });
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.animate-fadeIn').forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
             });
         });
     </script>
