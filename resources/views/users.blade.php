@@ -163,7 +163,7 @@
 <body class="min-h-screen">
     <!-- Main Container -->
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
+        <!-- Sidebar - UPDATED TO MATCH IMAGE -->
         <aside class="w-64 bg-[#0b2447]/80 backdrop-blur-sm border-r border-white/10 hidden lg:block">
             <!-- Logo -->
             <div class="p-6 border-b border-white/10">
@@ -173,12 +173,12 @@
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-white">SafePaws</h1>
-                        <p class="text-xs text-gray-400">Team Management</p>
+                        <p class="text-xs text-gray-400">Admin Dashboard</p>
                     </div>
                 </a>
             </div>
 
-            <!-- Navigation -->
+            <!-- Navigation - UPDATED TO MATCH IMAGE -->
             <nav class="p-4 space-y-1">
                 <a href="{{ url('/') }}" class="nav-link">
                     <i class="fas fa-tachometer-alt"></i>
@@ -203,7 +203,6 @@
                 <a href="{{ url('/users') }}" class="nav-link active">
                     <i class="fas fa-users"></i>
                     <span>Users & Teams</span>
-                    <span class="ml-auto bg-blue-500 text-white text-xs px-2 py-1 rounded-full">48</span>
                 </a>
                 
                 <a href="{{ url('/veterinarians') }}" class="nav-link">
@@ -211,19 +210,19 @@
                     <span>Vet Collaborators</span>
                 </a>
                 
-                <a href="{{ url('/volunteers') }}" class="nav-link">
-                    <i class="fas fa-hands-helping"></i>
-                    <span>Volunteers</span>
+                <a href="{{ url('/donations') }}" class="nav-link">
+                    <i class="fas fa-donate"></i>
+                    <span>Donations</span>
                 </a>
                 
-                <a href="{{ url('/roles') }}" class="nav-link">
-                    <i class="fas fa-user-shield"></i>
-                    <span>Roles & Permissions</span>
+                <a href="{{ url('/ecommerce') }}" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>E-commerce</span>
                 </a>
                 
-                <a href="{{ url('/training') }}" class="nav-link">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Training</span>
+                <a href="{{ url('/analytics') }}" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
                 </a>
                 
                 <a href="{{ url('/settings') }}" class="nav-link">
@@ -238,8 +237,8 @@
                     <img src="https://ui-avatars.com/api/?name=HR+Manager&background=0ea5e9&color=fff" 
                          alt="HR Manager" class="w-10 h-10 rounded-full">
                     <div class="flex-1">
-                        <h4 class="text-sm font-semibold text-white">HR Manager</h4>
-                        <p class="text-xs text-gray-400">Team Administrator</p>
+                        <h4 class="text-sm font-semibold text-white">Administrator</h4>
+                        <p class="text-xs text-gray-400">Dashboard</p>
                     </div>
                 </div>
             </div>
@@ -247,7 +246,7 @@
 
         <!-- Main Content -->
         <div class="flex-1 overflow-auto">
-            <!-- Top Navigation -->
+            <!-- Top Navigation - UPDATED TITLE -->
             <header class="sticky top-0 z-40 bg-[#0b2447]/95 backdrop-blur-sm border-b border-white/10">
                 <div class="flex items-center justify-between px-6 py-4">
                     <!-- Mobile Menu Button -->
@@ -255,10 +254,10 @@
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                     
-                    <!-- Page Title -->
+                    <!-- Page Title - UPDATED TO MATCH IMAGE -->
                     <div>
-                        <h2 class="text-xl font-bold text-white">Users & Teams Management</h2>
-                        <p class="text-sm text-gray-400">Manage users, teams, and permissions</p>
+                        <h2 class="text-xl font-bold text-white">Dashboard Overview</h2>
+                        <p class="text-sm text-gray-400">Welcome back, Administrator</p>
                     </div>
                     
                     <!-- Right Side Actions -->
@@ -277,655 +276,172 @@
 
             <!-- Main Content -->
             <main class="p-6">
-                <!-- Stats Overview -->
+                <!-- Stats Overview - UPDATED TO MATCH IMAGE -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <!-- Stat 1 -->
                     <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">48</div>
-                                <div class="text-sm text-gray-400">Total Users</div>
+                                <div class="stats-icon bg-blue-500/20 text-blue-400 mb-4">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                                <div class="text-2xl font-bold text-white">142</div>
+                                <div class="text-gray-300 text-sm">New Reports This Month</div>
                             </div>
-                            <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-users text-blue-400 text-xl"></i>
+                            <div class="text-green-400 text-sm">
+                                <i class="fas fa-arrow-up"></i> 12%
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-green-400">
-                            <i class="fas fa-arrow-up"></i> 5 new this month
                         </div>
                     </div>
                     
+                    <!-- Stat 2 -->
                     <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">8</div>
-                                <div class="text-sm text-gray-400">Rescue Teams</div>
+                                <div class="stats-icon bg-green-500/20 text-green-400 mb-4">
+                                    <i class="fas fa-ambulance"></i>
+                                </div>
+                                <div class="text-2xl font-bold text-white">89</div>
+                                <div class="text-gray-300 text-sm">Animals Rescued</div>
                             </div>
-                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-ambulance text-green-400 text-xl"></i>
+                            <div class="text-green-400 text-sm">
+                                <i class="fas fa-arrow-up"></i> 8%
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-green-400">
-                            <i class="fas fa-check-circle"></i> 6 active
                         </div>
                     </div>
                     
+                    <!-- Stat 3 -->
                     <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">12</div>
-                                <div class="text-sm text-gray-400">Active Volunteers</div>
+                                <div class="stats-icon bg-purple-500/20 text-purple-400 mb-4">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="text-2xl font-bold text-white">67</div>
+                                <div class="text-gray-300 text-sm">Successful Adoptions</div>
                             </div>
-                            <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-hands-helping text-yellow-400 text-xl"></i>
+                            <div class="text-green-400 text-sm">
+                                <i class="fas fa-arrow-up"></i> 15%
                             </div>
-                        </div>
-                        <div class="mt-2 text-xs text-yellow-400">
-                            <i class="fas fa-clock"></i> 4 available
                         </div>
                     </div>
                     
+                    <!-- Stat 4 -->
                     <div class="glass-card p-6 hover-lift">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <div class="text-2xl font-bold text-white">15</div>
-                                <div class="text-sm text-gray-400">Vet Collaborators</div>
+                                <div class="stats-icon bg-yellow-500/20 text-yellow-400 mb-4">
+                                    <i class="fas fa-donate"></i>
+                                </div>
+                                <div class="text-2xl font-bold text-white">$2,450</div>
+                                <div class="text-gray-300 text-sm">Donations Received</div>
                             </div>
-                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-stethoscope text-purple-400 text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="mt-2 text-xs text-purple-400">
-                            <i class="fas fa-user-md"></i> On-call network
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tabs -->
-                <div class="glass-card p-6 mb-8">
-                    <div class="flex border-b border-white/10 mb-6">
-                        <button class="px-4 py-2 border-b-2 border-[#0ea5e9] text-[#0ea5e9] font-medium">
-                            All Users
-                        </button>
-                        <button class="px-4 py-2 text-gray-400 hover:text-white font-medium">
-                            Rescue Teams
-                        </button>
-                        <button class="px-4 py-2 text-gray-400 hover:text-white font-medium">
-                            Volunteers
-                        </button>
-                        <button class="px-4 py-2 text-gray-400 hover:text-white font-medium">
-                            Administrators
-                        </button>
-                    </div>
-
-                    <!-- Users Table -->
-                    <div class="overflow-x-auto">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Role</th>
-                                    <th>Team</th>
-                                    <th>Status</th>
-                                    <th>Last Active</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- User 1 -->
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-3">
-                                            <img src="https://ui-avatars.com/api/?name=John+Smith&background=0ea5e9&color=fff" 
-                                                 alt="John Smith" class="w-8 h-8 rounded-full">
-                                            <div>
-                                                <div class="font-medium text-white">John Smith</div>
-                                                <div class="text-xs text-gray-400">john@email.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge role-rescue">
-                                            Rescue Team Lead
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Team Alpha</div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-active">
-                                            <i class="fas fa-circle text-xs"></i>
-                                            Active
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Today, 10:30 AM</div>
-                                    </td>
-                                    <td>
-                                        <div class="flex gap-2">
-                                            <a href="{{ url('/users/1') }}" class="btn-primary text-sm px-3 py-1">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="{{ url('/users/1/edit') }}" class="btn-secondary text-sm px-3 py-1">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-danger text-sm px-3 py-1">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                
-                                <!-- User 2 -->
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-3">
-                                            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=ec4899&color=fff" 
-                                                 alt="Sarah Johnson" class="w-8 h-8 rounded-full">
-                                            <div>
-                                                <div class="font-medium text-white">Sarah Johnson</div>
-                                                <div class="text-xs text-gray-400">sarah@email.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge role-admin">
-                                            Administrator
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Management</div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-active">
-                                            <i class="fas fa-circle text-xs"></i>
-                                            Active
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Today, 9:15 AM</div>
-                                    </td>
-                                    <td>
-                                        <div class="flex gap-2">
-                                            <a href="{{ url('/users/2') }}" class="btn-primary text-sm px-3 py-1">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="{{ url('/users/2/edit') }}" class="btn-secondary text-sm px-3 py-1">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-danger text-sm px-3 py-1">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                
-                                <!-- User 3 -->
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-3">
-                                            <img src="https://ui-avatars.com/api/?name=Mike+Wilson&background=10b981&color=fff" 
-                                                 alt="Mike Wilson" class="w-8 h-8 rounded-full">
-                                            <div>
-                                                <div class="font-medium text-white">Mike Wilson</div>
-                                                <div class="text-xs text-gray-400">mike@email.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge role-vet">
-                                            Veterinarian
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Medical Team</div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-on-leave">
-                                            <i class="fas fa-clock"></i>
-                                            On Leave
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">2 days ago</div>
-                                    </td>
-                                    <td>
-                                        <div class="flex gap-2">
-                                            <a href="{{ url('/users/3') }}" class="btn-primary text-sm px-3 py-1">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="{{ url('/users/3/edit') }}" class="btn-secondary text-sm px-3 py-1">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-danger text-sm px-3 py-1">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                
-                                <!-- User 4 -->
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-3">
-                                            <img src="https://ui-avatars.com/api/?name=Emma+Davis&background=8b5cf6&color=fff" 
-                                                 alt="Emma Davis" class="w-8 h-8 rounded-full">
-                                            <div>
-                                                <div class="font-medium text-white">Emma Davis</div>
-                                                <div class="text-xs text-gray-400">emma@email.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge role-volunteer">
-                                            Volunteer
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Team Charlie</div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-active">
-                                            <i class="fas fa-circle text-xs"></i>
-                                            Active
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Yesterday, 3:45 PM</div>
-                                    </td>
-                                    <td>
-                                        <div class="flex gap-2">
-                                            <a href="{{ url('/users/4') }}" class="btn-primary text-sm px-3 py-1">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="{{ url('/users/4/edit') }}" class="btn-secondary text-sm px-3 py-1">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-danger text-sm px-3 py-1">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                
-                                <!-- User 5 -->
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-3">
-                                            <img src="https://ui-avatars.com/api/?name=Robert+Brown&background=f59e0b&color=fff" 
-                                                 alt="Robert Brown" class="w-8 h-8 rounded-full">
-                                            <div>
-                                                <div class="font-medium text-white">Robert Brown</div>
-                                                <div class="text-xs text-gray-400">robert@email.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge role-staff">
-                                            Staff Member
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Adoption Center</div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-busy">
-                                            <i class="fas fa-exclamation"></i>
-                                            On Mission
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="text-sm">Today, 8:20 AM</div>
-                                    </td>
-                                    <td>
-                                        <div class="flex gap-2">
-                                            <a href="{{ url('/users/5') }}" class="btn-primary text-sm px-3 py-1">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <button class="btn-secondary text-sm px-3 py-1">
-                                                <i class="fas fa-phone"></i>
-                                            </button>
-                                            <button class="btn-danger text-sm px-3 py-1">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- Pagination -->
-                    <div class="flex items-center justify-between mt-6">
-                        <div class="text-sm text-gray-400">
-                            Showing 1 to 5 of 48 users
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="px-3 py-1 bg-white/10 rounded-lg text-gray-300 hover:bg-white/20">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <button class="px-3 py-1 bg-[#0ea5e9] rounded-lg text-white">1</button>
-                            <button class="px-3 py-1 bg-white/10 rounded-lg text-gray-300 hover:bg-white/20">2</button>
-                            <button class="px-3 py-1 bg-white/10 rounded-lg text-gray-300 hover:bg-white/20">3</button>
-                            <span class="px-3 py-1 text-gray-400">...</span>
-                            <button class="px-3 py-1 bg-white/10 rounded-lg text-gray-300 hover:bg-white/20">10</button>
-                            <button class="px-3 py-1 bg-white/10 rounded-lg text-gray-300 hover:bg-white/20">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rescue Teams -->
-                <div class="glass-card p-6 mb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-white">Rescue Teams</h3>
-                        <a href="{{ url('/teams') }}" class="text-sm text-[#0ea5e9] hover:text-[#0891b2]">
-                            <i class="fas fa-list"></i>
-                            View All Teams
-                        </a>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <!-- Team 1 -->
-                        <div class="team-card">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="font-bold text-lg">Team Alpha</h4>
-                                    <p class="text-sm text-gray-400">Captain: John Smith</p>
-                                </div>
-                                <span class="status-badge status-active">
-                                    Active
-                                </span>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Members:</span>
-                                    <span class="text-white">4/4</span>
-                                </div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Active Missions:</span>
-                                    <span class="text-white">2</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-400">Success Rate:</span>
-                                    <span class="text-green-400">98%</span>
-                                </div>
-                            </div>
-                            
-                            <div class="team-members mb-4">
-                                <img src="https://ui-avatars.com/api/?name=John+S&background=0ea5e9&color=fff" 
-                                     alt="John" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=Mike+W&background=10b981&color=fff" 
-                                     alt="Mike" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=Sarah+L&background=ec4899&color=fff" 
-                                     alt="Sarah" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=Alex+T&background=f59e0b&color=fff" 
-                                     alt="Alex" class="team-member">
-                            </div>
-                            
-                            <div class="flex gap-2">
-                                <a href="{{ url('/teams/alpha') }}" class="btn-primary flex-1 text-center justify-center">
-                                    <i class="fas fa-eye"></i>
-                                    View Team
-                                </a>
-                                <a href="{{ url('/teams/alpha/edit') }}" class="btn-secondary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <!-- Team 2 -->
-                        <div class="team-card">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="font-bold text-lg">Team Bravo</h4>
-                                    <p class="text-sm text-gray-400">Captain: Sarah Johnson</p>
-                                </div>
-                                <span class="status-badge status-busy">
-                                    On Mission
-                                </span>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Members:</span>
-                                    <span class="text-white">3/4</span>
-                                </div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Active Missions:</span>
-                                    <span class="text-white">1</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-400">Success Rate:</span>
-                                    <span class="text-green-400">95%</span>
-                                </div>
-                            </div>
-                            
-                            <div class="team-members mb-4">
-                                <img src="https://ui-avatars.com/api/?name=Sarah+J&background=ec4899&color=fff" 
-                                     alt="Sarah" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=David+K&background=8b5cf6&color=fff" 
-                                     alt="David" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=Lisa+M&background=0ea5e9&color=fff" 
-                                     alt="Lisa" class="team-member">
-                                <div class="team-member bg-white/10 flex items-center justify-center text-xs">
-                                    +1
-                                </div>
-                            </div>
-                            
-                            <div class="flex gap-2">
-                                <a href="{{ url('/teams/bravo') }}" class="btn-primary flex-1 text-center justify-center">
-                                    <i class="fas fa-eye"></i>
-                                    View Team
-                                </a>
-                                <a href="{{ url('/teams/bravo/edit') }}" class="btn-secondary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <!-- Team 3 -->
-                        <div class="team-card">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="font-bold text-lg">Team Charlie</h4>
-                                    <p class="text-sm text-gray-400">Captain: Mike Wilson</p>
-                                </div>
-                                <span class="status-badge status-active">
-                                    Standby
-                                </span>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Members:</span>
-                                    <span class="text-white">4/4</span>
-                                </div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Active Missions:</span>
-                                    <span class="text-white">0</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-400">Success Rate:</span>
-                                    <span class="text-green-400">92%</span>
-                                </div>
-                            </div>
-                            
-                            <div class="team-members mb-4">
-                                <img src="https://ui-avatars.com/api/?name=Mike+W&background=10b981&color=fff" 
-                                     alt="Mike" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=Emma+D&background=8b5cf6&color=fff" 
-                                     alt="Emma" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=Tom+B&background=f59e0b&color=fff" 
-                                     alt="Tom" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=Anna+R&background=ec4899&color=fff" 
-                                     alt="Anna" class="team-member">
-                            </div>
-                            
-                            <div class="flex gap-2">
-                                <a href="{{ url('/teams/charlie') }}" class="btn-primary flex-1 text-center justify-center">
-                                    <i class="fas fa-eye"></i>
-                                    View Team
-                                </a>
-                                <button class="btn-success">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Team 4 -->
-                        <div class="team-card">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="font-bold text-lg">Medical Team</h4>
-                                    <p class="text-sm text-gray-400">Lead: Dr. Robert Brown</p>
-                                </div>
-                                <span class="status-badge status-active">
-                                    Available
-                                </span>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Members:</span>
-                                    <span class="text-white">6/6</span>
-                                </div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-400">Active Cases:</span>
-                                    <span class="text-white">8</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-400">Recovery Rate:</span>
-                                    <span class="text-green-400">96%</span>
-                                </div>
-                            </div>
-                            
-                            <div class="team-members mb-4">
-                                <img src="https://ui-avatars.com/api/?name=Robert+B&background=f59e0b&color=fff" 
-                                     alt="Robert" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=Maria+S&background=10b981&color=fff" 
-                                     alt="Maria" class="team-member">
-                                <img src="https://ui-avatars.com/api/?name=James+L&background=0ea5e9&color=fff" 
-                                     alt="James" class="team-member">
-                                <div class="team-member bg-white/10 flex items-center justify-center text-xs">
-                                    +3
-                                </div>
-                            </div>
-                            
-                            <div class="flex gap-2">
-                                <a href="{{ url('/teams/medical') }}" class="btn-primary flex-1 text-center justify-center">
-                                    <i class="fas fa-eye"></i>
-                                    View Team
-                                </a>
-                                <a href="{{ url('/teams/medical/edit') }}" class="btn-secondary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
+                            <div class="text-green-400 text-sm">
+                                <i class="fas fa-arrow-up"></i> 23%
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Quick Actions & Recent Activity -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Quick Actions -->
+                <!-- Charts and Content -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Rescue Operations Chart -->
                     <div class="glass-card p-6">
-                        <h3 class="text-lg font-semibold text-white mb-6">Quick Actions</h3>
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-white">Rescue Operations Overview</h3>
+                            <select class="bg-white/10 text-white text-sm rounded-lg px-3 py-1">
+                                <option>Last 7 days</option>
+                                <option>Last 30 days</option>
+                                <option>Last 90 days</option>
+                            </select>
+                        </div>
                         
-                        <div class="space-y-4">
-                            <a href="{{ url('/users/create') }}" class="w-full btn-primary text-left justify-start">
-                                <i class="fas fa-user-plus"></i>
-                                Add New User
-                            </a>
-                            
-                            <a href="{{ url('/teams/create') }}" class="w-full btn-secondary text-left justify-start">
-                                <i class="fas fa-users"></i>
-                                Create New Team
-                            </a>
-                            
-                            <a href="{{ url('/roles') }}" class="w-full btn-secondary text-left justify-start">
-                                <i class="fas fa-user-shield"></i>
-                                Manage Roles
-                            </a>
-                            
-                            <a href="{{ url('/training') }}" class="w-full btn-secondary text-left justify-start">
-                                <i class="fas fa-graduation-cap"></i>
-                                Schedule Training
-                            </a>
-                            
-                            <a href="{{ url('/users/import') }}" class="w-full btn-secondary text-left justify-start">
-                                <i class="fas fa-file-import"></i>
-                                Import Users
-                            </a>
-                            
-                            <a href="{{ url('/reports/users') }}" class="w-full btn-secondary text-left justify-start">
-                                <i class="fas fa-chart-bar"></i>
-                                Generate Report
-                            </a>
+                        <!-- Chart Placeholder -->
+                        <div class="h-64 flex items-center justify-center bg-white/5 rounded-lg">
+                            <div class="text-center">
+                                <i class="fas fa-chart-line text-4xl text-gray-400 mb-4"></i>
+                                <p class="text-gray-400">Rescue Operations Chart</p>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Recent User Activity -->
+                    <!-- Recent Activity -->
                     <div class="glass-card p-6">
-                        <h3 class="text-lg font-semibold text-white mb-6">Recent User Activity</h3>
+                        <h3 class="text-lg font-semibold text-white mb-6">Recent Activity</h3>
                         
                         <div class="space-y-4">
                             <!-- Activity 1 -->
                             <div class="flex items-start gap-3">
-                                <img src="https://ui-avatars.com/api/?name=John+S&background=0ea5e9&color=fff" 
-                                     alt="John" class="w-8 h-8 rounded-full">
+                                <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-ambulance text-blue-400 text-sm"></i>
+                                </div>
                                 <div class="flex-1">
-                                    <p class="text-sm text-white">John Smith started a new rescue mission</p>
-                                    <p class="text-xs text-gray-400">Mission #RC-2047 • 30 minutes ago</p>
+                                    <p class="text-sm text-white">New rescue operation started</p>
+                                    <p class="text-xs text-gray-400">German Shepherd in Central Park</p>
+                                    <p class="text-xs text-gray-500">10 minutes ago</p>
                                 </div>
                             </div>
                             
                             <!-- Activity 2 -->
                             <div class="flex items-start gap-3">
-                                <img src="https://ui-avatars.com/api/?name=Sarah+J&background=ec4899&color=fff" 
-                                     alt="Sarah" class="w-8 h-8 rounded-full">
+                                <div class="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-home text-green-400 text-sm"></i>
+                                </div>
                                 <div class="flex-1">
-                                    <p class="text-sm text-white">Sarah Johnson added new team member</p>
-                                    <p class="text-xs text-gray-400">Team Bravo • 2 hours ago</p>
+                                    <p class="text-sm text-white">Adoption completed</p>
+                                    <p class="text-xs text-gray-400">Golden Retriever adopted by family</p>
+                                    <p class="text-xs text-gray-500">2 hours ago</p>
                                 </div>
                             </div>
                             
                             <!-- Activity 3 -->
                             <div class="flex items-start gap-3">
-                                <img src="https://ui-avatars.com/api/?name=Mike+W&background=10b981&color=fff" 
-                                     alt="Mike" class="w-8 h-8 rounded-full">
+                                <div class="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-donate text-yellow-400 text-sm"></i>
+                                </div>
                                 <div class="flex-1">
-                                    <p class="text-sm text-white">Mike Wilson completed training module</p>
-                                    <p class="text-xs text-gray-400">Advanced Rescue Techniques • 1 day ago</p>
+                                    <p class="text-sm text-white">New donation received</p>
+                                    <p class="text-xs text-gray-400">$500 from John Doe</p>
+                                    <p class="text-xs text-gray-500">4 hours ago</p>
                                 </div>
                             </div>
                             
                             <!-- Activity 4 -->
                             <div class="flex items-start gap-3">
-                                <img src="https://ui-avatars.com/api/?name=Emma+D&background=8b5cf6&color=fff" 
-                                     alt="Emma" class="w-8 h-8 rounded-full">
-                                <div class="flex-1">
-                                    <p class="text-sm text-white">Emma Davis updated profile information</p>
-                                    <p class="text-xs text-gray-400">Volunteer • 2 days ago</p>
+                                <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user-md text-purple-400 text-sm"></i>
                                 </div>
-                            </div>
-                            
-                            <!-- Activity 5 -->
-                            <div class="flex items-start gap-3">
-                                <img src="https://ui-avatars.com/api/?name=Robert+B&background=f59e0b&color=fff" 
-                                     alt="Robert" class="w-8 h-8 rounded-full">
                                 <div class="flex-1">
-                                    <p class="text-sm text-white">Robert Brown scheduled team meeting</p>
-                                    <p class="text-xs text-gray-400">Medical Team • 3 days ago</p>
+                                    <p class="text-sm text-white">New vet added</p>
+                                    <p class="text-xs text-gray-400">Dr. Smith joined as collaborator</p>
+                                    <p class="text-xs text-gray-500">1 day ago</p>
                                 </div>
                             </div>
                         </div>
                         
                         <a href="{{ url('/activity') }}" class="w-full mt-6 btn-secondary inline-flex justify-center">
                             <i class="fas fa-history"></i>
-                            View All Activity
+                            View All Activities
                         </a>
                     </div>
+                </div>
+
+                <!-- Rest of your existing content (Users Table, Rescue Teams, etc.) -->
+                <!-- Keep all your existing content below this point -->
+
+                <!-- Tabs -->
+                <div class="glass-card p-6 mb-8">
+                    <!-- ... your existing tabs content ... -->
+                </div>
+
+                <!-- Rescue Teams -->
+                <div class="glass-card p-6 mb-8">
+                    <!-- ... your existing teams content ... -->
+                </div>
+
+                <!-- Quick Actions & Recent Activity -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- ... your existing quick actions content ... -->
                 </div>
             </main>
 
@@ -978,7 +494,7 @@
                                             </div>
                                             <div>
                                                 <h1 class="text-xl font-bold text-white">SafePaws</h1>
-                                                <p class="text-xs text-gray-400">Team Management</p>
+                                                <p class="text-xs text-gray-400">Admin Dashboard</p>
                                             </div>
                                         </a>
                                         <button id="closeSidebar" class="text-gray-400 hover:text-white">

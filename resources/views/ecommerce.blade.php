@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafePaws - Vet Collaborators</title>
+    <title>SafePaws - E‑commerce</title>
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style type="text/tailwindcss">
@@ -28,7 +29,8 @@
         }
 
         .nav-link {
-            @apply flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300;
+            @apply flex items-center gap-3 px-4 py-3 text-gray-300
+            hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300;
         }
 
         .nav-link.active {
@@ -40,7 +42,7 @@
 <body class="min-h-screen">
 <div class="flex min-h-screen">
 
-    <!-- Sidebar -->
+    <!-- SIDEBAR -->
     <aside class="w-64 bg-[#0b2447]/80 backdrop-blur-sm border-r border-white/10 hidden lg:block">
 
         <!-- Logo -->
@@ -79,7 +81,7 @@
                 <i class="fas fa-users"></i> Users & Teams
             </a>
 
-            <a href="{{ url('/veterinarians') }}" class="nav-link active">
+            <a href="{{ url('/veterinarians') }}" class="nav-link">
                 <i class="fas fa-stethoscope"></i> Vet Collaborators
             </a>
 
@@ -87,8 +89,8 @@
                 <i class="fas fa-donate"></i> Donations
             </a>
 
-            <a href="{{ url('/ecommerce') }}" class="nav-link">
-                <i class="fas fa-shopping-cart"></i> E-commerce
+            <a href="{{ url('/ecommerce') }}" class="nav-link active">
+                <i class="fas fa-shopping-cart"></i> E‑commerce
             </a>
 
             <a href="{{ url('/analytics') }}" class="nav-link">
@@ -102,62 +104,65 @@
 
     </aside>
 
-    <!-- Main Content -->
+    <!-- MAIN CONTENT -->
     <div class="flex-1 overflow-auto">
 
         <!-- Header -->
         <header class="sticky top-0 bg-[#0b2447]/95 backdrop-blur-sm border-b border-white/10 px-6 py-4">
-            <h2 class="text-2xl font-bold">Vet Collaborators</h2>
-            <p class="text-gray-400 text-sm">Manage veterinary partners & clinics</p>
+            <h2 class="text-2xl font-bold">E‑commerce Management</h2>
+            <p class="text-gray-400 text-sm">Manage products, inventory & orders</p>
         </header>
 
-        <!-- Page Content -->
-        <main class="p-6">
+        <!-- Content -->
+        <main class="p-6 space-y-8">
 
-            <div class="flex justify-between mb-6">
-                <h3 class="text-xl font-semibold">All Veterinarians</h3>
-                <a href="{{ url('/veterinarians/create') }}" class="bg-[#0ea5e9] hover:bg-[#0891b2] px-4 py-2 rounded-lg text-white flex gap-2">
-                    <i class="fas fa-plus"></i> Add New Vet
+            <!-- Actions -->
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">Products</h3>
+                <a href="{{ url('/ecommerce/create') }}"
+                   class="bg-[#0ea5e9] hover:bg-[#0891b2] px-4 py-2 rounded-lg text-white flex gap-2">
+                    <i class="fas fa-plus"></i> Add Product
                 </a>
             </div>
 
+            <!-- Products Table -->
             <div class="glass-card p-6">
-                <table class="w-full text-left">
+                <table class="w-full">
                     <thead class="text-gray-300 border-b border-white/10">
-                        <tr>
-                            <th class="py-3">Name</th>
-                            <th>Clinic</th>
-                            <th>Phone</th>
-                            <th>Status</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
+                    <tr>
+                        <th class="py-3 text-left">Product</th>
+                        <th class="text-left">Category</th>
+                        <th class="text-left">Price</th>
+                        <th class="text-left">Stock</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
                     </thead>
 
-                    <tbody class="text-sm text-gray-200">
+                    <tbody class="text-gray-200 text-sm">
 
-                        <tr class="border-b border-white/5 hover:bg-white/10">
-                            <td class="py-3">Dr. Samantha Lee</td>
-                            <td>PetCare Wellness Center</td>
-                            <td>071 222 3333</td>
-                            <td><span class="text-green-400">Active</span></td>
-                            <td class="text-center">
-                                <a href="#" class="text-blue-400 px-2"><i class="fas fa-eye"></i></a>
-                                <a href="#" class="text-yellow-400 px-2"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="text-red-400 px-2"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
+                    <tr class="border-b border-white/5 hover:bg-white/10">
+                        <td class="py-3">Pet Collar</td>
+                        <td>Accessories</td>
+                        <td>Rs. 1,200</td>
+                        <td>34</td>
+                        <td class="text-center">
+                            <a href="#" class="text-blue-400 px-2"><i class="fas fa-eye"></i></a>
+                            <a href="#" class="text-yellow-400 px-2"><i class="fas fa-edit"></i></a>
+                            <a href="#" class="text-red-400 px-2"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
 
-                        <tr class="border-b border-white/5 hover:bg-white/10">
-                            <td class="py-3">Dr. Ajantha Perera</td>
-                            <td>Animal Rescue Clinic</td>
-                            <td>077 555 4444</td>
-                            <td><span class="text-green-400">Active</span></td>
-                            <td class="text-center">
-                                <a href="#" class="text-blue-400 px-2"><i class="fas fa-eye"></i></a>
-                                <a href="#" class="text-yellow-400 px-2"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="text-red-400 px-2"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
+                    <tr class="border-b border-white/5 hover:bg-white/10">
+                        <td class="py-3">Dog Food Pack</td>
+                        <td>Food</td>
+                        <td>Rs. 2,900</td>
+                        <td>12</td>
+                        <td class="text-center">
+                            <a href="#" class="text-blue-400 px-2"><i class="fas fa-eye"></i></a>
+                            <a href="#" class="text-yellow-400 px-2"><i class="fas fa-edit"></i></a>
+                            <a href="#" class="text-red-400 px-2"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
 
                     </tbody>
                 </table>

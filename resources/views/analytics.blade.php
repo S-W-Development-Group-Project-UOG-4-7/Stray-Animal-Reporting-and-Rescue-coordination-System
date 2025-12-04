@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafePaws - Vet Collaborators</title>
+    <title>SafePaws - Analytics</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -24,7 +24,7 @@
         }
 
         .glass-card {
-            @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl shadow-lg;
+            @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl shadow-lg p-6;
         }
 
         .nav-link {
@@ -79,7 +79,7 @@
                 <i class="fas fa-users"></i> Users & Teams
             </a>
 
-            <a href="{{ url('/veterinarians') }}" class="nav-link active">
+            <a href="{{ url('/veterinarians') }}" class="nav-link">
                 <i class="fas fa-stethoscope"></i> Vet Collaborators
             </a>
 
@@ -91,7 +91,7 @@
                 <i class="fas fa-shopping-cart"></i> E-commerce
             </a>
 
-            <a href="{{ url('/analytics') }}" class="nav-link">
+            <a href="{{ url('/analytics') }}" class="nav-link active">
                 <i class="fas fa-chart-bar"></i> Analytics
             </a>
 
@@ -107,64 +107,41 @@
 
         <!-- Header -->
         <header class="sticky top-0 bg-[#0b2447]/95 backdrop-blur-sm border-b border-white/10 px-6 py-4">
-            <h2 class="text-2xl font-bold">Vet Collaborators</h2>
-            <p class="text-gray-400 text-sm">Manage veterinary partners & clinics</p>
+            <h2 class="text-2xl font-bold">Analytics</h2>
+            <p class="text-gray-400 text-sm">Overall system statistics & insights</p>
         </header>
 
         <!-- Page Content -->
-        <main class="p-6">
+        <main class="p-6 space-y-6">
 
-            <div class="flex justify-between mb-6">
-                <h3 class="text-xl font-semibold">All Veterinarians</h3>
-                <a href="{{ url('/veterinarians/create') }}" class="bg-[#0ea5e9] hover:bg-[#0891b2] px-4 py-2 rounded-lg text-white flex gap-2">
-                    <i class="fas fa-plus"></i> Add New Vet
-                </a>
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="glass-card">
+                    <p class="text-gray-400 text-sm">Total Reports</p>
+                    <h1 class="text-3xl font-bold mt-2">124</h1>
+                </div>
+
+                <div class="glass-card">
+                    <p class="text-gray-400 text-sm">Successful Rescues</p>
+                    <h1 class="text-3xl font-bold mt-2">82</h1>
+                </div>
+
+                <div class="glass-card">
+                    <p class="text-gray-400 text-sm">Adoptions Completed</p>
+                    <h1 class="text-3xl font-bold mt-2">57</h1>
+                </div>
+
             </div>
 
-            <div class="glass-card p-6">
-                <table class="w-full text-left">
-                    <thead class="text-gray-300 border-b border-white/10">
-                        <tr>
-                            <th class="py-3">Name</th>
-                            <th>Clinic</th>
-                            <th>Phone</th>
-                            <th>Status</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody class="text-sm text-gray-200">
-
-                        <tr class="border-b border-white/5 hover:bg-white/10">
-                            <td class="py-3">Dr. Samantha Lee</td>
-                            <td>PetCare Wellness Center</td>
-                            <td>071 222 3333</td>
-                            <td><span class="text-green-400">Active</span></td>
-                            <td class="text-center">
-                                <a href="#" class="text-blue-400 px-2"><i class="fas fa-eye"></i></a>
-                                <a href="#" class="text-yellow-400 px-2"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="text-red-400 px-2"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr class="border-b border-white/5 hover:bg-white/10">
-                            <td class="py-3">Dr. Ajantha Perera</td>
-                            <td>Animal Rescue Clinic</td>
-                            <td>077 555 4444</td>
-                            <td><span class="text-green-400">Active</span></td>
-                            <td class="text-center">
-                                <a href="#" class="text-blue-400 px-2"><i class="fas fa-eye"></i></a>
-                                <a href="#" class="text-yellow-400 px-2"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="text-red-400 px-2"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
+            <!-- Charts Section (Placeholder) -->
+            <div class="glass-card h-64 flex items-center justify-center text-gray-300">
+                <p>Charts will go here (Bar, Line, Pie etc.)</p>
             </div>
 
         </main>
     </div>
+
 </div>
 </body>
 </html>
