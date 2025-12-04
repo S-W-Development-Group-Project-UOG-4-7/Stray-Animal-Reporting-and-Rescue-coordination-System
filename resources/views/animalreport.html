@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SafePaws — Report Animal</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style type="text/tailwindcss">
+            @keyframes paw-touch {
+                0%,
+                80%,
+                100% {
+                    opacity: 0;
+                    transform: translateY(0) scale(1);
+                }
+                10%,
+                50% {
+                    opacity: 1;
+                    transform: translateY(-10px) scale(1.1);
+                }
+            }
+
+            .animate-paw {
+                animation: paw-touch 2s infinite;
+            }
+
+            @keyframes paw-tap {
+                0%,
+                100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(0.9);
+                }
+            }
+
+            button svg {
+                animation: paw-tap 2s infinite;
+            }
+
+            .delay-0 {
+                animation-delay: 0s;
+            }
+            .delay-300 {
+                animation-delay: 0.3s;
+            }
+            .delay-600 {
+                animation-delay: 0.6s;
+            }
+            .delay-900 {
+                animation-delay: 0.9s;
+            }
+            .delay-1200 {
+                animation-delay: 1.2s;
+            }
+
+            /* Typography helpers */
+            .title {
+                @apply text-[1.75rem] md:text-[3.125rem] leading-[1.05] font-semibold tracking-wide;
+            }
+            .subtitle {
+                @apply text-[1.125rem] md:text-[1.625rem] font-light;
+            }
+
+            /* Buttons / UI */
+            .primary-btn {
+                @apply bg-[#0ea5e9] hover:bg-[#0891b2] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors duration-300;
+            }
+            .outline-btn {
+                @apply border border-[#0ea5e9] text-[#0ea5e9] px-5 py-2 rounded-md font-medium transition-colors duration-300 hover:bg-[#0ea5e9] hover:text-white;
+            }
+
+            /* Card */
+            .card {
+                @apply bg-white/5 p-6 md:p-8 rounded-xl shadow-md border border-white/10;
+            }
+
+            /* Form elements */
+            .form-input {
+                @apply w-full p-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] focus:border-transparent;
+            }
+
+            .form-label {
+                @apply block mb-2 text-sm font-medium text-white;
+            }
+
+            .form-error {
+                @apply text-red-400 text-sm mt-1 hidden;
+            }
+
+            .form-error.active {
+                @apply block;
+            }
+
+            /* File upload area */
+            .file-upload-area {
+                @apply border-2 border-dashed border-white/30 rounded-md p-6 text-center transition-colors duration-300;
+            }
+
+            .file-upload-area:hover,
+            .file-upload-area.dragover {
+                @apply border-[#0ea5e9] bg-white/5;
+            }
+
+            .gray-border {
+                @apply border-t-[8px] border-[#0b2447];
+            }
+
+            body {
+                background-color: #071331;
+                background-image: radial-gradient(
+                        circle at 20% 80%,
+                        rgba(14, 165, 233, 0.1) 0%,
+                        transparent 20%
+                    ),
+                    radial-gradient(
+                        circle at 80% 20%,
+                        rgba(14, 165, 233, 0.05) 0%,
+                        transparent 20%
+                    );
+            }
+        </style>
+    </head>
+    <body class="min-h-screen text-white">
+        <!-- Navigation -->
+        <header class="sticky top-0 z-50 bg-[#071331]/95 backdrop-blur-sm">
+            <div
+                class="flex items-center justify-between px-5 py-4 mx-auto max-w-7xl md:px-12"
+            >
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center gap-3">
+                    <svg width="42" height="42" viewBox="0 0 64 64" fill="none">
+                        <rect
+                            width="64"
+                            height="64"
+                            rx="12"
+                            fill="#0ea5e9"
+                        ></rect>
+                        <path
+                            d="M34.5 36c4-1 8.5 0 11 3 2.5 3 1.8 7.4-0.6 10.7C43.9 53 39.6 54 34.5 54c-5 0-9.7-1-12.6-3.8C17.2 47.4 16.4 43 18.9 40c2.7-3.2 6.9-4.2 11.6-4z"
+                            fill="#fff"
+                        ></path>
+                        <circle cx="22.5" cy="20.5" r="6" fill="#fff"></circle>
+                        <circle cx="31.5" cy="14.5" r="5" fill="#fff"></circle>
+                        <circle
+                            cx="43.5"
+                            cy="18.5"
+                            r="4.5"
+                            fill="#fff"
+                        ></circle>
+                    </svg>
+                    <span class="text-xl font-semibold text-white"
+                        >SafePaws</span
+                    >
+                </a>
+
+                <!-- Navigation Links -->
+                <nav
+                    class="items-center hidden gap-6 text-sm font-medium text-white md:flex"
+                >
+                    <a
+                        href="index.html"
+                        class="transition hover:text-yellow-300"
+                        >HOME</a
+                    >
+                    <a href="#about" class="transition hover:text-yellow-300"
+                        >ABOUT US</a
+                    >
+                    <a href="#contact" class="transition hover:text-yellow-300"
+                        >CONTACT US</a
+                    >
+                    <a href="index.html#adopt" class="outline-btn"
+                        >Find Pets to Adopt</a
+                    >
+                </nav>
+
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" class="md:hidden">
+                    <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"
+                        ></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile menu -->
+            <div
+                id="mobile-menu"
+                class="hidden md:hidden px-5 py-4 bg-[#071331] border-t border-white/10"
+            >
+                <div class="flex flex-col gap-4">
+                    <a
+                        href="index.html"
+                        class="transition hover:text-yellow-300"
+                        >HOME</a
+                    >
+                    <a href="#about" class="transition hover:text-yellow-300"
+                        >ABOUT US</a
+                    >
+                    <a href="#contact" class="transition hover:text-yellow-300"
+                        >CONTACT US</a
+                    >
+                    <a
+                        href="index.html#adopt"
+                        class="inline-block text-center outline-btn"
+                        >Find Pets to Adopt</a
+                    >
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-4xl px-5 py-8 mx-auto md:py-12">
+            <!-- Page Header -->
+            <div class="mb-10 text-center">
+                <h1 class="mb-4 title">Report an Animal in Need</h1>
+                <p class="max-w-2xl mx-auto text-gray-200 subtitle">
+                    Help us rescue animals by providing as much information as
+                    possible. Your report could save a life.
+                </p>
+            </div>
+
+            <!-- Form Progress Steps -->
+            <div class="relative flex justify-between mb-12">
+                <div
+                    class="absolute left-0 right-0 z-0 h-1 -translate-y-1/2 top-1/2 bg-white/10"
+                ></div>
+                <div
+                    id="progress-bar"
+                    class="absolute top-1/2 left-0 h-1 bg-[#0ea5e9] -translate-y-1/2 z-10 transition-all duration-500"
+                    style="width: 0%"
+                ></div>
+
+                <div class="relative z-20 flex flex-col items-center">
+                    <div
+                        class="w-10 h-10 rounded-full bg-[#0ea5e9] flex items-center justify-center mb-2"
+                    >
+                        1
+                    </div>
+                    <span class="text-sm">Animal Type</span>
+                </div>
+                <div class="relative z-20 flex flex-col items-center">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 mb-2 rounded-full bg-white/10"
+                    >
+                        2
+                    </div>
+                    <span class="text-sm text-gray-400">Details</span>
+                </div>
+                <div class="relative z-20 flex flex-col items-center">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 mb-2 rounded-full bg-white/10"
+                    >
+                        3
+                    </div>
+                    <span class="text-sm text-gray-400">Location & Time</span>
+                </div>
+                <div class="relative z-20 flex flex-col items-center">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 mb-2 rounded-full bg-white/10"
+                    >
+                        4
+                    </div>
+                    <span class="text-sm text-gray-400">Review & Submit</span>
+                </div>
+            </div>
+
+            <!-- Report Form -->
+            <form id="report-form" class="space-y-8" novalidate>
+                <!-- Step 1: Animal Type Selection -->
+                <div class="card step" data-step="1">
+                    <h2 class="mb-6 text-2xl font-semibold">
+                        1. Select Animal Type
+                    </h2>
+                    <p class="mb-6 text-gray-300">
+                        Choose the category that best describes the animal's
+                        situation.
+                    </p>
+
+                    <div class="grid grid-cols-1 gap-4 mb-6 md:grid-cols-3">
+                        <div class="animal-type-option">
+                            <input
+                                type="radio"
+                                id="aggressive"
+                                name="animal_type"
+                                value="Aggressive"
+                                class="hidden peer"
+                                required
+                            />
+                            <label
+                                for="aggressive"
+                                class="block p-5 rounded-lg border-2 border-white/20 cursor-pointer transition-all duration-300 hover:border-[#0ea5e9] hover:bg-white/5 peer-checked:border-[#0ea5e9] peer-checked:bg-[#0ea5e9]/10"
+                            >
+                                <div
+                                    class="flex flex-col items-center text-center"
+                                >
+                                    <svg
+                                        class="w-12 h-12 mb-3 text-red-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    <h3 class="text-lg font-medium">
+                                        Aggressive
+                                    </h3>
+                                    <p class="mt-1 text-sm text-gray-300">
+                                        Animal shows signs of aggression or
+                                        potential danger
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="animal-type-option">
+                            <input
+                                type="radio"
+                                id="sick"
+                                name="animal_type"
+                                value="Sick"
+                                class="hidden peer"
+                                required
+                            />
+                            <label
+                                for="sick"
+                                class="block p-5 rounded-lg border-2 border-white/20 cursor-pointer transition-all duration-300 hover:border-[#0ea5e9] hover:bg-white/5 peer-checked:border-[#0ea5e9] peer-checked:bg-[#0ea5e9]/10"
+                            >
+                                <div
+                                    class="flex flex-col items-center text-center"
+                                >
+                                    <svg
+                                        class="w-12 h-12 mb-3 text-yellow-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    <h3 class="text-lg font-medium">
+                                        Sick or Injured
+                                    </h3>
+                                    <p class="mt-1 text-sm text-gray-300">
+                                        Animal appears ill, wounded, or in
+                                        distress
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="animal-type-option">
+                            <input
+                                type="radio"
+                                id="stray"
+                                name="animal_type"
+                                value="Stray"
+                                class="hidden peer"
+                                required
+                            />
+                            <label
+                                for="stray"
+                                class="block p-5 rounded-lg border-2 border-white/20 cursor-pointer transition-all duration-300 hover:border-[#0ea5e9] hover:bg-white/5 peer-checked:border-[#0ea5e9] peer-checked:bg-[#0ea5e9]/10"
+                            >
+                                <div
+                                    class="flex flex-col items-center text-center"
+                                >
+                                    <svg
+                                        class="w-12 h-12 mb-3 text-blue-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    <h3 class="text-lg font-medium">
+                                        Stray / Lost
+                                    </h3>
+                                    <p class="mt-1 text-sm text-gray-300">
+                                        Animal appears to be lost or without an
+                                        owner
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="animal-type-option">
+                        <input
+                            type="radio"
+                            id="other"
+                            name="animal_type"
+                            value="Other"
+                            class="hidden peer"
+                            required
+                        />
+                        <label
+                            for="other"
+                            class="block p-5 rounded-lg border-2 border-white/20 cursor-pointer transition-all duration-300 hover:border-[#0ea5e9] hover:bg-white/5 peer-checked:border-[#0ea5e9] peer-checked:bg-[#0ea5e9]/10"
+                        >
+                            <div class="flex flex-col">
+                                <div class="flex items-center">
+                                    <svg
+                                        class="w-8 h-8 mr-4 text-gray-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    <h3 class="text-lg font-medium">
+                                        Other Situation
+                                    </h3>
+                                </div>
+                                <p class="mt-2 text-sm text-gray-300">
+                                    Describe the situation in your own words
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="animal-type-error" class="form-error">
+                        Please select an animal type
+                    </div>
+
+                    <div class="flex justify-end mt-8">
+                        <button
+                            type="button"
+                            class="primary-btn next-step"
+                            data-next="2"
+                        >
+                            Next: Animal Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Animal Details & Image Upload -->
+                <div class="hidden card step" data-step="2">
+                    <h2 class="mb-6 text-2xl font-semibold">
+                        2. Animal Details & Image
+                    </h2>
+
+                    <!-- Image Upload -->
+                    <div class="mb-8">
+                        <label class="form-label"
+                            >Upload Animal Image (Required)</label
+                        >
+                        <p class="mb-4 text-sm text-gray-300">
+                            A clear photo helps our rescue team identify the
+                            animal quickly.
+                        </p>
+
+                        <div id="file-upload-area" class="file-upload-area">
+                            <svg
+                                class="w-16 h-16 mx-auto mb-4 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                ></path>
+                            </svg>
+                            <p class="mb-2 text-lg font-medium">
+                                Drop your image here, or
+                                <span class="text-[#0ea5e9] cursor-pointer"
+                                    >click to browse</span
+                                >
+                            </p>
+                            <p class="text-sm text-gray-400">
+                                Supports JPG, PNG up to 5MB
+                            </p>
+                            <input
+                                type="file"
+                                id="animal_image"
+                                name="animal_image"
+                                accept="image/*"
+                                class="hidden"
+                                required
+                            />
+                        </div>
+
+                        <div id="file-preview" class="hidden mt-4">
+                            <p class="form-label">Selected Image:</p>
+                            <div
+                                class="flex items-center gap-4 p-3 rounded-md bg-white/5"
+                            >
+                                <img
+                                    id="image-preview"
+                                    class="object-cover w-20 h-20 rounded-md"
+                                    src=""
+                                    alt="Animal preview"
+                                />
+                                <div class="flex-1">
+                                    <p id="file-name" class="font-medium"></p>
+                                    <p
+                                        id="file-size"
+                                        class="text-sm text-gray-400"
+                                    ></p>
+                                </div>
+                                <button
+                                    type="button"
+                                    id="remove-image"
+                                    class="text-red-400 hover:text-red-300"
+                                >
+                                    <svg
+                                        class="w-6 h-6"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="image-error" class="form-error">
+                            Please upload an image of the animal
+                        </div>
+                    </div>
+
+                    <!-- Animal Description -->
+                    <div class="mb-8">
+                        <label for="animal_description" class="form-label"
+                            >Description / Notes</label
+                        >
+                        <p class="mb-4 text-sm text-gray-300">
+                            Provide any additional details about the animal's
+                            condition, behavior, or appearance.
+                        </p>
+                        <textarea
+                            id="animal_description"
+                            name="animal_description"
+                            rows="5"
+                            class="form-input"
+                            placeholder="Describe the animal's size, color, breed (if known), visible injuries, behavior, and any other relevant details..."
+                            required
+                        ></textarea>
+                        <div id="description-error" class="form-error">
+                            Please provide a description of the animal
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button
+                            type="button"
+                            class="outline-btn prev-step"
+                            data-prev="1"
+                        >
+                            <svg
+                                class="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 19l-7-7 7-7"
+                                ></path>
+                            </svg>
+                            Back
+                        </button>
+                        <button
+                            type="button"
+                            class="primary-btn next-step"
+                            data-next="3"
+                        >
+                            Next: Location & Time
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Location & Time -->
+                <div class="hidden card step" data-step="3">
+                    <h2 class="mb-6 text-2xl font-semibold">
+                        3. Location & Time Details
+                    </h2>
+
+                    <!-- Location Input -->
+                    <div class="mb-8">
+                        <label for="location" class="form-label"
+                            >Location (Required)</label
+                        >
+                        <p class="mb-4 text-sm text-gray-300">
+                            Provide the exact address, landmark, or coordinates
+                            where you saw the animal.
+                        </p>
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            class="form-input"
+                            placeholder="e.g., 123 Main Street, Central Park, or 40.7128° N, 74.0060° W"
+                            required
+                        />
+                        <div
+                            class="flex items-center mt-2 text-sm text-gray-400"
+                        >
+                            <svg
+                                class="w-4 h-4 mr-1"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span
+                                >Be as specific as possible to help our rescue
+                                team</span
+                            >
+                        </div>
+                        <div id="location-error" class="form-error">
+                            Please provide the location where you saw the animal
+                        </div>
+                    </div>
+
+                    <!-- Last Seen Date/Time -->
+                    <div class="mb-8">
+                        <label for="last_seen" class="form-label"
+                            >Last Seen Date & Time (Required)</label
+                        >
+                        <p class="mb-4 text-sm text-gray-300">
+                            When did you last see the animal?
+                        </p>
+                        <input
+                            type="datetime-local"
+                            id="last_seen"
+                            name="last_seen"
+                            class="form-input"
+                            required
+                        />
+                        <div id="last-seen-error" class="form-error">
+                            Please provide when you last saw the animal
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="mb-8">
+                        <h3 class="mb-4 text-lg font-medium">
+                            Your Contact Information (Optional)
+                        </h3>
+                        <p class="mb-4 text-sm text-gray-300">
+                            Providing contact info allows our team to follow up
+                            if we need more details.
+                        </p>
+
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div>
+                                <label for="contact_name" class="form-label"
+                                    >Your Name</label
+                                >
+                                <input
+                                    type="text"
+                                    id="contact_name"
+                                    name="contact_name"
+                                    class="form-input"
+                                    placeholder="Optional"
+                                />
+                            </div>
+                            <div>
+                                <label for="contact_phone" class="form-label"
+                                    >Phone Number</label
+                                >
+                                <input
+                                    type="tel"
+                                    id="contact_phone"
+                                    name="contact_phone"
+                                    class="form-input"
+                                    placeholder="Optional"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <label for="contact_email" class="form-label"
+                                >Email Address</label
+                            >
+                            <input
+                                type="email"
+                                id="contact_email"
+                                name="contact_email"
+                                class="form-input"
+                                placeholder="Optional"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button
+                            type="button"
+                            class="outline-btn prev-step"
+                            data-prev="2"
+                        >
+                            <svg
+                                class="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 19l-7-7 7-7"
+                                ></path>
+                            </svg>
+                            Back
+                        </button>
+                        <button
+                            type="button"
+                            class="primary-btn next-step"
+                            data-next="4"
+                        >
+                            Review & Submit
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Review & Submit -->
+                <div class="hidden card step" data-step="4">
+                    <h2 class="mb-6 text-2xl font-semibold">
+                        4. Review Your Report
+                    </h2>
+                    <p class="mb-8 text-gray-300">
+                        Please review all information before submitting. Once
+                        submitted, our rescue team will be alerted.
+                    </p>
+
+                    <!-- Review Summary -->
+                    <div class="p-6 mb-8 rounded-lg bg-white/5">
+                        <h3 class="mb-4 text-lg font-medium">Report Summary</h3>
+
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                                <div>
+                                    <p class="text-sm text-gray-400">
+                                        Animal Type
+                                    </p>
+                                    <p
+                                        id="review-animal-type"
+                                        class="font-medium"
+                                    >
+                                        -
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-400">
+                                        Location
+                                    </p>
+                                    <p id="review-location" class="font-medium">
+                                        -
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-400">
+                                        Last Seen
+                                    </p>
+                                    <p
+                                        id="review-last-seen"
+                                        class="font-medium"
+                                    >
+                                        -
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <p class="text-sm text-gray-400">Description</p>
+                                <p id="review-description" class="font-medium">
+                                    -
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-sm text-gray-400">Image</p>
+                                <div id="review-image" class="mt-2">
+                                    <img
+                                        id="review-image-preview"
+                                        class="object-cover w-32 h-32 rounded-md"
+                                        src=""
+                                        alt="Animal preview"
+                                    />
+                                </div>
+                            </div>
+
+                            <div id="review-contact" class="hidden">
+                                <p class="text-sm text-gray-400">
+                                    Contact Information
+                                </p>
+                                <p
+                                    id="review-contact-details"
+                                    class="font-medium"
+                                >
+                                    -
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Privacy -->
+                    <div class="mb-8">
+                        <div class="flex items-start">
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                name="terms"
+                                class="mt-1 mr-3"
+                                required
+                            />
+                            <label for="terms" class="text-sm text-gray-300">
+                                I confirm that the information provided is
+                                accurate to the best of my knowledge. I
+                                understand that SafePaws may use this
+                                information to coordinate rescue efforts and
+                                contact me if necessary.
+                            </label>
+                        </div>
+                        <div id="terms-error" class="form-error">
+                            You must agree to the terms before submitting
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button
+                            type="button"
+                            class="outline-btn prev-step"
+                            data-prev="3"
+                        >
+                            <svg
+                                class="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 19l-7-7 7-7"
+                                ></path>
+                            </svg>
+                            Back
+                        </button>
+                        <button type="submit" class="primary-btn">
+                            <svg
+                                class="w-5 h-5 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                ></path>
+                            </svg>
+                            Submit Report
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Success Message (Hidden by default) -->
+            <div id="success-message" class="hidden text-center card">
+                <svg
+                    class="w-20 h-20 mx-auto mb-6 text-green-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+                <h2 class="mb-4 text-2xl font-semibold">
+                    Report Submitted Successfully!
+                </h2>
+                <p class="max-w-lg mx-auto mb-6 text-gray-300">
+                    Thank you for helping an animal in need. Your report has
+                    been received and our rescue team has been alerted. You will
+                    receive a confirmation email with your report ID shortly.
+                </p>
+                <div class="max-w-md p-6 mx-auto mb-6 rounded-lg bg-white/5">
+                    <p class="mb-2 text-sm text-gray-400">Your Report ID:</p>
+                    <p id="report-id" class="text-xl font-bold text-[#0ea5e9]">
+                        SP-2023-XXXXX
+                    </p>
+                    <p class="mt-4 text-sm text-gray-300">
+                        Keep this ID to track your report status
+                    </p>
+                </div>
+                <div class="flex flex-col justify-center gap-4 sm:flex-row">
+                    <a href="index.html#track" class="primary-btn"
+                        >Track This Report</a
+                    >
+                    <a href="index.html" class="outline-btn">Return to Home</a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-12 gray-border">
+            <div class="max-w-[1000px] mx-auto px-5 py-12 text-gray-300">
+                <div
+                    class="flex flex-col items-start justify-between gap-6 md:flex-row"
+                >
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg
+                                width="34"
+                                height="34"
+                                viewBox="0 0 64 64"
+                                fill="none"
+                            >
+                                <rect
+                                    width="64"
+                                    height="64"
+                                    rx="12"
+                                    fill="#0ea5e9"
+                                ></rect>
+                                <path
+                                    d="M34.5 36c4-1 8.5 0 11 3 2.5 3 1.8 7.4-0.6 10.7C43.9 53 39.6 54 34.5 54c-5 0-9.7-1-12.6-3.8C17.2 47.4 16.4 43 18.9 40c2.7-3.2 6.9-4.2 11.6-4z"
+                                    fill="#fff"
+                                ></path>
+                            </svg>
+                            <div>
+                                <div class="font-semibold">SafePaws</div>
+                                <div class="text-xs text-gray-400">
+                                    A Better World for Every Paw
+                                </div>
+                            </div>
+                        </div>
+                        <p class="max-w-sm text-sm text-gray-400">
+                            SafePaws protects animals and connects the community
+                            — report, rescue and adopt with ease.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6 mt-4 text-sm md:mt-0">
+                        <div>
+                            <div class="mb-2 font-medium text-white">
+                                Support
+                            </div>
+                            <div class="text-gray-400">Help Center</div>
+                            <div class="text-gray-400">Contact</div>
+                            <div class="text-gray-400">Volunteer</div>
+                        </div>
+
+                        <div>
+                            <div class="mb-2 font-medium text-white">About</div>
+                            <div class="text-gray-400">Our Mission</div>
+                            <div class="text-gray-400">Privacy</div>
+                            <div class="text-gray-400">Terms</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-xs text-gray-500">
+                    © <span id="year"></span> SafePaws. All rights reserved.
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            // Set current year in footer
+            document.getElementById("year").textContent =
+                new Date().getFullYear();
+
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+            const mobileMenu = document.getElementById("mobile-menu");
+
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener("click", () => {
+                    mobileMenu.classList.toggle("hidden");
+                });
+            }
+
+            // Form handling
+            let currentStep = 1;
+            const steps = document.querySelectorAll(".step");
+            const progressBar = document.getElementById("progress-bar");
+
+            // Function to update progress bar
+            function updateProgressBar() {
+                const percentage = ((currentStep - 1) / 3) * 100;
+                progressBar.style.width = `${percentage}%`;
+
+                // Update step indicators
+                document
+                    .querySelectorAll(".flex.flex-col.items-center.relative")
+                    .forEach((indicator, index) => {
+                        const numberDiv = indicator.querySelector("div");
+                        const textSpan = indicator.querySelector("span");
+
+                        if (index + 1 < currentStep) {
+                            numberDiv.className =
+                                "w-10 h-10 rounded-full bg-green-500 flex items-center justify-center mb-2";
+                            textSpan.className = "text-sm text-green-400";
+                        } else if (index + 1 === currentStep) {
+                            numberDiv.className =
+                                "w-10 h-10 rounded-full bg-[#0ea5e9] flex items-center justify-center mb-2";
+                            textSpan.className = "text-sm";
+                        } else {
+                            numberDiv.className =
+                                "w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mb-2";
+                            textSpan.className = "text-sm text-gray-400";
+                        }
+                    });
+            }
+
+            // Function to show a specific step
+            function showStep(stepNumber) {
+                // Hide all steps
+                steps.forEach((step) => {
+                    step.classList.add("hidden");
+                });
+
+                // Show the requested step
+                const stepToShow = document.querySelector(
+                    `.step[data-step="${stepNumber}"]`
+                );
+                if (stepToShow) {
+                    stepToShow.classList.remove("hidden");
+                    currentStep = stepNumber;
+                    updateProgressBar();
+
+                    // If we're on the review step, populate the review
+                    if (stepNumber === 4) {
+                        populateReview();
+                    }
+                }
+            }
+
+            // Function to validate a step before proceeding
+            function validateStep(stepNumber) {
+                let isValid = true;
+
+                if (stepNumber === 1) {
+                    const animalTypeSelected = document.querySelector(
+                        'input[name="animal_type"]:checked'
+                    );
+                    const errorElement =
+                        document.getElementById("animal-type-error");
+
+                    if (!animalTypeSelected) {
+                        errorElement.classList.add("active");
+                        isValid = false;
+                    } else {
+                        errorElement.classList.remove("active");
+                    }
+                }
+
+                if (stepNumber === 2) {
+                    const imageInput = document.getElementById("animal_image");
+                    const descriptionInput =
+                        document.getElementById("animal_description");
+                    const imageError = document.getElementById("image-error");
+                    const descriptionError =
+                        document.getElementById("description-error");
+
+                    // Check image
+                    if (!imageInput.files || imageInput.files.length === 0) {
+                        imageError.classList.add("active");
+                        isValid = false;
+                    } else {
+                        imageError.classList.remove("active");
+                    }
+
+                    // Check description
+                    if (!descriptionInput.value.trim()) {
+                        descriptionError.classList.add("active");
+                        isValid = false;
+                    } else {
+                        descriptionError.classList.remove("active");
+                    }
+                }
+
+                if (stepNumber === 3) {
+                    const locationInput = document.getElementById("location");
+                    const lastSeenInput = document.getElementById("last_seen");
+                    const locationError =
+                        document.getElementById("location-error");
+                    const lastSeenError =
+                        document.getElementById("last-seen-error");
+
+                    // Check location
+                    if (!locationInput.value.trim()) {
+                        locationError.classList.add("active");
+                        isValid = false;
+                    } else {
+                        locationError.classList.remove("active");
+                    }
+
+                    // Check last seen
+                    if (!lastSeenInput.value) {
+                        lastSeenError.classList.add("active");
+                        isValid = false;
+                    } else {
+                        lastSeenError.classList.remove("active");
+                    }
+                }
+
+                return isValid;
+            }
+
+            // Function to populate the review step
+            function populateReview() {
+                // Animal type
+                const animalType = document.querySelector(
+                    'input[name="animal_type"]:checked'
+                );
+                if (animalType) {
+                    document.getElementById("review-animal-type").textContent =
+                        animalType.value;
+                }
+
+                // Location
+                const location = document.getElementById("location").value;
+                document.getElementById("review-location").textContent =
+                    location || "Not provided";
+
+                // Last seen
+                const lastSeen = document.getElementById("last_seen").value;
+                if (lastSeen) {
+                    const date = new Date(lastSeen);
+                    document.getElementById("review-last-seen").textContent =
+                        date.toLocaleString();
+                }
+
+                // Description
+                const description =
+                    document.getElementById("animal_description").value;
+                document.getElementById("review-description").textContent =
+                    description || "Not provided";
+
+                // Image
+                const imageInput = document.getElementById("animal_image");
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById("review-image-preview").src =
+                            e.target.result;
+                    };
+                    reader.readAsDataURL(imageInput.files[0]);
+                    document
+                        .getElementById("review-image")
+                        .classList.remove("hidden");
+                } else {
+                    document
+                        .getElementById("review-image")
+                        .classList.add("hidden");
+                }
+
+                // Contact information
+                const contactName =
+                    document.getElementById("contact_name").value;
+                const contactPhone =
+                    document.getElementById("contact_phone").value;
+                const contactEmail =
+                    document.getElementById("contact_email").value;
+
+                if (contactName || contactPhone || contactEmail) {
+                    let contactDetails = [];
+                    if (contactName)
+                        contactDetails.push(`Name: ${contactName}`);
+                    if (contactPhone)
+                        contactDetails.push(`Phone: ${contactPhone}`);
+                    if (contactEmail)
+                        contactDetails.push(`Email: ${contactEmail}`);
+
+                    document.getElementById(
+                        "review-contact-details"
+                    ).textContent = contactDetails.join(", ");
+                    document
+                        .getElementById("review-contact")
+                        .classList.remove("hidden");
+                } else {
+                    document
+                        .getElementById("review-contact")
+                        .classList.add("hidden");
+                }
+            }
+
+            // Next step button handlers
+            document.querySelectorAll(".next-step").forEach((button) => {
+                button.addEventListener("click", function () {
+                    const nextStep = parseInt(this.getAttribute("data-next"));
+                    if (validateStep(currentStep)) {
+                        showStep(nextStep);
+                    }
+                });
+            });
+
+            // Previous step button handlers
+            document.querySelectorAll(".prev-step").forEach((button) => {
+                button.addEventListener("click", function () {
+                    const prevStep = parseInt(this.getAttribute("data-prev"));
+                    showStep(prevStep);
+                });
+            });
+
+            // File upload handling
+            const fileUploadArea = document.getElementById("file-upload-area");
+            const fileInput = document.getElementById("animal_image");
+            const filePreview = document.getElementById("file-preview");
+            const fileName = document.getElementById("file-name");
+            const fileSize = document.getElementById("file-size");
+            const imagePreview = document.getElementById("image-preview");
+            const removeImageBtn = document.getElementById("remove-image");
+
+            if (fileUploadArea && fileInput) {
+                // Click on area to trigger file input
+                fileUploadArea.addEventListener("click", () => {
+                    fileInput.click();
+                });
+
+                // Drag and drop handling
+                fileUploadArea.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    fileUploadArea.classList.add("dragover");
+                });
+
+                fileUploadArea.addEventListener("dragleave", () => {
+                    fileUploadArea.classList.remove("dragover");
+                });
+
+                fileUploadArea.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    fileUploadArea.classList.remove("dragover");
+
+                    if (e.dataTransfer.files.length) {
+                        fileInput.files = e.dataTransfer.files;
+                        handleFileSelection(fileInput.files[0]);
+                    }
+                });
+
+                // File input change
+                fileInput.addEventListener("change", () => {
+                    if (fileInput.files.length) {
+                        handleFileSelection(fileInput.files[0]);
+                    }
+                });
+
+                // Remove image
+                removeImageBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    fileInput.value = "";
+                    filePreview.classList.add("hidden");
+                    document
+                        .getElementById("image-error")
+                        .classList.add("active");
+                });
+            }
+
+            function handleFileSelection(file) {
+                if (file && file.type.startsWith("image/")) {
+                    // Show preview
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+
+                    // Update file info
+                    fileName.textContent = file.name;
+                    fileSize.textContent = `${(
+                        file.size /
+                        (1024 * 1024)
+                    ).toFixed(2)} MB`;
+
+                    // Show preview and hide error
+                    filePreview.classList.remove("hidden");
+                    document
+                        .getElementById("image-error")
+                        .classList.remove("active");
+                } else {
+                    alert("Please select a valid image file (JPG, PNG, etc.)");
+                    fileInput.value = "";
+                }
+            }
+
+            // Form submission
+            const reportForm = document.getElementById("report-form");
+            const successMessage = document.getElementById("success-message");
+
+            if (reportForm) {
+                reportForm.addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    // Validate terms agreement
+                    const termsChecked =
+                        document.getElementById("terms").checked;
+                    const termsError = document.getElementById("terms-error");
+
+                    if (!termsChecked) {
+                        termsError.classList.add("active");
+                        return;
+                    } else {
+                        termsError.classList.remove("active");
+                    }
+
+                    // Validate all steps
+                    let allValid = true;
+                    for (let i = 1; i <= 3; i++) {
+                        if (!validateStep(i)) {
+                            allValid = false;
+                            showStep(i);
+                            break;
+                        }
+                    }
+
+                    if (!allValid) {
+                        return;
+                    }
+
+                    // Generate a random report ID
+                    const reportId =
+                        "SP-" +
+                        new Date().getFullYear() +
+                        "-" +
+                        Math.floor(10000 + Math.random() * 90000);
+                    document.getElementById("report-id").textContent = reportId;
+
+                    // Show success message, hide form
+                    reportForm.classList.add("hidden");
+                    successMessage.classList.remove("hidden");
+
+                    // In a real application, you would send the form data to a server here
+                    console.log("Form submitted with data:", {
+                        animalType: document.querySelector(
+                            'input[name="animal_type"]:checked'
+                        ).value,
+                        location: document.getElementById("location").value,
+                        lastSeen: document.getElementById("last_seen").value,
+                        description:
+                            document.getElementById("animal_description").value,
+                        contactName:
+                            document.getElementById("contact_name").value,
+                        contactPhone:
+                            document.getElementById("contact_phone").value,
+                        contactEmail:
+                            document.getElementById("contact_email").value,
+                        image: document.getElementById("animal_image").files[0]
+                            ?.name,
+                    });
+                });
+            }
+
+            // Initialize progress bar
+            updateProgressBar();
+        </script>
+    </body>
+</html>
