@@ -3,14 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-class AuthController extends Controller
-{
-    <?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +15,7 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    // Registration function — paste your code here
+    // Registration function
     public function register(Request $request)
     {
         $request->validate([
@@ -48,7 +40,7 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Login function — paste your code here
+    // Login function
     public function login(Request $request)
     {
         $credentials = $request->only('email','password');
@@ -66,6 +58,4 @@ class AuthController extends Controller
         Auth::logout();
         return redirect('/login');
     }
-}
-
 }

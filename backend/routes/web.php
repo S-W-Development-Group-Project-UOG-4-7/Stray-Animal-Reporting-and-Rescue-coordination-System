@@ -6,44 +6,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Main rescue team page
-Route::get('/rescue-team', function () {
-    return view('rescue-team');
-});
-
-// Rescue team section routes
-Route::prefix('rescue')->group(function () {
+// Simple rescue routes with names (no auth for testing)
+Route::prefix('rescue')->name('rescue.')->group(function () {
     Route::get('/dashboard', function () {
         return view('rescue-team');
-    })->name('rescue.dashboard');
+    })->name('dashboard');
     
     Route::get('/reports', function () {
         return view('rescue-reports');
-    })->name('rescue.reports');
+    })->name('reports');
     
     Route::get('/assignments', function () {
         return view('rescue-assignments');
-    })->name('rescue.assignments');
+    })->name('assignments');
     
     Route::get('/animals', function () {
         return view('rescue-animals');
-    })->name('rescue.animals');
+    })->name('animals');
     
     Route::get('/adoptions', function () {
-        return view('rescue-adoptions');  // Make sure blade file name matches
-    })->name('rescue.adoptions');
-
+        return view('rescue-adoptions');
+    })->name('adoptions');
 });
-Route::get('/adoption', [AdoptionController::class, 'index']);
-// REMOVE THIS DUPLICATE:
-// Route::get('/animals', function () {
-//     return view('animals');
-// });
-Route::get('/register',[AuthController::class,'showRegister'])->name('register');
-Route::post('/register',[AuthController::class,'register'])->name('register.post');
-Route::get('/login',[AuthController::class,'showLogin'])->name('login');
-Route::post('/login',[AuthController::class,'login'])->name('login.post');
-Route::get('/logout',[AuthController::class,'logout'])->name('logout');
-Route::get('/rescue/dashboard', function(){
-    return "Welcome Rescue Team!";
-})->middleware('auth');

@@ -212,8 +212,7 @@
 
             <!-- Desktop Menu -->
             <nav class="items-center hidden gap-6 text-sm font-medium text-white md:flex">
-                
-                <a href="{{ url('/rescue-team') }}" class="transition hover:text-yellow-300">DASHBOARD</a>
+                <a href="{{ route('rescue.dashboard') }}" class="transition hover:text-yellow-300">DASHBOARD</a>
                 <a href="{{ route('rescue.reports') }}" class="transition hover:text-yellow-300 text-yellow-300">ANIMAL REPORTS</a>
                 <a href="{{ route('rescue.animals') }}" class="transition hover:text-yellow-300">ANIMALS</a>
                 <a href="{{ route('rescue.adoptions') }}" class="transition hover:text-yellow-300">ADOPTIONS</a>

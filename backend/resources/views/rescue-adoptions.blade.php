@@ -161,11 +161,22 @@
 
             <!-- Desktop Menu -->
             <nav class="items-center hidden gap-6 text-sm font-medium text-white md:flex">
-                <!-- Rescue Team Navigation -->
-                <a href="{{ url('/rescue-team') }}" class="transition hover:text-yellow-300">DASHBOARD</a>
-                <a href="{{ route('rescue.reports') }}" class="transition hover:text-yellow-300">ANIMAL REPORTS</a>
-                <a href="{{ route('rescue.animals') }}" class="transition hover:text-yellow-300">ANIMALS</a>
-                <a href="{{ route('rescue.adoptions') }}" class="transition hover:text-yellow-300 text-yellow-300">ADOPTIONS</a>
+                <a href="{{ route('rescue.dashboard') }}" 
+                   class="transition hover:text-yellow-300 {{ request()->is('rescue/dashboard') ? 'text-yellow-300' : '' }}">
+                    DASHBOARD
+                </a>
+                <a href="{{ route('rescue.reports') }}" 
+                   class="transition hover:text-yellow-300 {{ request()->is('rescue/reports') ? 'text-yellow-300' : '' }}">
+                    ANIMAL REPORTS
+                </a>
+                <a href="{{ route('rescue.animals') }}" 
+                   class="transition hover:text-yellow-300 {{ request()->is('rescue/animals') ? 'text-yellow-300' : '' }}">
+                    ANIMALS
+                </a>
+                <a href="{{ route('rescue.adoptions') }}" 
+                   class="transition hover:text-yellow-300 text-yellow-300">
+                    ADOPTIONS
+                </a>
 
                 <!-- User dropdown -->
                 <div class="relative ml-4">
@@ -195,13 +206,12 @@
         </div>
 
         <!-- Mobile menu -->
-        <div class="hidden md:hidden" id="mobileMenu">
+        <div class="md:hidden hidden" id="mobileMenu">
             <div class="px-5 py-4 space-y-4 bg-[#0b2447]">
-                <a href="{{ url('/rescue-team') }}" class="block py-2">Dashboard</a>
+                <a href="{{ route('rescue.dashboard') }}" class="block py-2">Dashboard</a>
                 <a href="{{ route('rescue.reports') }}" class="block py-2">Animal Reports</a>
                 <a href="{{ route('rescue.animals') }}" class="block py-2">Animals</a>
                 <a href="{{ route('rescue.adoptions') }}" class="block py-2 text-yellow-300">Adoptions</a>
-                <a href="#logout" class="block py-2 text-red-400">Logout</a>
             </div>
         </div>
     </header>
@@ -924,16 +934,23 @@
             }
         });
         
-        // Set active nav link
+        // Set active nav link on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const currentPath = window.location.pathname;
-            const navLinks = document.querySelectorAll('nav a');
-            
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPath) {
+            // For desktop menu
+            const desktopLinks = document.querySelectorAll('nav.md\\:flex a');
+            desktopLinks.forEach(link => {
+                if (link.href === window.location.href) {
                     link.classList.add('text-yellow-300');
                 } else {
                     link.classList.remove('text-yellow-300');
+                }
+            });
+            
+            // For mobile menu
+            const mobileLinks = document.querySelectorAll('#mobileMenu a');
+            mobileLinks.forEach(link => {
+                if (link.href === window.location.href) {
+                    link.classList.add('text-yellow-300');
                 }
             });
         });
