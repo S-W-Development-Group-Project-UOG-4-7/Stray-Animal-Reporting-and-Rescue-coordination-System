@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ReportController;
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', fn() => view('dashboard'));
 
-// Reports
+// Reports routes (public placeholders)
 Route::get('/reports', fn() => view('reports'));
 Route::get('/reports/create', fn() => 'Create Report Coming Soon');
 Route::get('/reports/{id}', fn($id) => "View Report: {$id}");
@@ -44,7 +43,7 @@ Route::get('/analytics', fn() => view('analytics'));
 // Settings
 Route::get('/settings', fn() => view('settings'));
 
-// Other system pages
+// Other pages
 Route::get('/contact', fn() => 'Contact Coming Soon');
 Route::get('/faq', fn() => 'FAQ Coming Soon');
 Route::get('/help', fn() => 'Help Coming Soon');
@@ -53,3 +52,11 @@ Route::get('/activity', fn() => 'Activity Log Coming Soon');
 Route::get('/notifications', fn() => 'Notifications Coming Soon');
 Route::get('/logout', fn() => 'Logout Coming Soon');
 Route::get('/profile', fn() => 'Profile Coming Soon');
+
+// Admin routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Reports
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/create', [ReportController::class, 'create'])->name('reports.create');
+    Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
+});
