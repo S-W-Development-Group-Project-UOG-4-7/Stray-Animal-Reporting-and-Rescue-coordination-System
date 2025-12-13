@@ -1,10 +1,300 @@
-/* Tailwind base, components, and utilities */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-/* Optional: Add your custom styles here */
-body {
-    /* Example: default background color */
-    background-color: #f9fafb;
+/* Your custom styles */
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse-glow {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-in {
+    animation: slide-in 0.6s ease-out;
+}
+
+.stagger-animation > * {
+    opacity: 0;
+    animation: slide-in 0.5s ease-out forwards;
+}
+
+.stagger-animation > *:nth-child(1) {
+    animation-delay: 0.1s;
+}
+.stagger-animation > *:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.stagger-animation > *:nth-child(3) {
+    animation-delay: 0.3s;
+}
+.stagger-animation > *:nth-child(4) {
+    animation-delay: 0.4s;
+}
+.stagger-animation > *:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #0ea5e9, #22d3ee, #67e8f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #0ea5e9, #22d3ee, #67e8f9);
+}
+
+.hover-grow {
+    transition: transform 0.3s ease;
+}
+
+.hover-grow:hover {
+    transform: translateY(-5px);
+}
+
+.section-padding {
+    @apply px-5 py-16 md:px-12 md:py-24;
+}
+
+.container-custom {
+    @apply max-w-[1400px] mx-auto;
+}
+
+.title {
+    @apply text-4xl font-bold leading-tight md:text-5xl lg:text-6xl;
+}
+
+.subtitle {
+    @apply text-xl font-light text-gray-300 md:text-2xl;
+}
+
+.section-title {
+    @apply mb-4 text-3xl font-bold text-center md:text-4xl lg:text-5xl;
+}
+
+.section-subtitle {
+    @apply max-w-3xl mx-auto mb-12 text-lg text-center text-gray-300 md:text-xl;
+}
+
+.primary-btn {
+    @apply inline-flex items-center gap-2 px-8 py-4 font-medium text-white transition-all duration-300 rounded-full gradient-bg hover:shadow-lg hover:shadow-cyan-500/30 hover:scale-105;
+}
+
+.secondary-btn {
+    @apply border-2 border-[#0ea5e9] text-[#0ea5e9] font-medium px-8 py-4 rounded-full hover:bg-[#0ea5e9] hover:text-white transition-all duration-300 hover:scale-105 inline-flex items-center gap-2;
+}
+
+.card {
+    @apply p-6 glass-effect rounded-2xl md:p-8 hover-grow;
+}
+
+.stat-card {
+    @apply p-8 text-center border bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-2xl border-cyan-500/20;
+}
+
+.feature-card {
+    @apply transition-all duration-300 card hover:border-cyan-500/30;
+}
+
+.testimonial-card {
+    @apply border-l-4 card border-cyan-500;
+}
+
+.nav-link {
+    @apply relative px-3 py-2 text-sm font-medium transition-colors duration-300;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 80%;
+}
+
+.dropdown-menu {
+    @apply absolute left-0 invisible w-56 p-4 mt-2 transition-all duration-300 transform -translate-y-2 shadow-2xl opacity-0 top-full rounded-xl glass-effect;
+}
+
+.dropdown:hover .dropdown-menu {
+    @apply visible transform translate-y-0 opacity-100;
+}
+
+.dropdown-item {
+    @apply block px-4 py-3 mb-2 transition-colors duration-200 rounded-lg hover:bg-white/5 last:mb-0;
+}
+
+.progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+
+.step-indicator {
+    @apply flex items-center justify-center w-10 h-10 font-bold text-white transition-all duration-300 rounded-full;
+}
+
+.step-indicator.active {
+    @apply shadow-lg gradient-bg shadow-cyan-500/30;
+}
+
+.step-indicator.completed {
+    @apply bg-green-500;
+}
+
+.form-step {
+    @apply animate-slide-in;
+}
+
+.required-field::after {
+    content: " *";
+    color: #f87171;
+}
+
+.file-upload-area {
+    @apply p-8 text-center transition-all duration-300 border-2 border-dashed cursor-pointer border-cyan-500/30 rounded-2xl hover:border-cyan-500 hover:bg-cyan-500/5;
+}
+
+.success-checkmark {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0ea5e9, #22d3ee);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse-glow 2s infinite;
+}
+
+.success-checkmark::after {
+    content: "✓";
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scroll-indicator::before {
+    content: "";
+    width: 6px;
+    height: 12px;
+    background: white;
+    border-radius: 3px;
+    animation: scroll 2s infinite;
+}
+
+.floating-element {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(14, 165, 233, 0.2) 0%,
+        transparent 70%
+    );
+    z-index: -1;
+}
+
+.floating-element-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 5%;
+}
+
+.floating-element-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 20%;
+    right: 10%;
+}
+
+.stats-counter {
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.feature-icon {
+    @apply flex items-center justify-center mb-6 text-2xl text-white w-14 h-14 rounded-2xl gradient-bg;
 }
