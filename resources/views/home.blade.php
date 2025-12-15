@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>SafePaws — A Better World for Every Paw</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
         <style type="text/tailwindcss">
             @keyframes float {
                 0%, 100% { transform: translateY(0px); }
@@ -112,6 +114,10 @@
                 @apply border-2 border-[#0ea5e9] text-[#0ea5e9] font-medium px-8 py-4 rounded-full hover:bg-[#0ea5e9] hover:text-white transition-all duration-300 hover:scale-105 inline-flex items-center gap-2;
             }
 
+            .danger-btn {
+                @apply border-2 border-red-500 text-red-500 font-medium px-6 py-3 rounded-full hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-105 inline-flex items-center gap-2;
+            }
+
             .card {
                 @apply glass-effect rounded-2xl p-6 md:p-8 hover-grow;
             }
@@ -129,7 +135,7 @@
             }
 
             .nav-link {
-                @apply relative px-3 py-2 text-sm font-medium transition-colors duration-300;
+                @apply relative px-3 py-2 text-sm font-medium transition-colors duration-300 text-white/90 hover:text-white;
             }
 
             .nav-link::after {
@@ -160,55 +166,17 @@
                 @apply block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors duration-200 mb-2 last:mb-0;
             }
 
-            .progress-bar {
-                height: 4px;
-                background: linear-gradient(90deg, #0ea5e9, #22d3ee);
-                border-radius: 2px;
-                transition: width 0.5s ease;
-            }
-
-            .step-indicator {
-                @apply w-10 h-10 rounded-full flex items-center justify-center text-white font-bold transition-all duration-300;
-            }
-
-            .step-indicator.active {
-                @apply gradient-bg shadow-lg shadow-cyan-500/30;
-            }
-
-            .step-indicator.completed {
-                @apply bg-green-500;
-            }
-
-            .form-step {
-                @apply animate-slide-in;
-            }
-
-            .required-field::after {
-                content: ' *';
-                color: #f87171;
-            }
-
-            .file-upload-area {
-                @apply border-2 border-dashed border-cyan-500/30 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-cyan-500 hover:bg-cyan-500/5;
-            }
-
-            .success-checkmark {
-                width: 80px;
-                height: 80px;
-                margin: 0 auto;
-                border-radius: 50%;
-                background: linear-gradient(135deg, #0ea5e9, #22d3ee);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                animation: pulse-glow 2s infinite;
-            }
-
-            .success-checkmark::after {
-                content: '✓';
-                color: white;
-                font-size: 40px;
+            .stats-counter {
+                font-size: 3rem;
                 font-weight: bold;
+                background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+            .feature-icon {
+                @apply w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center text-white text-2xl mb-6;
             }
 
             .scroll-indicator {
@@ -261,17 +229,87 @@
                 right: 10%;
             }
 
-            .stats-counter {
-                font-size: 3rem;
-                font-weight: bold;
-                background: linear-gradient(90deg, #0ea5e9, #22d3ee);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
+            .pet-card {
+                @apply relative overflow-hidden rounded-2xl transition-all duration-500 hover:scale-105;
             }
 
-            .feature-icon {
-                @apply w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center text-white text-2xl mb-6;
+            .pet-card img {
+                transition: transform 0.5s ease;
+            }
+
+            .pet-card:hover img {
+                transform: scale(1.05);
+            }
+
+            .pet-info {
+                @apply absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent;
+            }
+
+            .team-card {
+                @apply text-center card hover:border-cyan-500/50;
+            }
+
+            .team-img {
+                @apply w-32 h-32 mx-auto mb-6 rounded-full object-cover border-4 border-cyan-500/30;
+            }
+
+            /* Language selector styles */
+            .language-selector {
+                @apply relative;
+            }
+
+            .language-dropdown {
+                @apply absolute right-0 mt-2 w-40 rounded-xl glass-effect shadow-2xl p-3 invisible opacity-0 transition-all duration-300 transform -translate-y-2 z-50;
+            }
+
+            .language-selector:hover .language-dropdown {
+                @apply visible opacity-100 transform translate-y-0;
+            }
+
+            .language-option {
+                @apply flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors duration-200 mb-1 last:mb-0 cursor-pointer text-sm;
+            }
+
+            .flag-icon {
+                @apply w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0;
+            }
+
+            /* Login button styles */
+            .login-btn {
+                @apply flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-300 text-sm font-medium text-white/90 hover:text-white;
+            }
+
+            /* Report Animal button styles */
+            .report-btn {
+                @apply flex items-center gap-2 px-4 py-2.5 rounded-full bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 transition-all duration-300 text-sm font-medium text-red-300 hover:text-white;
+            }
+
+            /* Navigation action buttons container */
+            .nav-actions {
+                @apply flex items-center gap-2 ml-4;
+            }
+
+            /* Small utility buttons */
+            .small-btn {
+                @apply px-3 py-1.5 text-xs rounded-lg transition-all duration-200;
+            }
+
+            /* Enhanced glass effect for nav */
+            .nav-glass {
+                background: rgba(7, 19, 49, 0.85);
+                backdrop-filter: blur(15px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Beautiful separator */
+            .nav-separator {
+                @apply w-px h-6 bg-white/10 mx-2;
+            }
+
+            /* Mobile language selector */
+            .mobile-language-btn {
+                @apply flex items-center justify-center gap-2 w-full p-2.5 rounded-lg hover:bg-white/5 text-sm;
             }
         </style>
     </head>
@@ -281,17 +319,17 @@
         <div class="floating-element floating-element-2"></div>
 
         <!-- Navigation -->
-        <header class="fixed top-0 z-50 w-full border-b glass-effect border-white/10">
-            <div class="px-5 py-4 container-custom">
+        <header class="fixed top-0 z-50 w-full nav-glass">
+            <div class="px-5 py-3 container-custom">
                 <div class="flex items-center justify-between">
                     <!-- Logo -->
-                    <a href="#" class="flex items-center gap-3">
-                        <div class="flex items-center justify-center w-12 h-12 shadow-lg gradient-bg rounded-xl shadow-cyan-500/30">
-                            <i class="text-xl text-white fas fa-paw"></i>
+                    <a href="#home" class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-10 h-10 shadow-lg gradient-bg rounded-xl shadow-cyan-500/30">
+                            <i class="text-lg text-white fas fa-paw"></i>
                         </div>
                         <div>
-                            <span class="text-2xl font-bold">SafePaws</span>
-                            <div class="text-xs text-gray-300">Protecting Every Paw</div>
+                            <span class="text-xl font-bold">SafePaws</span>
+                            <div class="text-[10px] text-gray-300 leading-tight">Protecting Every Paw</div>
                         </div>
                     </a>
 
@@ -351,50 +389,161 @@
                         <a href="#success" class="nav-link">Success Stories</a>
                         <a href="#contact" class="nav-link">Contact</a>
                         
-                        <div class="flex items-center gap-4 ml-6">
-                            <a href="#report" class="primary-btn">
-                                <i class="fas fa-bullhorn"></i>
+                        <!-- Navigation Actions - Beautifully Arranged -->
+                        <div class="nav-actions">
+                            <!-- Report Animal Button -->
+                            <button class="report-btn" onclick="reportAnimal()">
+                                <i class="fas fa-exclamation-triangle"></i>
                                 Report Animal
+                            </button>
+
+                            <!-- Donate Button -->
+                            <a href="#donate" class="border small-btn bg-cyan-500/20 hover:bg-cyan-500/30 border-cyan-500/30 text-cyan-300 hover:text-white">
+                                <i class="mr-1 fas fa-heart"></i>
+                                Donate
                             </a>
-                            <a href="#adopt" class="secondary-btn">
-                                <i class="fas fa-paw"></i>
-                                Adopt
-                            </a>
+
+                            <div class="nav-separator"></div>
+
+                            <!-- Language Selector -->
+                            <div class="relative language-selector">
+                                <button class="flex items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-white/5 text-xs font-medium text-white/70 hover:text-white">
+                                    <i class="text-xs fas fa-globe"></i>
+                                    <span>EN</span>
+                                </button>
+                                <div class="language-dropdown">
+                                    <div class="language-option" data-lang="en">
+                                        <div class="text-white flag-icon bg-gradient-to-r from-blue-500 to-red-500">
+                                            EN
+                                        </div>
+                                        <span class="text-white/90">English</span>
+                                    </div>
+                                    <div class="language-option" data-lang="es">
+                                        <div class="text-white flag-icon bg-gradient-to-r from-red-500 to-yellow-500">
+                                            ES
+                                        </div>
+                                        <span class="text-white/90">Español</span>
+                                    </div>
+                                    <div class="language-option" data-lang="fr">
+                                        <div class="text-blue-600 flag-icon bg-gradient-to-r from-blue-500 to-white">
+                                            FR
+                                        </div>
+                                        <span class="text-white/90">Français</span>
+                                    </div>
+                                    <div class="language-option" data-lang="de">
+                                        <div class="text-white flag-icon bg-gradient-to-r from-black to-red-500 to-yellow-500">
+                                            DE
+                                        </div>
+                                        <span class="text-white/90">Deutsch</span>
+                                    </div>
+                                    <div class="language-option" data-lang="ja">
+                                        <div class="text-red-600 flag-icon bg-gradient-to-r from-red-500 to-white">
+                                            日
+                                        </div>
+                                        <span class="text-white/90">日本語</span>
+                                    </div>
+                                    <div class="language-option" data-lang="si">
+                                        <div class="text-white flag-icon bg-gradient-to-r from-yellow-500 to-orange-500">
+                                            සි
+                                        </div>
+                                        <span class="text-white/90">සිංහල</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Log In Button -->
+                            <button class="login-btn" onclick="openLogin()">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Log In
+                            </button>
                         </div>
                     </nav>
 
                     <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-btn" class="text-2xl lg:hidden">
+                    <button id="mobile-menu-btn" class="text-xl lg:hidden">
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden px-5 py-6 border-t lg:hidden glass-effect border-white/10">
-                <div class="space-y-4">
-                    <a href="#home" class="block px-4 py-3 rounded-lg hover:bg-white/5">Home</a>
-                    <a href="#about" class="block px-4 py-3 rounded-lg hover:bg-white/5">About</a>
-                    <a href="#work" class="block px-4 py-3 rounded-lg hover:bg-white/5">Our Work</a>
-                    <a href="#involve" class="block px-4 py-3 rounded-lg hover:bg-white/5">Get Involved</a>
-                    <a href="#success" class="block px-4 py-3 rounded-lg hover:bg-white/5">Success Stories</a>
-                    <a href="#contact" class="block px-4 py-3 rounded-lg hover:bg-white/5">Contact</a>
+            <div id="mobile-menu" class="hidden px-5 py-4 border-t lg:hidden nav-glass border-white/10">
+                <div class="space-y-2">
+                    <a href="#home" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Home</a>
+                    <a href="#about" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">About</a>
+                    <a href="#work" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Our Work</a>
+                    <a href="#involve" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Get Involved</a>
+                    <a href="#success" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Success Stories</a>
+                    <a href="#contact" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Contact</a>
                     
-                    <div class="pt-4 border-t border-white/10">
-                        <a href="#report" class="justify-center w-full mb-3 text-center primary-btn">
-                            <i class="fas fa-bullhorn"></i>
+                    <!-- Action Buttons for Mobile -->
+                    <div class="pt-3 mt-3 space-y-2 border-t border-white/10">
+                        <button class="justify-center w-full report-btn" onclick="reportAnimal()">
+                            <i class="fas fa-exclamation-triangle"></i>
                             Report Animal
+                        </button>
+                        
+                        <a href="#donate" class="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/30 text-cyan-300 hover:text-white text-sm">
+                            <i class="fas fa-heart"></i>
+                            Donate Now
                         </a>
-                        <a href="#adopt" class="justify-center w-full text-center secondary-btn">
-                            <i class="fas fa-paw"></i>
-                            Adopt a Pet
-                        </a>
+                    </div>
+
+                    <!-- Language Selector for Mobile -->
+                    <div class="pt-3 mt-3 border-t border-white/10">
+                        <h4 class="px-2 mb-2 text-xs font-semibold tracking-wider text-gray-400 uppercase">Language</h4>
+                        <div class="grid grid-cols-2 gap-1">
+                            <button class="mobile-language-btn" data-lang="en">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-blue-500 to-red-500">
+                                    EN
+                                </div>
+                                <span>English</span>
+                            </button>
+                            <button class="mobile-language-btn" data-lang="es">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-red-500 to-yellow-500">
+                                    ES
+                                </div>
+                                <span>Español</span>
+                            </button>
+                            <button class="mobile-language-btn" data-lang="fr">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-blue-600 rounded-full bg-gradient-to-r from-blue-500 to-white">
+                                    FR
+                                </div>
+                                <span>Français</span>
+                            </button>
+                            <button class="mobile-language-btn" data-lang="de">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-black to-red-500 to-yellow-500">
+                                    DE
+                                </div>
+                                <span>Deutsch</span>
+                            </button>
+                            <button class="mobile-language-btn" data-lang="ja">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold rounded-full bg-gradient-to-r from-red-500 to-white">
+                                    日
+                                </div>
+                                <span>日本語</span>
+                            </button>
+                            <button class="mobile-language-btn" data-lang="si">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-yellow-500 to-orange-500">
+                                    සි
+                                </div>
+                                <span>සිංහල</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Log In for Mobile -->
+                    <div class="pt-3 mt-3 border-t border-white/10">
+                        <button class="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-sm" onclick="openLogin()">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Log In to Account
+                        </button>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Section -->
+       <!-- Hero Section -->
         <section id="home" class="relative pt-32 pb-20 overflow-hidden md:pt-40 md:pb-32">
             <div class="absolute inset-0 bg-gradient-to-b from-cyan-900/20 via-transparent to-blue-900/20"></div>
             <div class="px-5 container-custom">
@@ -407,13 +556,14 @@
                             Join our community dedicated to rescuing, protecting, and finding loving homes for animals in need. Every life matters.
                         </p>
                         <div class="flex flex-col gap-4 sm:flex-row">
-                            <a href="#report" class="primary-btn animate-pulse-glow">
-                                <i class="fas fa-bullhorn"></i>
-                                Report Animal in Need
-                            </a>
-                            <a href="#adopt" class="secondary-btn">
+                            <!-- Also updated in hero section -->
+                            <button class="primary-btn animate-pulse-glow" onclick="alert('Adoption feature coming soon!')">
                                 <i class="fas fa-heart"></i>
                                 Adopt a Friend
+                            </button>
+                            <a href="#volunteer" class="secondary-btn">
+                                <i class="fas fa-hands-helping"></i>
+                                Become a Volunteer
                             </a>
                         </div>
                         
@@ -448,442 +598,71 @@
             <div class="mt-16 scroll-indicator"></div>
         </section>
 
-        <!-- Report Animal Form Section -->
-        <section id="report" class="section-padding bg-gradient-to-b from-cyan-900/10 to-transparent">
+        <!-- About Section -->
+        <section id="about" class="section-padding bg-gradient-to-b from-cyan-900/10 to-transparent">
             <div class="container-custom">
                 <div class="mb-16 text-center">
-                    <h2 class="section-title">Report an Animal in Need</h2>
+                    <h2 class="section-title">Our Mission & Vision</h2>
                     <p class="section-subtitle">
-                        Help us rescue animals by providing accurate information. Your report could save a life.
+                        Creating a compassionate world where every animal is safe, healthy, and loved
                     </p>
                 </div>
 
-                <!-- Multi-step Form -->
-                <div class="max-w-4xl mx-auto">
-                    <!-- Form Steps Indicator -->
-                    <div class="mb-12">
-                        <div class="relative flex items-center justify-between">
-                            <div class="absolute left-0 right-0 h-1 -translate-y-1/2 top-1/2 bg-white/10 -z-10"></div>
-                            <div id="form-progress" class="absolute left-0 -translate-y-1/2 progress-bar top-1/2 -z-10" style="width: 25%"></div>
-                            
-                            <div class="z-10 flex flex-col items-center">
-                                <div class="step-indicator active">1</div>
-                                <span class="mt-2 text-sm">Animal Type</span>
-                            </div>
-                            <div class="z-10 flex flex-col items-center">
-                                <div class="step-indicator">2</div>
-                                <span class="mt-2 text-sm text-gray-400">Details</span>
-                            </div>
-                            <div class="z-10 flex flex-col items-center">
-                                <div class="step-indicator">3</div>
-                                <span class="mt-2 text-sm text-gray-400">Location</span>
-                            </div>
-                            <div class="z-10 flex flex-col items-center">
-                                <div class="step-indicator">4</div>
-                                <span class="mt-2 text-sm text-gray-400">Submit</span>
-                            </div>
+                <div class="grid gap-8 md:grid-cols-2">
+                    <div class="card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullseye"></i>
                         </div>
-                    </div>
-
-                    <!-- Form Steps -->
-                    <form id="animal-report-form" class="space-y-8">
-                        <!-- Step 1: Animal Type -->
-                        <div id="step-1" class="form-step card">
-                            <h3 class="mb-6 text-2xl font-bold gradient-text">1. Select Animal Type</h3>
-                            
-                            <div class="grid gap-6 mb-8 md:grid-cols-2">
-                                <div class="animal-type-option">
-                                    <input type="radio" id="aggressive" name="animal_type" value="Aggressive" class="hidden peer" required>
-                                    <label for="aggressive" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
-                                        <div class="flex items-center gap-4">
-                                            <div class="feature-icon">
-                                                <i class="fas fa-exclamation-triangle"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-lg font-bold">Aggressive</h4>
-                                                <p class="text-sm text-gray-300">Animal shows signs of aggression or danger</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                                
-                                <div class="animal-type-option">
-                                    <input type="radio" id="sick" name="animal_type" value="Sick/Injured" class="hidden peer" required>
-                                    <label for="sick" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
-                                        <div class="flex items-center gap-4">
-                                            <div class="feature-icon">
-                                                <i class="fas fa-heartbeat"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-lg font-bold">Sick/Injured</h4>
-                                                <p class="text-sm text-gray-300">Animal appears ill, wounded, or in distress</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                                
-                                <div class="animal-type-option">
-                                    <input type="radio" id="stray" name="animal_type" value="Stray/Lost" class="hidden peer" required>
-                                    <label for="stray" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
-                                        <div class="flex items-center gap-4">
-                                            <div class="feature-icon">
-                                                <i class="fas fa-home"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-lg font-bold">Stray/Lost</h4>
-                                                <p class="text-sm text-gray-300">Animal appears lost or without owner</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                                
-                                <div class="animal-type-option">
-                                    <input type="radio" id="abandoned" name="animal_type" value="Abandoned" class="hidden peer" required>
-                                    <label for="abandoned" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
-                                        <div class="flex items-center gap-4">
-                                            <div class="feature-icon">
-                                                <i class="fas fa-sad-tear"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-lg font-bold">Abandoned</h4>
-                                                <p class="text-sm text-gray-300">Animal left behind by owner</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="flex justify-end">
-                                <button type="button" class="primary-btn next-step" data-next="2">
-                                    Next Step
-                                    <i class="ml-2 fas fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Step 2: Details & Image -->
-                        <div id="step-2" class="hidden form-step card">
-                            <h3 class="mb-6 text-2xl font-bold gradient-text">2. Animal Details & Photo</h3>
-                            
-                            <!-- Image Upload -->
-                            <div class="mb-8">
-                                <label class="block mb-4 text-lg font-bold required-field">Upload Animal Photo</label>
-                                <p class="mb-6 text-gray-300">A clear photo helps our team identify and locate the animal faster.</p>
-                                
-                                <div id="file-upload-area" class="file-upload-area">
-                                    <i class="mb-4 text-4xl fas fa-cloud-upload-alt text-cyan-400"></i>
-                                    <p class="mb-2 text-lg font-medium">Drag & drop your photo here</p>
-                                    <p class="mb-4 text-gray-400">or click to browse files</p>
-                                    <p class="text-sm text-gray-500">Supports JPG, PNG, WEBP (Max 5MB)</p>
-                                    <input type="file" id="animal_photo" name="animal_photo" accept="image/*" class="hidden" required>
-                                </div>
-                                
-                                <div id="file-preview" class="hidden mt-6">
-                                    <div class="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                                        <div class="flex items-center gap-4">
-                                            <img id="image-preview" class="object-cover w-20 h-20 rounded-lg" src="" alt="Preview">
-                                            <div>
-                                                <p id="file-name" class="font-medium"></p>
-                                                <p id="file-size" class="text-sm text-gray-400"></p>
-                                            </div>
-                                        </div>
-                                        <button type="button" id="remove-image" class="text-red-400 hover:text-red-300">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div id="image-error" class="hidden mt-2 text-sm text-red-400">
-                                    Please upload a photo of the animal
-                                </div>
-                            </div>
-                            
-                            <!-- Description -->
-                            <div class="mb-8">
-                                <label for="description" class="block mb-4 text-lg font-bold required-field">Description & Notes</label>
-                                <textarea id="description" name="description" rows="5" 
-                                          class="w-full p-4 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
-                                          placeholder="Describe the animal's size, color, breed, behavior, visible injuries, and any other important details..."
-                                          required></textarea>
-                                <div id="description-error" class="hidden mt-2 text-sm text-red-400">
-                                    Please provide a description of the animal
-                                </div>
-                            </div>
-                            
-                            <div class="flex justify-between">
-                                <button type="button" class="secondary-btn prev-step" data-prev="1">
-                                    <i class="mr-2 fas fa-arrow-left"></i>
-                                    Previous
-                                </button>
-                                <button type="button" class="primary-btn next-step" data-next="3">
-                                    Next Step
-                                    <i class="ml-2 fas fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: Location & Time -->
-                        <div id="step-3" class="hidden form-step card">
-                            <h3 class="mb-6 text-2xl font-bold gradient-text">3. Location & Time Details</h3>
-                            
-                            <div class="grid gap-8 md:grid-cols-2">
-                                <!-- Location -->
-                                <div>
-                                    <label for="location" class="block mb-4 text-lg font-bold required-field">Location</label>
-                                    <div class="relative">
-                                        <i class="absolute fas fa-map-marker-alt left-4 top-4 text-cyan-400"></i>
-                                        <input type="text" id="location" name="location" 
-                                               class="w-full py-4 pl-12 pr-4 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
-                                               placeholder="Enter address, landmark, or coordinates"
-                                               required>
-                                    </div>
-                                    <p class="mt-2 text-sm text-gray-300">
-                                        <i class="mr-1 fas fa-info-circle text-cyan-400"></i>
-                                        Be as specific as possible for faster response
-                                    </p>
-                                    <div id="location-error" class="hidden mt-2 text-sm text-red-400">
-                                        Please provide the location
-                                    </div>
-                                </div>
-                                
-                                <!-- Last Seen -->
-                                <div>
-                                    <label for="last_seen" class="block mb-4 text-lg font-bold required-field">Last Seen Date & Time</label>
-                                    <div class="relative">
-                                        <i class="absolute fas fa-clock left-4 top-4 text-cyan-400"></i>
-                                        <input type="datetime-local" id="last_seen" name="last_seen" 
-                                               class="w-full py-4 pl-12 pr-4 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
-                                               required>
-                                    </div>
-                                    <div id="last-seen-error" class="hidden mt-2 text-sm text-red-400">
-                                        Please provide when you last saw the animal
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Contact Information -->
-                            <div class="mt-8">
-                                <h4 class="mb-6 text-xl font-bold">Your Contact Information (Optional)</h4>
-                                <p class="mb-6 text-gray-300">Providing contact info helps us follow up if we need more details.</p>
-                                
-                                <div class="grid gap-6 md:grid-cols-3">
-                                    <div>
-                                        <label for="contact_name" class="block mb-2 font-medium">Your Name</label>
-                                        <input type="text" id="contact_name" name="contact_name" 
-                                               class="w-full px-4 py-3 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500"
-                                               placeholder="Optional">
-                                    </div>
-                                    <div>
-                                        <label for="contact_phone" class="block mb-2 font-medium">Phone Number</label>
-                                        <input type="tel" id="contact_phone" name="contact_phone" 
-                                               class="w-full px-4 py-3 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500"
-                                               placeholder="Optional">
-                                    </div>
-                                    <div>
-                                        <label for="contact_email" class="block mb-2 font-medium">Email Address</label>
-                                        <input type="email" id="contact_email" name="contact_email" 
-                                               class="w-full px-4 py-3 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500"
-                                               placeholder="Optional">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex justify-between mt-8">
-                                <button type="button" class="secondary-btn prev-step" data-prev="2">
-                                    <i class="mr-2 fas fa-arrow-left"></i>
-                                    Previous
-                                </button>
-                                <button type="button" class="primary-btn next-step" data-next="4">
-                                    Next Step
-                                    <i class="ml-2 fas fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Step 4: Review & Submit -->
-                        <div id="step-4" class="hidden form-step card">
-                            <h3 class="mb-6 text-2xl font-bold gradient-text">4. Review & Submit Report</h3>
-                            
-                            <div class="mb-8">
-                                <div class="mb-6 card bg-white/5">
-                                    <h4 class="mb-4 text-xl font-bold">Report Summary</h4>
-                                    <div class="space-y-4">
-                                        <div class="grid gap-4 md:grid-cols-2">
-                                            <div>
-                                                <p class="text-gray-400">Animal Type</p>
-                                                <p id="review-type" class="font-bold">-</p>
-                                            </div>
-                                            <div>
-                                                <p class="text-gray-400">Location</p>
-                                                <p id="review-location" class="font-bold">-</p>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <p class="text-gray-400">Last Seen</p>
-                                            <p id="review-last-seen" class="font-bold">-</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-gray-400">Description</p>
-                                            <p id="review-description" class="font-bold">-</p>
-                                        </div>
-                                        <div id="review-contact" class="hidden">
-                                            <p class="text-gray-400">Contact Information</p>
-                                            <p id="review-contact-details" class="font-bold">-</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-6">
-                                    <div class="flex items-start">
-                                        <input type="checkbox" id="terms" name="terms" class="mt-1 mr-3" required>
-                                        <label for="terms" class="text-sm text-gray-300">
-                                            I confirm that the information provided is accurate to the best of my knowledge. I understand that SafePaws may use this information to coordinate rescue efforts and contact me if necessary. I agree to the <a href="#" class="text-cyan-400 hover:underline">Terms of Service</a> and <a href="#" class="text-cyan-400 hover:underline">Privacy Policy</a>.
-                                        </label>
-                                    </div>
-                                    <div id="terms-error" class="hidden mt-2 text-sm text-red-400">
-                                        You must agree to the terms before submitting
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex justify-between">
-                                <button type="button" class="secondary-btn prev-step" data-prev="3">
-                                    <i class="mr-2 fas fa-arrow-left"></i>
-                                    Previous
-                                </button>
-                                <button type="submit" class="primary-btn">
-                                    <i class="mr-2 fas fa-paper-plane"></i>
-                                    Submit Report
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    
-                    <!-- Success Message -->
-                    <div id="success-message" class="hidden text-center card">
-                        <div class="mb-6 success-checkmark"></div>
-                        <h3 class="mb-4 text-2xl font-bold">Report Submitted Successfully!</h3>
-                        <p class="mb-6 text-gray-300">
-                            Thank you for helping an animal in need. Our rescue team has been notified and will respond as soon as possible.
+                        <h3 class="mb-4 text-2xl font-bold">Our Mission</h3>
+                        <p class="mb-4 text-gray-300">
+                            To rescue, rehabilitate, and rehome animals in distress while promoting responsible pet ownership through education and community outreach.
                         </p>
-                        <div class="max-w-md mx-auto mb-6 card bg-white/5">
-                            <p class="mb-2 text-gray-400">Your Report ID:</p>
-                            <p id="report-id" class="text-2xl font-bold gradient-text">SP-2024-XXXXX</p>
-                            <p class="mt-3 text-sm text-gray-300">
-                                <i class="mr-1 fas fa-info-circle"></i>
-                                Use this ID to track your report status
-                            </p>
-                        </div>
-                        <div class="flex flex-col justify-center gap-4 sm:flex-row">
-                            <a href="#track" class="primary-btn">
-                                <i class="mr-2 fas fa-search"></i>
-                                Track Report Status
-                            </a>
-                            <a href="#report" class="secondary-btn">
-                                <i class="mr-2 fas fa-plus"></i>
-                                Submit Another Report
-                            </a>
-                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3">
+                                <i class="text-cyan-400 fas fa-check-circle"></i>
+                                <span>Provide immediate medical care to injured animals</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="text-cyan-400 fas fa-check-circle"></i>
+                                <span>Find loving forever homes for abandoned pets</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="text-cyan-400 fas fa-check-circle"></i>
+                                <span>Educate communities about animal welfare</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="text-cyan-400 fas fa-check-circle"></i>
+                                <span>Advocate for animal rights and protection laws</span>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Track Report Section -->
-        <section id="track" class="section-padding">
-            <div class="container-custom">
-                <div class="mb-16 text-center">
-                    <h2 class="section-title">Track Rescue Status</h2>
-                    <p class="section-subtitle">
-                        Enter your report ID to see real-time updates from our rescue team
-                    </p>
-                </div>
-                
-                <div class="max-w-3xl mx-auto">
-                    <div class="mb-8 card">
-                        <div class="flex gap-4">
-                            <div class="flex-1">
-                                <input type="text" id="tracking-id" 
-                                       class="w-full px-6 py-4 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
-                                       placeholder="Enter your report ID (e.g., SP-2024-12345)">
-                            </div>
-                            <button id="track-btn" class="primary-btn">
-                                <i class="mr-2 fas fa-search"></i>
-                                Track Report
-                            </button>
+                    <div class="card">
+                        <div class="feature-icon">
+                            <i class="fas fa-eye"></i>
                         </div>
-                    </div>
-                    
-                    <!-- Tracking Status Display -->
-                    <div id="tracking-status" class="hidden card">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <h3 class="text-xl font-bold" id="report-title">Report #SP-2024-12345</h3>
-                                <p class="text-gray-300" id="report-animal">Dog - Aggressive</p>
-                            </div>
-                            <span class="px-4 py-2 text-sm font-medium rounded-full bg-cyan-500/20 text-cyan-400" id="report-status">
-                                In Progress
-                            </span>
-                        </div>
-                        
-                        <!-- Progress Timeline -->
-                        <div class="mb-8">
-                            <h4 class="mb-6 font-bold">Rescue Progress</h4>
-                            <div class="space-y-6">
-                                <div class="flex gap-4">
-                                    <div class="flex flex-col items-center">
-                                        <div class="flex items-center justify-center w-8 h-8 rounded-full gradient-bg">
-                                            <i class="text-sm text-white fas fa-check"></i>
-                                        </div>
-                                        <div class="w-0.5 h-12 gradient-bg mt-2"></div>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold">Report Received</p>
-                                        <p class="text-sm text-gray-300">Your report has been received and assigned to our team</p>
-                                        <p class="mt-1 text-xs text-gray-400">Today, 10:30 AM</p>
-                                    </div>
+                        <h3 class="mb-4 text-2xl font-bold">Our Vision</h3>
+                        <p class="mb-4 text-gray-300">
+                            A world where no animal suffers from neglect, abuse, or homelessness, and where humans and animals coexist in harmony.
+                        </p>
+                        <div class="p-6 mt-6 rounded-xl bg-gradient-to-r from-cyan-900/30 to-blue-900/30">
+                            <h4 class="mb-3 text-xl font-bold">Our Core Values</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-3 rounded-lg bg-white/5">
+                                    <i class="mb-2 text-cyan-400 fas fa-heart"></i>
+                                    <p class="font-medium">Compassion</p>
                                 </div>
-                                
-                                <div class="flex gap-4">
-                                    <div class="flex flex-col items-center">
-                                        <div class="flex items-center justify-center w-8 h-8 rounded-full gradient-bg">
-                                            <i class="text-sm text-white fas fa-check"></i>
-                                        </div>
-                                        <div class="w-0.5 h-12 bg-white/10 mt-2"></div>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold">Team Dispatched</p>
-                                        <p class="text-sm text-gray-300">Rescue Team Alpha has been dispatched to the location</p>
-                                        <p class="mt-1 text-xs text-gray-400">Today, 11:15 AM</p>
-                                    </div>
+                                <div class="p-3 rounded-lg bg-white/5">
+                                    <i class="mb-2 text-cyan-400 fas fa-shield-alt"></i>
+                                    <p class="font-medium">Protection</p>
                                 </div>
-                                
-                                <div class="flex gap-4">
-                                    <div class="flex flex-col items-center">
-                                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white/10">
-                                            <i class="text-sm text-gray-400 fas fa-clock"></i>
-                                        </div>
-                                        <div class="w-0.5 h-12 bg-transparent mt-2"></div>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold">Rescue in Progress</p>
-                                        <p class="text-sm text-gray-300">Team is en route to the reported location</p>
-                                        <p class="mt-1 text-xs text-cyan-400">ETA: 25 minutes</p>
-                                    </div>
+                                <div class="p-3 rounded-lg bg-white/5">
+                                    <i class="mb-2 text-cyan-400 fas fa-handshake"></i>
+                                    <p class="font-medium">Community</p>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Team Updates -->
-                        <div>
-                            <h4 class="mb-4 font-bold">Team Updates</h4>
-                            <div class="space-y-4">
-                                <div class="p-4 bg-white/5 rounded-xl">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="font-medium">Rescue Team Alpha</span>
-                                        <span class="text-sm text-gray-400">10 min ago</span>
-                                    </div>
-                                    <p class="text-gray-300">We've located the animal and are approaching carefully. The animal appears to be in stable condition.</p>
+                                <div class="p-3 rounded-lg bg-white/5">
+                                    <i class="mb-2 text-cyan-400 fas fa-star"></i>
+                                    <p class="font-medium">Excellence</p>
                                 </div>
                             </div>
                         </div>
@@ -892,39 +671,357 @@
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section class="section-padding bg-gradient-to-b from-transparent to-cyan-900/10">
+        <!-- Our Work Section -->
+        <section id="work" class="section-padding">
             <div class="container-custom">
                 <div class="mb-16 text-center">
-                    <h2 class="section-title">Why Choose SafePaws?</h2>
+                    <h2 class="section-title">Our Impactful Work</h2>
                     <p class="section-subtitle">
-                        We're committed to providing the best care and finding forever homes for animals in need
+                        Making a difference in the lives of animals through comprehensive programs and initiatives
                     </p>
                 </div>
-                
-                <div class="grid gap-8 md:grid-cols-3">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
+
+                <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                    <div class="text-center feature-card">
+                        <div class="mx-auto feature-icon">
+                            <i class="fas fa-heartbeat"></i>
                         </div>
-                        <h3 class="mb-4 text-xl font-bold">24/7 Rescue Team</h3>
-                        <p class="text-gray-300">Our trained rescue teams are available round the clock to respond to emergencies and animal distress calls.</p>
+                        <h3 class="mb-3 text-xl font-bold">Rescue & Rehabilitation</h3>
+                        <p class="text-gray-300">Emergency response teams rescue injured and abandoned animals, providing immediate medical care.</p>
                     </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-stethoscope"></i>
-                        </div>
-                        <h3 class="mb-4 text-xl font-bold">Medical Care</h3>
-                        <p class="text-gray-300">Every rescued animal receives immediate medical attention, vaccinations, and rehabilitation before adoption.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
+
+                    <div class="text-center feature-card">
+                        <div class="mx-auto feature-icon">
                             <i class="fas fa-home"></i>
                         </div>
-                        <h3 class="mb-4 text-xl font-bold">Safe Shelter</h3>
-                        <p class="text-gray-300">Our state-of-the-art shelters provide comfortable, clean, and safe environments for animals during their recovery.</p>
+                        <h3 class="mb-3 text-xl font-bold">Adoption Program</h3>
+                        <p class="text-gray-300">Matching rescued animals with loving forever homes through careful screening and follow-up.</p>
+                    </div>
+
+                    <div class="text-center feature-card">
+                        <div class="mx-auto feature-icon">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <h3 class="mb-3 text-xl font-bold">Medical Care</h3>
+                        <p class="text-gray-300">Complete veterinary services including vaccinations, sterilization, and specialized treatments.</p>
+                    </div>
+
+                    <div class="text-center feature-card">
+                        <div class="mx-auto feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="mb-3 text-xl font-bold">Education</h3>
+                        <p class="text-gray-300">Community workshops and school programs promoting responsible pet ownership and animal welfare.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-8 mt-12 md:grid-cols-2">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="Animal shelter" 
+                             class="object-cover w-full h-64 mb-6 rounded-xl">
+                        <h3 class="mb-3 text-2xl font-bold">Our Shelter Facilities</h3>
+                        <p class="text-gray-300">State-of-the-art shelter with separate areas for dogs, cats, and special needs animals. Features include climate control, outdoor play areas, and isolation wards for sick animals.</p>
+                    </div>
+
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="Veterinary care" 
+                             class="object-cover w-full h-64 mb-6 rounded-xl">
+                        <h3 class="mb-3 text-2xl font-bold">Veterinary Clinic</h3>
+                        <p class="text-gray-300">Fully equipped veterinary clinic with surgery facilities, diagnostic equipment, and pharmacy. Staffed by licensed veterinarians and trained technicians.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pets for Adoption Section -->
+        <section id="adopt" class="section-padding bg-gradient-to-b from-transparent to-cyan-900/10">
+            <div class="container-custom">
+                <div class="mb-16 text-center">
+                    <h2 class="section-title">Meet Our Furry Friends</h2>
+                    <p class="section-subtitle">
+                        These wonderful animals are waiting for their forever homes. Could you be their perfect match?
+                    </p>
+                </div>
+
+                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <!-- Pet 1 -->
+                    <div class="pet-card">
+                        <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="Golden Retriever" 
+                             class="object-cover w-full h-80">
+                        <div class="pet-info">
+                            <h3 class="text-xl font-bold">Max</h3>
+                            <p class="text-gray-300">Golden Retriever • 2 years • Male</p>
+                            <div class="flex items-center justify-between mt-4">
+                                <span class="px-3 py-1 text-sm rounded-full bg-cyan-500/20 text-cyan-400">Friendly</span>
+                                <a href="#" class="text-cyan-400 hover:text-cyan-300">
+                                    Meet Max <i class="ml-1 fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pet 2 -->
+                    <div class="pet-card">
+                        <img src="https://images.unsplash.com/photo-1561948955-570b270e7c36?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="Cat" 
+                             class="object-cover w-full h-80">
+                        <div class="pet-info">
+                            <h3 class="text-xl font-bold">Luna</h3>
+                            <p class="text-gray-300">Domestic Shorthair • 1 year • Female</p>
+                            <div class="flex items-center justify-between mt-4">
+                                <span class="px-3 py-1 text-sm rounded-full bg-cyan-500/20 text-cyan-400">Playful</span>
+                                <a href="#" class="text-cyan-400 hover:text-cyan-300">
+                                    Meet Luna <i class="ml-1 fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pet 3 -->
+                    <div class="pet-card">
+                        <img src="https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="Puppy" 
+                             class="object-cover w-full h-80">
+                        <div class="pet-info">
+                            <h3 class="text-xl font-bold">Buddy</h3>
+                            <p class="text-gray-300">Mixed Breed • 8 months • Male</p>
+                            <div class="flex items-center justify-between mt-4">
+                                <span class="px-3 py-1 text-sm rounded-full bg-cyan-500/20 text-cyan-400">Energetic</span>
+                                <a href="#" class="text-cyan-400 hover:text-cyan-300">
+                                    Meet Buddy <i class="ml-1 fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pet 4 -->
+                    <div class="pet-card">
+                        <img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="Senior Dog" 
+                             class="object-cover w-full h-80">
+                        <div class="pet-info">
+                            <h3 class="text-xl font-bold">Charlie</h3>
+                            <p class="text-gray-300">Labrador Mix • 7 years • Male</p>
+                            <div class="flex items-center justify-between mt-4">
+                                <span class="px-3 py-1 text-sm rounded-full bg-cyan-500/20 text-cyan-400">Calm</span>
+                                <a href="#" class="text-cyan-400 hover:text-cyan-300">
+                                    Meet Charlie <i class="ml-1 fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <!-- Also updated in this button -->
+                    <button class="primary-btn" onclick="alert('Adoption feature coming soon!')">
+                        <i class="mr-2 fas fa-paw"></i>
+                        View All Available Pets
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Stories Section -->
+        <section id="success" class="section-padding">
+            <div class="container-custom">
+                <div class="mb-16 text-center">
+                    <h2 class="section-title">Heartwarming Success Stories</h2>
+                    <p class="section-subtitle">
+                        Real stories of hope, healing, and happy endings from our SafePaws family
+                    </p>
+                </div>
+
+                <div class="grid gap-8 md:grid-cols-3">
+                    <div class="testimonial-card">
+                        <div class="flex items-center gap-4 mb-6">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b786d4b9?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                                 alt="Sarah Johnson" 
+                                 class="w-16 h-16 rounded-full">
+                            <div>
+                                <h4 class="font-bold">Sarah Johnson</h4>
+                                <p class="text-sm text-gray-400">Adopted Bella in 2023</p>
+                            </div>
+                        </div>
+                        <p class="mb-4 text-gray-300">
+                            "When we adopted Bella, she was scared and malnourished. The SafePaws team provided amazing support throughout her recovery. Today, she's the happiest dog, full of life and love."
+                        </p>
+                        <div class="flex text-cyan-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="flex items-center gap-4 mb-6">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                                 alt="Michael Chen" 
+                                 class="w-16 h-16 rounded-full">
+                            <div>
+                                <h4 class="font-bold">Michael Chen</h4>
+                                <p class="text-sm text-gray-400">Volunteer since 2021</p>
+                            </div>
+                        </div>
+                        <p class="mb-4 text-gray-300">
+                            "Volunteering at SafePaws has been life-changing. Seeing animals transform from scared and injured to happy and healthy is the most rewarding experience. The team is like family."
+                        </p>
+                        <div class="flex text-cyan-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="flex items-center gap-4 mb-6">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                                 alt="Priya Sharma" 
+                                 class="w-16 h-16 rounded-full">
+                            <div>
+                                <h4 class="font-bold">Priya Sharma</h4>
+                                <p class="text-sm text-gray-400">Foster parent for 5 cats</p>
+                            </div>
+                        </div>
+                        <p class="mb-4 text-gray-300">
+                            "Fostering cats through SafePaws has been incredible. They provide all the supplies and medical care needed. Watching these beautiful creatures heal and find forever homes brings me so much joy."
+                        </p>
+                        <div class="flex text-cyan-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Get Involved Section -->
+        <section id="involve" class="section-padding bg-gradient-to-b from-cyan-900/10 to-transparent">
+            <div class="container-custom">
+                <div class="mb-16 text-center">
+                    <h2 class="section-title">Ways to Get Involved</h2>
+                    <p class="section-subtitle">
+                        Join our mission to create a better world for animals. Every contribution makes a difference.
+                    </p>
+                </div>
+
+                <div class="grid gap-8 md:grid-cols-4">
+                    <div class="text-center card">
+                        <div class="mx-auto feature-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3 class="mb-3 text-xl font-bold">Volunteer</h3>
+                        <p class="mb-4 text-gray-300">Help with animal care, events, administration, or fundraising.</p>
+                        <a href="#volunteer" class="text-cyan-400 hover:text-cyan-300">
+                            Learn More <i class="ml-1 fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="text-center card">
+                        <div class="mx-auto feature-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3 class="mb-3 text-xl font-bold">Foster</h3>
+                        <p class="mb-4 text-gray-300">Provide temporary homes for animals awaiting adoption.</p>
+                        <a href="#foster" class="text-cyan-400 hover:text-cyan-300">
+                            Become a Foster <i class="ml-1 fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="text-center card">
+                        <div class="mx-auto feature-icon">
+                            <i class="fas fa-donate"></i>
+                        </div>
+                        <h3 class="mb-3 text-xl font-bold">Donate</h3>
+                        <p class="mb-4 text-gray-300">Support our work with one-time or monthly contributions.</p>
+                        <a href="#donate" class="text-cyan-400 hover:text-cyan-300">
+                            Donate Now <i class="ml-1 fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="text-center card">
+                        <div class="mx-auto feature-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="mb-3 text-xl font-bold">Sponsor</h3>
+                        <p class="mb-4 text-gray-300">Sponsor an animal's care until they find their forever home.</p>
+                        <a href="#sponsor" class="text-cyan-400 hover:text-cyan-300">
+                            Sponsor Today <i class="ml-1 fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="max-w-3xl mx-auto mt-12">
+                    <div class="p-8 rounded-2xl gradient-bg">
+                        <h3 class="mb-4 text-2xl font-bold text-center">Corporate Partnerships</h3>
+                        <p class="mb-6 text-center text-cyan-50">
+                            Join companies like PetCo, Blue Buffalo, and Amazon in supporting our mission through sponsorships, employee volunteer programs, and matching gifts.
+                        </p>
+                        <div class="text-center">
+                            <a href="#partnership" class="px-8 py-3 font-medium bg-white rounded-full text-cyan-600 hover:bg-gray-100">
+                                Explore Partnership Opportunities
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="section-padding">
+            <div class="container-custom">
+                <div class="mb-16 text-center">
+                    <h2 class="section-title">Meet Our Team</h2>
+                    <p class="section-subtitle">
+                        Passionate professionals and volunteers dedicated to animal welfare
+                    </p>
+                </div>
+
+                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="team-card">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="Dr. Sarah Miller" 
+                             class="team-img">
+                        <h3 class="mb-2 text-xl font-bold">Dr. Sarah Miller</h3>
+                        <p class="mb-3 text-gray-400">Head Veterinarian</p>
+                        <p class="text-sm text-gray-300">15+ years of veterinary experience specializing in rescue medicine.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="James Wilson" 
+                             class="team-img">
+                        <h3 class="mb-2 text-xl font-bold">James Wilson</h3>
+                        <p class="mb-3 text-gray-400">Rescue Operations Director</p>
+                        <p class="text-sm text-gray-300">Leads our emergency response and field rescue teams.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="Maria Garcia" 
+                             class="team-img">
+                        <h3 class="mb-2 text-xl font-bold">Maria Garcia</h3>
+                        <p class="mb-3 text-gray-400">Adoption Coordinator</p>
+                        <p class="text-sm text-gray-300">Matches animals with perfect forever homes since 2018.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a6f6d5c5b5e5b5e5b5e5b5e5b5e5b5e" 
+                             alt="David Chen" 
+                             class="team-img">
+                        <h3 class="mb-2 text-xl font-bold">David Chen</h3>
+                        <p class="mb-3 text-gray-400">Volunteer Manager</p>
+                        <p class="text-sm text-gray-300">Coordinates 500+ volunteers across all our programs.</p>
                     </div>
                 </div>
             </div>
@@ -939,17 +1036,18 @@
                 </p>
                 
                 <div class="flex flex-col justify-center gap-6 sm:flex-row">
-                    <a href="#report" class="primary-btn">
-                        <i class="mr-2 fas fa-bullhorn"></i>
-                        Report Animal Now
-                    </a>
-                    <a href="#adopt" class="secondary-btn">
+                    <!-- Also updated in CTA section -->
+                    <button class="primary-btn" onclick="alert('Adoption feature coming soon!')">
                         <i class="mr-2 fas fa-heart"></i>
-                        Browse Pets for Adoption
-                    </a>
+                        Adopt a Pet
+                    </button>
                     <a href="#volunteer" class="secondary-btn">
                         <i class="mr-2 fas fa-hands-helping"></i>
                         Become a Volunteer
+                    </a>
+                    <a href="#donate" class="secondary-btn">
+                        <i class="mr-2 fas fa-donate"></i>
+                        Make a Donation
                     </a>
                 </div>
             </div>
@@ -960,7 +1058,7 @@
             <div class="px-5 container-custom">
                 <div class="grid gap-8 mb-12 md:grid-cols-4">
                     <div>
-                        <a href="#" class="flex items-center gap-3 mb-6">
+                        <a href="#home" class="flex items-center gap-3 mb-6">
                             <div class="flex items-center justify-center w-12 h-12 gradient-bg rounded-xl">
                                 <i class="text-xl text-white fas fa-paw"></i>
                             </div>
@@ -982,7 +1080,6 @@
                             <a href="#" class="flex items-center justify-center w-10 h-10 transition-colors duration-300 rounded-full bg-white/10 hover:bg-cyan-500">
                                 <i class="fab fa-instagram"></i>
                             </a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-
                             <a href="#" class="flex items-center justify-center w-10 h-10 transition-colors duration-300 rounded-full bg-white/10 hover:bg-cyan-500">
                                 <i class="fab fa-youtube"></i>
                             </a>
@@ -994,9 +1091,9 @@
                         <ul class="space-y-3">
                             <li><a href="#home" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Home</a></li>
                             <li><a href="#about" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">About Us</a></li>
-                            <li><a href="#report" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Report Animal</a></li>
                             <li><a href="#adopt" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Adopt a Pet</a></li>
-                            <li><a href="#track" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Track Report</a></li>
+                            <li><a href="#success" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Success Stories</a></li>
+                            <li><a href="#team" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Our Team</a></li>
                         </ul>
                     </div>
                     
@@ -1086,321 +1183,6 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            // Form handling
-            let currentStep = 1;
-            const totalSteps = 4;
-            const formProgress = document.getElementById('form-progress');
-            const steps = document.querySelectorAll('.step-indicator');
-            
-            // Update progress bar and step indicators
-            function updateProgress() {
-                // Update progress bar width
-                const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-                formProgress.style.width = `${progressPercentage}%`;
-                
-                // Update step indicators
-                steps.forEach((step, index) => {
-                    const stepNumber = index + 1;
-                    if (stepNumber < currentStep) {
-                        step.classList.remove('active');
-                        step.classList.add('completed');
-                        step.innerHTML = '<i class="fas fa-check"></i>';
-                    } else if (stepNumber === currentStep) {
-                        step.classList.add('active');
-                        step.classList.remove('completed');
-                        step.textContent = stepNumber;
-                    } else {
-                        step.classList.remove('active', 'completed');
-                        step.textContent = stepNumber;
-                    }
-                });
-            }
-            
-            // Show specific step
-            function showStep(stepNumber) {
-                // Hide all steps
-                document.querySelectorAll('.form-step').forEach(step => {
-                    step.classList.add('hidden');
-                });
-                
-                // Show requested step
-                const stepToShow = document.getElementById(`step-${stepNumber}`);
-                if (stepToShow) {
-                    stepToShow.classList.remove('hidden');
-                    currentStep = stepNumber;
-                    updateProgress();
-                    
-                    // If on review step, populate review
-                    if (stepNumber === 4) {
-                        populateReview();
-                    }
-                }
-            }
-            
-            // Validate current step
-            function validateStep(stepNumber) {
-                let isValid = true;
-                
-                if (stepNumber === 1) {
-                    const animalTypeSelected = document.querySelector('input[name="animal_type"]:checked');
-                    if (!animalTypeSelected) {
-                        alert('Please select an animal type');
-                        isValid = false;
-                    }
-                }
-                
-                if (stepNumber === 2) {
-                    const imageInput = document.getElementById('animal_photo');
-                    const description = document.getElementById('description').value.trim();
-                    
-                    if (!imageInput.files || imageInput.files.length === 0) {
-                        document.getElementById('image-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('image-error').classList.add('hidden');
-                    }
-                    
-                    if (!description) {
-                        document.getElementById('description-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('description-error').classList.add('hidden');
-                    }
-                }
-                
-                if (stepNumber === 3) {
-                    const location = document.getElementById('location').value.trim();
-                    const lastSeen = document.getElementById('last_seen').value;
-                    
-                    if (!location) {
-                        document.getElementById('location-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('location-error').classList.add('hidden');
-                    }
-                    
-                    if (!lastSeen) {
-                        document.getElementById('last-seen-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('last-seen-error').classList.add('hidden');
-                    }
-                }
-                
-                if (stepNumber === 4) {
-                    const termsAccepted = document.getElementById('terms').checked;
-                    if (!termsAccepted) {
-                        document.getElementById('terms-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('terms-error').classList.add('hidden');
-                    }
-                }
-                
-                return isValid;
-            }
-            
-            // Populate review step
-            function populateReview() {
-                // Animal type
-                const animalType = document.querySelector('input[name="animal_type"]:checked');
-                if (animalType) {
-                    document.getElementById('review-type').textContent = animalType.value;
-                }
-                
-                // Location
-                const location = document.getElementById('location').value;
-                document.getElementById('review-location').textContent = location || 'Not provided';
-                
-                // Last seen
-                const lastSeen = document.getElementById('last_seen').value;
-                if (lastSeen) {
-                    const date = new Date(lastSeen);
-                    document.getElementById('review-last-seen').textContent = date.toLocaleString();
-                } else {
-                    document.getElementById('review-last-seen').textContent = 'Not provided';
-                }
-                
-                // Description
-                const description = document.getElementById('description').value;
-                document.getElementById('review-description').textContent = description || 'Not provided';
-                
-                // Contact info
-                const contactName = document.getElementById('contact_name').value;
-                const contactPhone = document.getElementById('contact_phone').value;
-                const contactEmail = document.getElementById('contact_email').value;
-                
-                if (contactName || contactPhone || contactEmail) {
-                    let contactDetails = [];
-                    if (contactName) contactDetails.push(`Name: ${contactName}`);
-                    if (contactPhone) contactDetails.push(`Phone: ${contactPhone}`);
-                    if (contactEmail) contactDetails.push(`Email: ${contactEmail}`);
-                    
-                    document.getElementById('review-contact-details').textContent = contactDetails.join(', ');
-                    document.getElementById('review-contact').classList.remove('hidden');
-                } else {
-                    document.getElementById('review-contact').classList.add('hidden');
-                }
-            }
-            
-            // Next step button handlers
-            document.querySelectorAll('.next-step').forEach(button => {
-                button.addEventListener('click', function() {
-                    const nextStep = parseInt(this.getAttribute('data-next'));
-                    if (validateStep(currentStep)) {
-                        showStep(nextStep);
-                    }
-                });
-            });
-            
-            // Previous step button handlers
-            document.querySelectorAll('.prev-step').forEach(button => {
-                button.addEventListener('click', function() {
-                    const prevStep = parseInt(this.getAttribute('data-prev'));
-                    showStep(prevStep);
-                });
-            });
-            
-            // File upload handling
-            const fileUploadArea = document.getElementById('file-upload-area');
-            const fileInput = document.getElementById('animal_photo');
-            const filePreview = document.getElementById('file-preview');
-            const fileName = document.getElementById('file-name');
-            const fileSize = document.getElementById('file-size');
-            const imagePreview = document.getElementById('image-preview');
-            const removeImageBtn = document.getElementById('remove-image');
-            
-            if (fileUploadArea && fileInput) {
-                // Click to upload
-                fileUploadArea.addEventListener('click', () => {
-                    fileInput.click();
-                });
-                
-                // Drag and drop
-                fileUploadArea.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    fileUploadArea.classList.add('border-cyan-500', 'bg-cyan-500/10');
-                });
-                
-                fileUploadArea.addEventListener('dragleave', () => {
-                    fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
-                });
-                
-                fileUploadArea.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
-                    
-                    if (e.dataTransfer.files.length) {
-                        fileInput.files = e.dataTransfer.files;
-                        handleFileSelection(fileInput.files[0]);
-                    }
-                });
-                
-                // File input change
-                fileInput.addEventListener('change', () => {
-                    if (fileInput.files.length) {
-                        handleFileSelection(fileInput.files[0]);
-                    }
-                });
-                
-                // Remove image
-                removeImageBtn.addEventListener('click', () => {
-                    fileInput.value = '';
-                    filePreview.classList.add('hidden');
-                });
-            }
-            
-            function handleFileSelection(file) {
-                if (file && file.type.startsWith('image/')) {
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert('File size must be less than 5MB');
-                        return;
-                    }
-                    
-                    // Show preview
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                    
-                    // Update file info
-                    fileName.textContent = file.name;
-                    fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
-                    
-                    // Show preview
-                    filePreview.classList.remove('hidden');
-                    document.getElementById('image-error').classList.add('hidden');
-                } else {
-                    alert('Please select a valid image file (JPG, PNG, etc.)');
-                }
-            }
-            
-            // Form submission
-            const reportForm = document.getElementById('animal-report-form');
-            const successMessage = document.getElementById('success-message');
-            
-            if (reportForm) {
-                reportForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    // Validate all steps
-                    let allValid = true;
-                    for (let i = 1; i <= 4; i++) {
-                        if (!validateStep(i)) {
-                            allValid = false;
-                            showStep(i);
-                            break;
-                        }
-                    }
-                    
-                    if (!allValid) {
-                        return;
-                    }
-                    
-                    // Generate report ID
-                    const reportId = 'SP-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
-                    document.getElementById('report-id').textContent = reportId;
-                    
-                    // Show success message
-                    reportForm.classList.add('hidden');
-                    successMessage.classList.remove('hidden');
-                    
-                    // In real app, send data to server here
-                    console.log('Form submitted successfully');
-                });
-            }
-            
-            // Tracking functionality
-            const trackBtn = document.getElementById('track-btn');
-            const trackingStatus = document.getElementById('tracking-status');
-            
-            if (trackBtn) {
-                trackBtn.addEventListener('click', () => {
-                    const trackingId = document.getElementById('tracking-id').value.trim();
-                    
-                    if (!trackingId) {
-                        alert('Please enter a report ID');
-                        return;
-                    }
-                    
-                    // Show tracking status (demo)
-                    trackingStatus.classList.remove('hidden');
-                    
-                    // Update tracking info (demo data)
-                    document.getElementById('report-title').textContent = `Report #${trackingId}`;
-                    
-                    // Simulate loading
-                    trackBtn.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i> Tracking...';
-                    trackBtn.disabled = true;
-                    
-                    setTimeout(() => {
-                        trackBtn.innerHTML = '<i class="mr-2 fas fa-search"></i> Track Report';
-                        trackBtn.disabled = false;
-                    }, 1500);
-                });
-            }
-            
             // Animated counters
             function animateCounter(element, target) {
                 let current = 0;
@@ -1462,9 +1244,6 @@
                     }
                 });
             });
-            
-            // Initialize progress bar
-            updateProgress();
             
             // Add active class to nav links on scroll
             const sections = document.querySelectorAll('section[id]');

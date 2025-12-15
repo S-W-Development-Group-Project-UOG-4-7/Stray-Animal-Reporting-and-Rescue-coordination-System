@@ -1,21 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdoptionController;
 
+// Route for home page
 Route::get('/', function () {
-<<<<<<< HEAD
+    // Returns the Blade view located at resources/views/home.blade.php
     return view('home');
 });
-=======
-    return view('welcome');
-});
 
+// Route with parameter
+Route::get('/user/{name}', function ($name) {
+    // Pass data to the Blade view
+    return view('user', ['name' => ucfirst($name)]);
+})->where('name', '[A-Za-z]+'); // Validation: only letters allowed
 
-
-// Adoption Module Routes
-Route::get('/adoptions', [AdoptionController::class, 'index'])->name('adoption.index');
-Route::get('/adoptions/create', [AdoptionController::class, 'create'])->name('adoption.create');
-Route::post('/adoptions', [AdoptionController::class, 'store'])->name('adoption.store');
-Route::get('/adoptions/{id}', [AdoptionController::class, 'show'])->name('adoption.show');
->>>>>>> c66c228bedac61dd65515feab78b6eaeb088392e
+// Named route example
+Route::get('/about', function () {
+    return view('about');
+})->name('about.page');
