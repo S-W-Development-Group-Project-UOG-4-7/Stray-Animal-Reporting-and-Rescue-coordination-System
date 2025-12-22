@@ -22,19 +22,37 @@ Route::get('/', function () {
 // ==========================
 
 // Registration
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register.show'); // Show form
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');    // Submit form
+
+
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
 // Login
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login.show');          // Show form
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');             // Submit form
+
+
+
+// Show login form
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+
+// Handle login POST
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-use App\Http\Controllers\AssignmentController;
+Route::get('/rescue/dashboard', function () {
+    return view('welcome'); // Replace with your dashboard Blade if different
+})->middleware('auth');
+
+use App\Http\Controllers\RescueAssignmentController;
 
 Route::middleware('auth')->group(function() {
+
+
+
+Route::put('/rescue/{id}/update-status', [RescueAssignmentController::class, 'updateStatus'])->name('rescue.updateStatus');
+
     // Show form to accept a new assignment
     Route::get('/assignments/create', [AssignmentController::class, 'create'])->name('assignments.create');
 
