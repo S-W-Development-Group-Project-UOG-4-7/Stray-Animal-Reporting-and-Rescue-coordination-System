@@ -25,6 +25,9 @@ Route::get('/dashboard', function () {
     $rescues = Rescue::all();
     return view('rescue-team', compact('rescues'));
 })->name('dashboard');
+// web.php
+Route::get('/rescue/status', [RescueStatusController::class, 'viewStatus'])->name('rescue.status');
+
 
 
     Route::get('/reports', function () {

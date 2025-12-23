@@ -219,20 +219,32 @@
         <div class="mb-8">
             <h2 class="text-xl font-bold mb-4 text-white">Quick Actions</h2>
             <div class="flex flex-wrap gap-4">
-                <!-- Removed: Accept New Assignment button -->
-                <a href="{{ route('rescue.edit', 1) }}" class="outline-btn inline-flex items-center gap-2">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>Update Rescue Status
-</a>
+                <!-- Rescue Selection Dropdown and Edit Button -->
+                <div class="flex items-center gap-4">
+                    <select id="rescueSelect" class="bg-[#071331] border border-white/20 rounded-md px-3 py-2 text-white min-w-[250px]">
+                        <option value="">-- Select Rescue to Edit --</option>
+                        <option value="2042">#SP-2042 - Cat (Healthy)</option>
+                        <option value="2043">#SP-2043 - Dog (Infection)</option>
+                        <option value="2045">#SP-2045 - Dog (Leg injury)</option>
+                        <option value="2046">#SP-2046 - Cat (Cornered, scared)</option>
+                        <option value="2047">#SP-2047 - Dog (Severe infection)</option>
+                    </select>
+                    
+                    <button onclick="editSelectedRescue()" class="outline-btn inline-flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Update Rescue Status
+                    </button>
+                </div>
 
-                <button class="success-btn">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Mark Rescue Complete
-                </button>
-                <!-- Removed: Report Issue button -->
+                <button class="success-btn" onclick="viewRescueStatus()">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    View Rescue Status
+</button>
+
             </div>
         </div>
 
@@ -378,7 +390,6 @@
                 <!-- Animal 2 -->
                 <div class="card">
                     <img src="{{ asset('Mittens.jpg') }}" 
- 
                          alt="Mittens - Cat" 
                          class="w-full h-48 object-cover rounded-lg mb-4">
                     <div class="flex justify-between items-start">
@@ -408,7 +419,6 @@
                 <!-- Animal 3 -->
                 <div class="card">
                     <img src="{{ asset('Rocky.jpg') }}" 
- 
                          alt="Rocky - Dog" 
                          class="w-full h-48 object-cover rounded-lg mb-4">
                     <div class="flex justify-between items-start">
@@ -574,118 +584,166 @@
             </div>
         </div>
         <!-- Update Rescue Status Modal -->
-<div id="rescueStatusModal"
-     class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+        <div id="rescueStatusModal"
+             class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
 
-    <div class="bg-[#0b2447] rounded-xl p-6 w-full max-w-md border border-white/10">
-        <h2 class="text-xl font-bold mb-4 text-white">Update Rescue Status</h2>
+            <div class="bg-[#0b2447] rounded-xl p-6 w-full max-w-md border border-white/10">
+                <h2 class="text-xl font-bold mb-4 text-white">Update Rescue Status</h2>
 
-        <label class="block text-sm text-gray-300 mb-2">Select Status</label>
-        <select id="rescue_status"
-                class="w-full bg-[#071331] border border-white/20 rounded-md px-3 py-2 text-white">
-            <option value="assigned">Assigned</option>
-            <option value="en_route">En Route</option>
-            <option value="rescued">Rescued</option>
-            <option value="at_shelter">At Shelter</option>
-            <option value="completed">Completed</option>
-        </select>
+                <label class="block text-sm text-gray-300 mb-2">Select Status</label>
+                <select id="rescue_status"
+                        class="w-full bg-[#071331] border border-white/20 rounded-md px-3 py-2 text-white">
+                    <option value="assigned">Assigned</option>
+                    <option value="en_route">En Route</option>
+                    <option value="rescued">Rescued</option>
+                    <option value="at_shelter">At Shelter</option>
+                    <option value="completed">Completed</option>
+                </select>
 
-        <div class="flex justify-end gap-3 mt-6">
-            <button onclick="closeRescueStatusModal()" class="outline-btn">
-                Cancel
-            </button>
-            <button onclick="updateRescueStatus()" class="success-btn">
-                Update
-            </button>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button onclick="closeRescueStatusModal()" class="outline-btn">
+                        Cancel
+                    </button>
+                    <button onclick="updateRescueStatus()" class="success-btn">
+                        Update
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
     </footer>
 
     <script>
-       
-/* =========================
-   Update Rescue Status Logic
-   ========================= */
+        function viewRescueStatus() {
+    fetch('/rescue/status')
+        .then(res => res.json())
+        .then(data => {
+            console.log('Rescue Status:', data); // for debugging
+            
+            // You can dynamically populate your table
+            const tbody = document.querySelector('.dashboard-table tbody');
+            tbody.innerHTML = ''; // clear existing rows
 
-let selectedRescueId = 2047; // TEMP: matches #SP-2047
-
-function openRescueStatusModal() {
-    const modal = document.getElementById('rescueStatusModal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
-
-function closeRescueStatusModal() {
-    const modal = document.getElementById('rescueStatusModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
-
-function updateRescueStatus() {
-    const status = document.getElementById('rescue_status').value;
-
-    fetch(`/rescue/update-status/${selectedRescueId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ status })
-    })
-    .then(res => res.json())
-    .then(() => {
-        alert('Rescue status updated successfully');
-        closeRescueStatusModal();
-        location.reload();
-    })
-    .catch(() => alert('Failed to update rescue status'));
+            data.forEach(rescue => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="font-medium">#SP-${rescue.id}</td>
+                    <td>${rescue.animal_name}</td>
+                    <td>${rescue.condition}</td>
+                    <td>${rescue.location}</td>
+                    <td><span class="px-2 py-1 text-xs font-bold text-white ${rescue.priority === 'HIGH' ? 'bg-red-500' : rescue.priority === 'MEDIUM' ? 'bg-yellow-500' : 'bg-green-500'} rounded-full">${rescue.priority}</span></td>
+                    <td><span class="status-badge status-${rescue.status.replace('_','-')}">${rescue.status.replace('_',' ')}</span></td>
+                    <td>Actions here</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => alert('Failed to load rescue status'));
 }
 
         
-       // ADD THIS CODE - Hash-based navigation for SPA
-function navigateTo(section) {
-    console.log('Navigating to:', section);
-    
-    // Update URL hash without page reload
-    window.location.hash = section;
-    
-    // Show the corresponding section
-    showSection(section);
-}
+        // Edit Selected Rescue Function
+        function editSelectedRescue() {
+            const rescueSelect = document.getElementById('rescueSelect');
+            const rescueId = rescueSelect.value;
+            const selectedOption = rescueSelect.options[rescueSelect.selectedIndex];
+            const rescueText = selectedOption.text;
+            
+            if (rescueId) {
+                // Show confirmation before redirecting
+                if (confirm(`Edit ${rescueText}?\n\nNote: Make sure rescue ID ${rescueId} exists in your database.`)) {
+                    // Navigate to the edit page for the selected rescue
+                    window.location.href = `/rescue/${rescueId}/edit`;
+                }
+            } else {
+                alert('Please select a rescue from the dropdown first');
+            }
+        }
+        
+        /* =========================
+           Update Rescue Status Logic
+           ========================= */
 
-function showSection(section) {
-    console.log('Showing section:', section);
-    
-    // Hide all sections first (you'll need to add sections to your HTML)
-    document.querySelectorAll('.dashboard-section').forEach(div => {
-        div.style.display = 'none';
-    });
-    
-    // Show the selected section
-    const target = document.getElementById(section + '-section');
-    if (target) {
-        target.style.display = 'block';
-    }
-}
+        let selectedRescueId = 2047; // TEMP: matches #SP-2047
 
-// Handle initial load
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if there's a hash in the URL
-    const hash = window.location.hash.substring(1);
-    if (hash) {
-        navigateTo(hash);
-    }
-});
+        function openRescueStatusModal() {
+            const modal = document.getElementById('rescueStatusModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
 
-// Handle hash changes
-window.addEventListener('hashchange', function() {
-    const hash = window.location.hash.substring(1);
-    if (hash) {
-        showSection(hash);
-    }
-});
+        function closeRescueStatusModal() {
+            const modal = document.getElementById('rescueStatusModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function updateRescueStatus() {
+            const status = document.getElementById('rescue_status').value;
+
+            fetch(`/rescue/update-status/${selectedRescueId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status })
+            })
+            .then(res => res.json())
+            .then(() => {
+                alert('Rescue status updated successfully');
+                closeRescueStatusModal();
+                location.reload();
+            })
+            .catch(() => alert('Failed to update rescue status'));
+        }
+
+        
+        // ADD THIS CODE - Hash-based navigation for SPA
+        function navigateTo(section) {
+            console.log('Navigating to:', section);
+            
+            // Update URL hash without page reload
+            window.location.hash = section;
+            
+            // Show the corresponding section
+            showSection(section);
+        }
+
+        function showSection(section) {
+            console.log('Showing section:', section);
+            
+            // Hide all sections first (you'll need to add sections to your HTML)
+            document.querySelectorAll('.dashboard-section').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            // Show the selected section
+            const target = document.getElementById(section + '-section');
+            if (target) {
+                target.style.display = 'block';
+            }
+        }
+
+        // Handle initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if there's a hash in the URL
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                navigateTo(hash);
+            }
+            
+            // Set current year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+
+        // Handle hash changes
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                showSection(hash);
+            }
+        });
     </script>
     
 </body>
