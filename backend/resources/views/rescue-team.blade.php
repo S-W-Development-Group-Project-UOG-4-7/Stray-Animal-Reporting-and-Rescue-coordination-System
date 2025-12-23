@@ -220,12 +220,12 @@
             <h2 class="text-xl font-bold mb-4 text-white">Quick Actions</h2>
             <div class="flex flex-wrap gap-4">
                 <!-- Removed: Accept New Assignment button -->
-                <button class="outline-btn">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Update Rescue Status
-                </button>
+                <a href="{{ route('rescue.edit', 1) }}" class="outline-btn inline-flex items-center gap-2">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>Update Rescue Status
+</a>
+
                 <button class="success-btn">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -573,9 +573,77 @@
                 © <span id="year"></span> SafePaws Rescue Team. All rights reserved.
             </div>
         </div>
+        <!-- Update Rescue Status Modal -->
+<div id="rescueStatusModal"
+     class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+
+    <div class="bg-[#0b2447] rounded-xl p-6 w-full max-w-md border border-white/10">
+        <h2 class="text-xl font-bold mb-4 text-white">Update Rescue Status</h2>
+
+        <label class="block text-sm text-gray-300 mb-2">Select Status</label>
+        <select id="rescue_status"
+                class="w-full bg-[#071331] border border-white/20 rounded-md px-3 py-2 text-white">
+            <option value="assigned">Assigned</option>
+            <option value="en_route">En Route</option>
+            <option value="rescued">Rescued</option>
+            <option value="at_shelter">At Shelter</option>
+            <option value="completed">Completed</option>
+        </select>
+
+        <div class="flex justify-end gap-3 mt-6">
+            <button onclick="closeRescueStatusModal()" class="outline-btn">
+                Cancel
+            </button>
+            <button onclick="updateRescueStatus()" class="success-btn">
+                Update
+            </button>
+        </div>
+    </div>
+</div>
+
     </footer>
 
     <script>
+       
+/* =========================
+   Update Rescue Status Logic
+   ========================= */
+
+let selectedRescueId = 2047; // TEMP: matches #SP-2047
+
+function openRescueStatusModal() {
+    const modal = document.getElementById('rescueStatusModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeRescueStatusModal() {
+    const modal = document.getElementById('rescueStatusModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+function updateRescueStatus() {
+    const status = document.getElementById('rescue_status').value;
+
+    fetch(`/rescue/update-status/${selectedRescueId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ status })
+    })
+    .then(res => res.json())
+    .then(() => {
+        alert('Rescue status updated successfully');
+        closeRescueStatusModal();
+        location.reload();
+    })
+    .catch(() => alert('Failed to update rescue status'));
+}
+
+        
        // ADD THIS CODE - Hash-based navigation for SPA
 function navigateTo(section) {
     console.log('Navigating to:', section);
