@@ -10,10 +10,9 @@ class Report extends Model
     use HasFactory;
 
     protected $fillable = [
-    'animal_type',
-    'location',
-    'description',
-    'status'
-];
-
+        'title',
+        'description',
+        'status',
+    ];
 }
+

@@ -60,3 +60,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('reports/create', [ReportController::class, 'create'])->name('reports.create');
     Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
 });
+use App\Http\Controllers\UserRegistrationController;
+
+// Show registration form
+Route::get('/users/create', [UserRegistrationController::class, 'create'])
+    ->name('users.create');
+
+// Handle form submission
+Route::post('/users/create', [UserRegistrationController::class, 'store'])
+    ->name('users.store');
+
