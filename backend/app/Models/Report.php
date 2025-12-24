@@ -10,10 +10,15 @@ class Report extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
+        'animal_type',
         'location',
         'description',
-        'dogs_count',
-        'status'
+        'status',
+        'assigned_to'
     ];
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
 }

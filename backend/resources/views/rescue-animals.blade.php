@@ -381,21 +381,61 @@
                     </svg>
                     Apply Filters
                 </button>
-                <button class="outline-btn" onclick="clearFilters()">Clear Filters</button>
                 <button class="success-btn" onclick="exportAnimals()">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                    Export
-                </button>
-                <button class="primary-btn bg-green-500 hover:bg-green-600" onclick="addNewAnimal()">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Add New Animal
-                </button>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+    </svg>
+    Export
+</button>
+
+<a href="{{ route('rescue.animals.create') }}" class="bg-green-600 px-4 py-2 rounded text-white inline-flex items-center gap-2">
+    + Add New Animal
+</a>
+
+
+
+
             </div>
         </div>
+        <!-- Add Animal Modal -->
+<div id="addAnimalModal"
+     class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-50">
+
+    <div class="bg-slate-900 p-6 rounded-lg w-96">
+        <h2 class="text-xl font-bold text-white mb-4">Add New Animal</h2>
+
+        <form action="{{ route('rescue.animals.store') }}" method="POST">
+
+            @csrf
+
+            <input type="text" name="name" placeholder="Animal Name"
+                   class="w-full mb-3 p-2 rounded" required>
+
+            <input type="text" name="species" placeholder="Species"
+                   class="w-full mb-3 p-2 rounded" required>
+
+            <input type="text" name="breed" placeholder="Breed"
+                   class="w-full mb-3 p-2 rounded">
+
+            <input type="number" name="age" placeholder="Age"
+                   class="w-full mb-4 p-2 rounded" required>
+
+            <div class="flex justify-between">
+                <button type="button"
+                        onclick="closeAddAnimalModal()"
+                        class="bg-gray-600 px-4 py-2 rounded text-white">
+                    Cancel
+                </button>
+
+                <button type="submit"
+                        class="bg-blue-600 px-4 py-2 rounded text-white">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
         <!-- View Toggle -->
         <div class="flex items-center justify-between mb-4">
@@ -420,274 +460,82 @@
 
         <!-- Animals Grid View -->
         <div id="animalsGridView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Animal Card 1 -->
-            <div class="animal-card">
-                <div class="relative">
-                    <img 
-                        src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                        alt="Max" 
-                        class="animal-image"
-                    >
-                    <div class="absolute top-3 right-3">
-                        <span class="status-badge status-available">Available</span>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex items-start justify-between mb-2">
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Max</h3>
-                            <p class="text-sm text-gray-400">Golden Retriever • 2 years</p>
-                        </div>
-                        <div class="animal-type-icon dog-icon">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="animal-id mb-3">#SP-0012</div>
-                    
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="text-center p-2 bg-white/5 rounded">
-                            <div class="text-xs text-gray-400">Gender</div>
-                            <div class="font-medium text-white">Male</div>
-                        </div>
-                        <div class="text-center p-2 bg-white/5 rounded">
-                            <div class="text-xs text-gray-400">Weight</div>
-                            <div class="font-medium text-white">28 kg</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-2">
-                        <button class="flex-1 text-xs primary-btn px-3 py-2" onclick="viewAnimal('SP-0012')">
-                            View Details
-                        </button>
-                        <button class="text-xs outline-btn px-3 py-2" onclick="editAnimal('SP-0012')">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Animal Card 2 -->
-            <div class="animal-card">
-                <div class="relative">
-                    <img src="{{ asset('Luna.jpg') }}" 
-
-                        alt="Luna" 
-                        class="animal-image"
-                    >
-                    <div class="absolute top-3 right-3">
-                        <span class="status-badge status-adopted">Adopted</span>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex items-start justify-between mb-2">
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Luna</h3>
-                            <p class="text-sm text-gray-400">Domestic Cat • 1.5 years</p>
-                        </div>
-                        <div class="animal-type-icon cat-icon">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="animal-id mb-3">#SP-0015</div>
-                    
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="text-center p-2 bg-white/5 rounded">
-                            <div class="text-xs text-gray-400">Gender</div>
-                            <div class="font-medium text-white">Female</div>
-                        </div>
-                        <div class="text-center p-2 bg-white/5 rounded">
-                            <div class="text-xs text-gray-400">Weight</div>
-                            <div class="font-medium text-white">4.2 kg</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-2">
-                        <button class="flex-1 text-xs outline-btn px-3 py-2" onclick="viewAnimal('SP-0015')">
-                            View History
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Animal Card 3 -->
-            <div class="animal-card">
-                <div class="relative">
-                    <img 
-                        src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                        alt="Rocky" 
-                        class="animal-image"
-                    >
-                    <div class="absolute top-3 right-3">
-                        <span class="status-badge status-medical">Medical</span>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex items-start justify-between mb-2">
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Rocky</h3>
-                            <p class="text-sm text-gray-400">German Shepherd • 4 years</p>
-                        </div>
-                        <div class="animal-type-icon dog-icon">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="animal-id mb-3">#SP-0008</div>
-                    
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="text-center p-2 bg-white/5 rounded">
-                            <div class="text-xs text-gray-400">Gender</div>
-                            <div class="font-medium text-white">Male</div>
-                        </div>
-                        <div class="text-center p-2 bg-white/5 rounded">
-                            <div class="text-xs text-gray-400">Weight</div>
-                            <div class="font-medium text-white">34 kg</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-2">
-                        <button class="flex-1 text-xs warning-btn px-3 py-2" onclick="viewMedical('SP-0008')">
-                            Medical Records
-                        </button>
-                        <button class="text-xs outline-btn px-3 py-2" onclick="editAnimal('SP-0008')">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Animal Card 4 -->
-            <div class="animal-card">
-                <div class="relative">
-                   <img src="{{ asset('Thumper.jpg') }}" 
- 
-                        alt="Thumper" 
-                        class="animal-image"
-                    >
-                    <div class="absolute top-3 right-3">
-                        <span class="status-badge status-quarantine">Quarantine</span>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex items-start justify-between mb-2">
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Thumper</h3>
-                            <p class="text-sm text-gray-400">Mini Lop Rabbit • 8 months</p>
-                        </div>
-                        <div class="animal-type-icon rabbit-icon">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="animal-id mb-3">#SP-0018</div>
-                    
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="text-center p-2 bg-white/5 rounded">
-                            <div class="text-xs text-gray-400">Gender</div>
-                            <div class="font-medium text-white">Female</div>
-                        </div>
-                        <div class="text-center p-2 bg-white/5 rounded">
-                            <div class="text-xs text-gray-400">Weight</div>
-                            <div class="font-medium text-white">1.8 kg</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-2">
-                        <button class="flex-1 text-xs outline-btn px-3 py-2" onclick="viewAnimal('SP-0018')">
-                            Quarantine Details
-                        </button>
-                    </div>
-                </div>
+    @foreach($animals as $animal)
+    <div class="animal-card">
+        <div class="relative">
+            <img src="{{ asset($animal->image ?? 'default.jpg') }}" 
+                 alt="{{ $animal->name }}" 
+                 class="animal-image">
+            <div class="absolute top-3 right-3">
+                <span class="status-badge status-{{ strtolower($animal->status) }}">
+                    {{ ucfirst($animal->status) }}
+                </span>
             </div>
         </div>
+        <div class="p-4">
+            <div class="flex items-start justify-between mb-2">
+                <div>
+                    <h3 class="text-lg font-bold text-white">{{ $animal->name }}</h3>
+                    <p class="text-sm text-gray-400">{{ $animal->breed }} • {{ $animal->age }} years</p>
+                </div>
+                <div class="animal-type-icon {{ strtolower($animal->species) }}-icon">
+                    <!-- optional species icon -->
+                </div>
+            </div>
+            <div class="animal-id mb-3">#SP-{{ str_pad($animal->id, 4, '0', STR_PAD_LEFT) }}</div>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="text-center p-2 bg-white/5 rounded">
+                    <div class="text-xs text-gray-400">Gender</div>
+                    <div class="font-medium text-white">{{ ucfirst($animal->gender ?? '-') }}</div>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button class="flex-1 text-xs primary-btn px-3 py-2" onclick="viewAnimal('{{ $animal->id }}')">
+                    View Details
+                </button>
+                <button class="text-xs outline-btn px-3 py-2" onclick="editAnimal('{{ $animal->id }}')">
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+
 
         <!-- Animals Table View (Hidden by default) -->
-        <div id="animalsTableView" class="hidden">
-            <div class="table-container">
-                <table class="dashboard-table">
-                    <thead>
-                        <tr>
-                            <th class="w-12">
-                                <input type="checkbox" class="rounded">
-                            </th>
-                            <th>Animal ID</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Breed</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Status</th>
-                            <th>Intake Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Animal 1 -->
-                        <tr>
-                            <td><input type="checkbox" class="rounded"></td>
-                            <td class="font-medium">#SP-0012</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden">
-                                        <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover">
-                                    </div>
-                                    <span class="text-white">Max</span>
-                                </div>
-                            </td>
-                            <td class="text-white">Dog</td>
-                            <td class="text-white">Golden Retriever</td>
-                            <td class="text-white">2 years</td>
-                            <td class="text-white">Male</td>
-                            <td><span class="status-badge status-available">Available</span></td>
-                            <td class="text-white">2023-10-15</td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewAnimal('SP-0012')">View</button>
-                                    <button class="text-xs outline-btn px-3 py-1" onclick="editAnimal('SP-0012')">Edit</button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- Animal 2 -->
-                        <tr>
-                            <td><input type="checkbox" class="rounded"></td>
-                            <td class="font-medium">#SP-0015</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden">
-                                        <img src="https://images.unsplash.com/photo-1514888286974-6d03bdeacba8?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover">
-                                    </div>
-                                    <span class="text-white">Luna</span>
-                                </div>
-                            </td>
-                            <td class="text-white">Cat</td>
-                            <td class="text-white">Domestic Shorthair</td>
-                            <td class="text-white">1.5 years</td>
-                            <td class="text-white">Female</td>
-                            <td><span class="status-badge status-adopted">Adopted</span></td>
-                            <td class="text-white">2023-09-22</td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs outline-btn px-3 py-1" onclick="viewAnimal('SP-0015')">History</button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- Add more animals as needed -->
-                    </tbody>
-                </table>
+        <tbody>
+@foreach ($animals as $animal)
+<tr>
+    <td><input type="checkbox" class="rounded"></td>
+    <td class="font-medium">{{ $animal->animal_id }}</td>
+    <td>
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full overflow-hidden">
+                <img src="{{ asset('storage/' . $animal->image) }}" class="w-full h-full object-cover" alt="{{ $animal->name }}">
             </div>
+            <span class="text-white">{{ $animal->name }}</span>
         </div>
+    </td>
+    <td class="text-white">{{ ucfirst($animal->species) }}</td>
+    <td class="text-white">{{ $animal->breed }}</td>
+    <td class="text-white">{{ $animal->age }} years</td>
+    <td class="text-white">{{ ucfirst($animal->gender) }}</td>
+    <td>
+        <span class="status-badge status-{{ strtolower($animal->status) }}">
+            {{ ucfirst($animal->status) }}
+        </span>
+    </td>
+    <td class="text-white">{{ $animal->intake_date }}</td>
+    <td>
+        <div class="flex gap-2">
+            <button class="text-xs primary-btn px-3 py-1" onclick="viewAnimal('{{ $animal->animal_id }}')">View</button>
+            <button class="text-xs outline-btn px-3 py-1" onclick="editAnimal('{{ $animal->animal_id }}')">Edit</button>
+        </div>
+    </td>
+</tr>
+@endforeach
+</tbody>
 
         <!-- Pagination -->
         <div class="flex items-center justify-between mt-8">
@@ -831,5 +679,22 @@
             }
         });
     </script>
+    <script>
+function openAddAnimalModal() {
+    document.getElementById('addAnimalModal').classList.remove('hidden');
+}
+
+function closeAddAnimalModal() {
+    document.getElementById('addAnimalModal').classList.add('hidden');
+}
+</script>
+<script>
+    // Convert PHP data to JavaScript
+    const animals = @json($animals);
+
+    console.log("Animals from DB:", animals);
+</script>
+
+
 </body>
 </html>
