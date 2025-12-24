@@ -69,4 +69,13 @@ Route::get('/users/create', [UserRegistrationController::class, 'create'])
 // Handle form submission
 Route::post('/users/create', [UserRegistrationController::class, 'store'])
     ->name('users.store');
+use App\Models\Rescue;
 
+Route::get('/rescues-json', function () {
+    return response()->json(Rescue::all());
+});
+// routes/web.php
+
+use App\Http\Controllers\VeterinarianController;
+
+Route::resource('veterinarians', VeterinarianController::class);

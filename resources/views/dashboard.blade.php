@@ -358,7 +358,7 @@
             <main class="p-6">
 
             @if(isset($page))
-        @include($page)
+        @include($page)a
     @endif
                 
                 <!-- Stats Overview -->
@@ -798,10 +798,11 @@
                                 Generate Monthly Report
                             </a>
                             
-                            <a href="{{ url('/veterinarians/create') }}" class="w-full btn-secondary text-left">
-                                <i class="fas fa-user-md"></i>
-                                Add Vet Collaborator
-                            </a>
+                            <a href="{{ route('users.create', ['role' => 'vet']) }}"
+   class="flex items-center gap-2 bg-gray-700 text-white px-4 py-3 rounded hover:bg-gray-600">
+    Add Vet Collaborator
+</a>
+
                             
                             <a href="{{ url('/awareness/create') }}" class="w-full btn-secondary text-left">
                                 <i class="fas fa-bullhorn"></i>
@@ -997,5 +998,36 @@
             element.textContent = new Date().getFullYear();
         });
     </script>
+        <!-- dashboard HTML ends here -->
+
+
+    <script>
+        fetch('/rescues-json')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Rescue Table Data:', data);
+
+                data.forEach(rescue => {
+                    console.log(
+                        rescue.id,
+                        rescue.animal_type,
+                        rescue.status,
+                        rescue.location
+                    );
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+    @section('scripts')
+<script>
+fetch('/rescues-json')
+    .then(res => res.json())
+    .then(data => {
+        console.log('Rescue Table Data:', data);
+    });
+</script>
+@endsection
+
 </body>
 </html>
+
