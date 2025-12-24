@@ -744,7 +744,58 @@
                 showSection(hash);
             }
         });
+        
     </script>
-    
+    <script>
+function viewRescueStatus() {
+    fetch('/rescue/status')
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector('.dashboard-table tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(rescue => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td class="font-medium">#SP-${rescue.id}</td>
+                    <td>${rescue.animal_type}</td>
+                    <td>${rescue.condition}</td>
+                    <td>${rescue.location}</td>
+                    <td>
+                        <span class="px-2 py-1 text-xs font-bold text-white
+                        ${getStatusColor(rescue.status)} rounded-full">
+                        ${formatStatus(rescue.status)}
+                        </span>
+                    </td>
+                    <td>${rescue.notes ?? '-'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Failed to load rescue status');
+        });
+}
+
+function formatStatus(status) {
+    return status.replace(/_/g, ' ').toUpperCase();
+}
+
+function getStatusColor(status) {
+    switch (status) {
+        case 'assigned': return 'bg-blue-500';
+        case 'in_progress': return 'bg-yellow-500';
+        case 'rescued': return 'bg-green-600';
+        case 'in_treatment': return 'bg-orange-500';
+        case 'ready_for_adoption': return 'bg-purple-600';
+        default: return 'bg-gray-500';
+    }
+}
+</script>
+
+
 </body>
 </html>
