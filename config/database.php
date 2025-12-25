@@ -46,9 +46,9 @@ return [
             'strict' => true,
             'engine' => null,
 
-            // ✅ FIXED FOR PHP 8.5+
+            // MySQL SSL options (works in PHP 8.2+)
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                \Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                \PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 
@@ -68,9 +68,9 @@ return [
             'strict' => true,
             'engine' => null,
 
-            // ✅ FIXED FOR PHP 8.5+
+            // MariaDB SSL options (works in PHP 8.2+)
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                \Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                \PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 

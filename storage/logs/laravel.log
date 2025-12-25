@@ -1057,3 +1057,159 @@ Did you mean one of these?
 #38 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand()
 #39 {main}
 "} 
+[2025-12-25 12:30:46] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:222)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(138): Illuminate\\Log\\LogManager->resolve(NULL, NULL)
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(125): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(703): Illuminate\\Log\\LogManager->driver()
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(402): Illuminate\\Log\\LogManager->error('Class \"Pdo\\\\Mysq...', Array)
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(365): Illuminate\\Foundation\\Exceptions\\Handler->reportThrowable(Object(Error))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(620): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Error))
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(Error))
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:30:46] laravel.ERROR: Class "Pdo\Mysql" not found {"exception":"[object] (Error(code: 0): Class \"Pdo\\Mysql\" not found at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\config\\database.php:51)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): require()
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(96): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFile(Object(Illuminate\\Config\\Repository), 'database', 'C:\\\\laragon\\\\www\\\\...', Array)
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(55): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(342): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(473): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(195): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:32:45] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:222)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(138): Illuminate\\Log\\LogManager->resolve(NULL, NULL)
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(125): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(703): Illuminate\\Log\\LogManager->driver()
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(402): Illuminate\\Log\\LogManager->error('Class \"Pdo\\\\Mysq...', Array)
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(365): Illuminate\\Foundation\\Exceptions\\Handler->reportThrowable(Object(Error))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(620): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Error))
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(Error))
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:32:45] laravel.ERROR: Class "Pdo\Mysql" not found {"exception":"[object] (Error(code: 0): Class \"Pdo\\Mysql\" not found at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\config\\database.php:74)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): require()
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(96): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFile(Object(Illuminate\\Config\\Repository), 'database', 'C:\\\\laragon\\\\www\\\\...', Array)
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(55): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(342): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(473): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(195): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:33:34] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:222)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(138): Illuminate\\Log\\LogManager->resolve(NULL, NULL)
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(125): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(703): Illuminate\\Log\\LogManager->driver()
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(402): Illuminate\\Log\\LogManager->error('Class \"Pdo\\\\Mysq...', Array)
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(365): Illuminate\\Foundation\\Exceptions\\Handler->reportThrowable(Object(Error))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(620): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Error))
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(Error))
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:33:34] laravel.ERROR: Class "Pdo\Mysql" not found {"exception":"[object] (Error(code: 0): Class \"Pdo\\Mysql\" not found at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\config\\database.php:74)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): require()
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(96): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFile(Object(Illuminate\\Config\\Repository), 'database', 'C:\\\\laragon\\\\www\\\\...', Array)
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(55): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(342): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(473): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(195): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:33:34] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:222)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(138): Illuminate\\Log\\LogManager->resolve(NULL, NULL)
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(125): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(703): Illuminate\\Log\\LogManager->driver()
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(402): Illuminate\\Log\\LogManager->error('Class \"Pdo\\\\Mysq...', Array)
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(365): Illuminate\\Foundation\\Exceptions\\Handler->reportThrowable(Object(Error))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(620): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Error))
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(Error))
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:33:34] laravel.ERROR: Class "Pdo\Mysql" not found {"exception":"[object] (Error(code: 0): Class \"Pdo\\Mysql\" not found at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\config\\database.php:74)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): require()
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(96): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFile(Object(Illuminate\\Config\\Repository), 'database', 'C:\\\\laragon\\\\www\\\\...', Array)
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(55): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(342): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(473): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(195): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:33:35] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:222)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(138): Illuminate\\Log\\LogManager->resolve(NULL, NULL)
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(125): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(703): Illuminate\\Log\\LogManager->driver()
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(402): Illuminate\\Log\\LogManager->error('Class \"Pdo\\\\Mysq...', Array)
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(365): Illuminate\\Foundation\\Exceptions\\Handler->reportThrowable(Object(Error))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(620): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Error))
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(Error))
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:33:35] laravel.ERROR: Class "Pdo\Mysql" not found {"exception":"[object] (Error(code: 0): Class \"Pdo\\Mysql\" not found at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\config\\database.php:74)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): require()
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(96): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFile(Object(Illuminate\\Config\\Repository), 'database', 'C:\\\\laragon\\\\www\\\\...', Array)
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(55): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(342): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(473): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(195): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:33:40] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:222)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(138): Illuminate\\Log\\LogManager->resolve(NULL, NULL)
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(125): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(703): Illuminate\\Log\\LogManager->driver()
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(402): Illuminate\\Log\\LogManager->error('Class \"Pdo\\\\Mysq...', Array)
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(365): Illuminate\\Foundation\\Exceptions\\Handler->reportThrowable(Object(Error))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(620): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Error))
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(Error))
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
+[2025-12-25 12:33:40] laravel.ERROR: Class "Pdo\Mysql" not found {"exception":"[object] (Error(code: 0): Class \"Pdo\\Mysql\" not found at C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\config\\database.php:74)
+[stacktrace]
+#0 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): require()
+#1 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(115): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#2 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(96): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFile(Object(Illuminate\\Config\\Repository), 'database', 'C:\\\\laragon\\\\www\\\\...', Array)
+#3 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(55): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#4 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(342): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(473): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(195): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\laragon\\www\\Stray-Animal-Reporting-and-Rescue-coordination-System\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
