@@ -7,7 +7,6 @@ use App\Models\Branch;
 use App\Models\Consultation;
 use App\Models\Owner;
 use App\Models\Pet;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -17,18 +16,18 @@ class DashboardController extends Controller
             'pets' => Pet::count(),
             'owners' => Owner::count(),
             'branches' => Branch::count(),
-            'todayRevenue' => Consultation::whereDate('created_at', now())->sum('total_cost'),
+            'revenue_today' => Consultation::whereDate('created_at', now())->sum('total_cost'),
         ];
 
-        $todayAppointments = Appointment::with(['pet.owner'])
+        $todayAppointments = Appointment::with(['pet.owner', 'branch'])
             ->whereDate('appointment_at', now())
             ->orderBy('appointment_at')
             ->take(8)
             ->get();
 
-        // Revenue chart (last 7 days)
         $last7Days = collect(range(6, 0))->map(function ($i) {
             $date = now()->subDays($i);
+
             return [
                 'date' => $date->format('D'),
                 'total' => Consultation::whereDate('created_at', $date)->sum('total_cost'),

@@ -9,3 +9,54 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+.stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+.stat-card h3 {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 8px;
+}
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table th, .table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: white;
+    font-size: 14px;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.badge-pending { background: rgba(255,193,7,0.25); color: #ffc107; }
+.badge-confirmed { background: rgba(0,123,255,0.25); color: #0d6efd; }
+.badge-completed { background: rgba(40,167,69,0.25); color: #28a745; }
+.badge-cancelled { background: rgba(220,53,69,0.25); color: #dc3545; }
