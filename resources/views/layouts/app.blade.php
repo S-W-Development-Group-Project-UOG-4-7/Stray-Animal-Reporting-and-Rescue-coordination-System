@@ -60,7 +60,7 @@
                         <span>Dashboard</span>
                     </a>
 
-                    @if(Route::has('branches.index'))
+                    @if(Route::has('vet.branches.index'))
                         <a href="{{ route('vet.branches.index') }}"
                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
                            {{ request()->routeIs('branches.*') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
@@ -68,8 +68,8 @@
                         </a>
                     @endif
 
-                    @if(Route::has('appointments.index'))
-                        <a href="{{ route('appointments.index') }}"
+                    @if(Route::has('vet.appointments.index'))
+                        <a href="{{ route('vet.appointments.index') }}"
                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
                            {{ request()->routeIs('appointments.*') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
                             <span>Appointments</span>

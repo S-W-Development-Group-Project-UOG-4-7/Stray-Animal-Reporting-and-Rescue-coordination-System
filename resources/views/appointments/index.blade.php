@@ -14,7 +14,7 @@
 <div class="flex justify-between items-center mb-6">
     <h1 class="text-2xl font-bold text-white">Appointments</h1>
 
-    <a href="{{ route('appointments.create') }}"
+    <a href="{{ route('vet.appointments.create') }}"
        class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-lg shadow-sky-600/20">
         + Book Appointment
     </a>
@@ -59,10 +59,10 @@
                             </span>
                         </td>
                         <td class="py-4 px-6 text-right space-x-2">
-                            <a href="{{ route('appointments.show', $appointment) }}" class="text-sky-400 hover:text-white text-sm">View</a>
-                            <a href="{{ route('appointments.edit', $appointment) }}" class="text-amber-400 hover:text-white text-sm">Edit</a>
+                            <a href="{{ route('vet.appointments.show', $appointment) }}" class="text-sky-400 hover:text-white text-sm">View</a>
+                            <a href="{{ route('vet.appointments.edit', $appointment) }}" class="text-amber-400 hover:text-white text-sm">Edit</a>
 
-                            <form action="{{ route('appointments.destroy', $appointment) }}" method="POST" class="inline-block"
+                            <form action="{{ route('vet.appointments.destroy', $appointment) }}" method="POST" class="inline-block"
                                   onsubmit="return confirm('Delete this appointment?')">
                                 @csrf
                                 @method('DELETE')

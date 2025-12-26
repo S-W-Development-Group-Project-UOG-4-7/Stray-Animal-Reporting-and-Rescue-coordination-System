@@ -14,7 +14,7 @@
 <div class="flex justify-between items-center mb-6">
     <h1 class="text-2xl font-bold text-white">Branch Network</h1>
 
-    <a href="{{ route('branches.create') }}"
+    <a href="{{ route('vet.branches.create') }}">
        class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-lg shadow-sky-600/20">
         + Add Branch
     </a>

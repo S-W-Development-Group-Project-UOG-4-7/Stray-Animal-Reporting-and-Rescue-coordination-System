@@ -6,7 +6,7 @@
 @section('content')
 
 <div class="max-w-2xl bg-slate-900/50 border border-white/5 rounded-2xl p-6">
-    <form action="{{ route('appointments.store') }}" method="POST" class="space-y-5">
+    <form action="{{ route('vet.appointments.store') }}" method="POST" class="space-y-5">
         @csrf
 
         <div>
@@ -63,7 +63,7 @@
         </div>
 
         <div class="flex justify-end gap-3 pt-2">
-            <a href="{{ route('appointments.index') }}"
+            <a href="{{ route('vet.appointments.index') }}"
                class="px-4 py-2 rounded-lg border border-white/10 text-slate-300 hover:bg-white/5 transition">
                 Cancel
             </a>

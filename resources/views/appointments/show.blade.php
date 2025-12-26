@@ -40,12 +40,12 @@
     @endif
 
     <div class="flex justify-end gap-3 pt-3">
-        <a href="{{ route('appointments.index') }}"
+        <a href="{{ route('vet.appointments.index') }}"
            class="px-4 py-2 rounded-lg border border-white/10 text-slate-300 hover:bg-white/5 transition">
             Back
         </a>
 
-        <a href="{{ route('appointments.edit', $appointment) }}"
+        <a href="{{ route('vet.appointments.edit', $appointment) }}"
            class="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 hover:bg-amber-500 hover:text-black transition">
             Edit
         </a>

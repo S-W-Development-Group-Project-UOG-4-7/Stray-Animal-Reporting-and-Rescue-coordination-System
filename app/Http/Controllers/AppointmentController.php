@@ -39,7 +39,7 @@ class AppointmentController extends Controller
         Appointment::create($validated);
 
         return redirect()
-            ->route('appointments.index')
+            ->route('vet.appointments.index')
             ->with('success', 'Appointment created successfully!');
     }
 
@@ -71,7 +71,7 @@ class AppointmentController extends Controller
         $appointment->update($validated);
 
         return redirect()
-            ->route('appointments.index')
+            ->route('vet.appointments.index')
             ->with('success', 'Appointment updated successfully!');
     }
 
@@ -80,7 +80,7 @@ class AppointmentController extends Controller
         $appointment->delete();
 
         return redirect()
-            ->route('appointments.index')
+            ->route('vet.appointments.index')
             ->with('success', 'Appointment deleted successfully!');
     }
 }
