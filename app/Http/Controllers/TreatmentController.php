@@ -14,7 +14,7 @@ class TreatmentController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('treatments.index', compact('treatments'));
+        return view('vet.treatments.index', compact('treatments'));
     }
 
     public function updateStatus(Request $request, Treatment $treatment)

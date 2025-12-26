@@ -45,7 +45,9 @@
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-lg bg-sky-500 flex items-center justify-center text-white font-bold">LK</div>
                         <div>
-                            <span class="text-lg font-bold text-white tracking-tight">SafePaws<span class="text-sky-400">.lk</span></span>
+                            <span class="text-lg font-bold text-white tracking-tight">
+                                SafePaws<span class="text-sky-400">.lk</span>
+                            </span>
                             <div class="text-[10px] text-slate-500 uppercase tracking-widest">Vet Portal</div>
                         </div>
                     </div>
@@ -54,29 +56,41 @@
                 <!-- Navigation -->
                 <nav class="px-3 mt-6 space-y-1">
 
+                    <!-- ✅ Dashboard -->
                     <a href="{{ route('vet.dashboard') }}"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
-                       {{ request()->routeIs('dashboard') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                       {{ request()->routeIs('vet.dashboard') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
                         <span>Dashboard</span>
                     </a>
 
-                    @if(Route::has('vet.branches.index'))
-                        <a href="{{ route('vet.branches.index') }}"
-                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
-                           {{ request()->routeIs('branches.*') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                            <span>Branches</span>
-                        </a>
-                    @endif
+                    <!-- ✅ Branches -->
+                    <a href="{{ route('vet.branches.index') }}"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
+                       {{ request()->routeIs('vet.branches.*') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                        <span>Branches</span>
+                    </a>
 
-                    @if(Route::has('vet.appointments.index'))
-                        <a href="{{ route('vet.appointments.index') }}"
-                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
-                           {{ request()->routeIs('appointments.*') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                            <span>Appointments</span>
-                        </a>
-                    @endif
+                    <!-- ✅ Appointments -->
+                    <a href="{{ route('vet.appointments.index') }}"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
+                       {{ request()->routeIs('vet.appointments.*') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                        <span>Appointments</span>
+                    </a>
 
-                    {{-- You can add more links later, but do same format --}}
+                    <!-- ✅ Treatments -->
+                    <a href="{{ route('vet.treatments.index') }}"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
+                       {{ request()->routeIs('vet.treatments.*') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                        <span>Treatments</span>
+                    </a>
+
+                    <!-- ✅ Back Home -->
+                    <a href="{{ route('home') }}"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
+                       text-slate-400 hover:text-white hover:bg-white/5">
+                        <span>Back to Home</span>
+                    </a>
+
                 </nav>
             </div>
 
@@ -140,5 +154,6 @@
             </div>
         </main>
     </div>
+
 </body>
 </html>

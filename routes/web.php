@@ -34,28 +34,39 @@ Route::prefix('vet')->name('vet.')->group(function () {
     // Appointments
     Route::resource('appointments', AppointmentController::class);
 
-    // Treatments
+    /*
+    |--------------------------------------------------------------------------
+    | Treatments
+    |--------------------------------------------------------------------------
+    */
     Route::get('/treatments', [TreatmentController::class, 'index'])
         ->name('treatments.index');
 
-    Route::post('/treatments/{treatment}/status', 
+    Route::get('/treatments/{treatment}', [TreatmentController::class, 'show'])
+        ->name('treatments.show');
+
+    Route::post('/treatments/{treatment}/status',
         [TreatmentController::class, 'updateStatus'])
         ->name('treatments.updateStatus');
 
-    // Medical Records
-    Route::get('/pets/{pet}/history', 
+    /*
+    |--------------------------------------------------------------------------
+    | Medical Records
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/pets/{pet}/history',
         [MedicalRecordController::class, 'history'])
         ->name('medical.history');
 
-    Route::get('/medical-records/create/{pet}', 
+    Route::get('/medical-records/create/{pet}',
         [MedicalRecordController::class, 'create'])
         ->name('medical.create');
 
-    Route::post('/medical-records/store', 
+    Route::post('/medical-records/store',
         [MedicalRecordController::class, 'store'])
         ->name('medical.store');
 
-    Route::get('/medical-records/file/{file}/download', 
+    Route::get('/medical-records/file/{file}/download',
         [MedicalRecordController::class, 'download'])
         ->name('medical.file.download');
 });

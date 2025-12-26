@@ -9,7 +9,7 @@
             <p class="text-slate-400 text-sm">{{ $pet->name }} ({{ $pet->species }})</p>
         </div>
 
-        <a href="{{ route('medical.create', $pet->id) }}"
+        <a href="{{ route('vet.medical.create', $pet->id) }}"
            class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 font-semibold text-white">
             + Add Record
         </a>
@@ -80,7 +80,7 @@
 
                         <div class="flex flex-wrap gap-3">
                             @foreach($record->files as $file)
-                                <a href="{{ route('medical.file.download', $file->id) }}"
+                                <a href="{{ route('vet.medical.file.download', $file->id) }}"
                                    class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm">
                                     📎 {{ $file->file_name }}
                                 </a>

@@ -8,9 +8,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
+        // ==============================
         // Admin User
+        // ==============================
         User::firstOrCreate(
             ['email' => 'admin@safepaws.lk'],
             [
@@ -20,7 +25,9 @@ class UserSeeder extends Seeder
             ]
         );
 
+        // ==============================
         // Vet User
+        // ==============================
         User::firstOrCreate(
             ['email' => 'vet@safepaws.lk'],
             [

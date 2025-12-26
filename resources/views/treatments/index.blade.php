@@ -47,7 +47,7 @@
                         </td>
 
                         <td class="py-4 px-6 text-right">
-                            <form method="POST" action="{{ route('treatments.updateStatus', $treatment) }}" class="flex items-center justify-end gap-2">
+                            <form method="POST" action="{{ route('vet.treatments.updateStatus', $treatment) }}" class="flex items-center justify-end gap-2">
                                 @csrf
                                 <select name="status" class="bg-slate-900 border border-white/10 rounded-lg text-sm text-white px-2 py-1">
                                     <option value="ongoing" @selected($treatment->status === 'ongoing')>Ongoing</option>
