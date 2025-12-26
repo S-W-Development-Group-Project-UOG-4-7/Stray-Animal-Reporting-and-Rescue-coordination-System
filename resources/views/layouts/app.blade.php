@@ -54,14 +54,14 @@
                 <!-- Navigation -->
                 <nav class="px-3 mt-6 space-y-1">
 
-                    <a href="{{ route('dashboard') }}"
+                    <a href="{{ route('vet.dashboard') }}"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
                        {{ request()->routeIs('dashboard') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
                         <span>Dashboard</span>
                     </a>
 
                     @if(Route::has('branches.index'))
-                        <a href="{{ route('branches.index') }}"
+                        <a href="{{ route('vet.branches.index') }}"
                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer
                            {{ request()->routeIs('branches.*') ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
                             <span>Branches</span>

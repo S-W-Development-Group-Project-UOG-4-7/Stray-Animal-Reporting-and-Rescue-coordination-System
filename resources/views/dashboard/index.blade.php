@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.vet')
 
 @section('content')
 <div class="dashboard-header">

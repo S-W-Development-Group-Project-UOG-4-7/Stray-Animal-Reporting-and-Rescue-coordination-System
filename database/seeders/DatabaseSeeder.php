@@ -14,7 +14,10 @@ class DatabaseSeeder extends Seeder
             OwnerSeeder::class,
             PetSeeder::class,
             TreatmentSeeder::class,
-            MedicalRecordSeeder::class, // if you have it
+            MedicalRecordSeeder::class,
+
+            // ✅ Shop data
+            ProductSeeder::class,
         ]);
     }
 }

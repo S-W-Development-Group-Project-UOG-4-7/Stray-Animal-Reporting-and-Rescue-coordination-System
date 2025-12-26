@@ -9,9 +9,10 @@ class Treatment extends Model
 {
     use HasFactory;
 
+    // ✅ Mass assignable fields
     protected $fillable = [
         'pet_id',
-        'veterinarian_id', // must match the column name in the DB
+        'veterinarian_id', // make sure this matches the column in your DB
         'title',
         'notes',
         'status',
@@ -19,24 +20,25 @@ class Treatment extends Model
         'completed_at',
     ];
 
+    // ✅ Cast dates to Carbon instances
     protected $casts = [
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
     ];
 
-    // Relationship to the Pet
+    // ✅ Relationship to Pet
     public function pet()
     {
         return $this->belongsTo(Pet::class);
     }
 
-    // Relationship to Treatment Updates
+    // ✅ Relationship to Treatment Updates (if you have a TreatmentUpdate model)
     public function updates()
     {
         return $this->hasMany(TreatmentUpdate::class);
     }
 
-    // Relationship to Veterinarian (User model)
+    // ✅ Relationship to Veterinarian (User model)
     public function vet()
     {
         return $this->belongsTo(User::class, 'veterinarian_id');
