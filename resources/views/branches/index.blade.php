@@ -43,10 +43,10 @@
                             </span>
                         </td>
                         <td class="py-4 px-6 text-right space-x-2">
-                            <a href="{{ route('branches.show', $branch) }}" class="text-sky-400 hover:text-white text-sm">View</a>
-                            <a href="{{ route('branches.edit', $branch) }}" class="text-amber-400 hover:text-white text-sm">Edit</a>
+                            <a href="{{ route('vet.branches.show', $branch) }}" class="text-sky-400 hover:text-white text-sm">View</a>
+                            <a href="{{ route('vet.branches.edit', $branch) }}" class="text-amber-400 hover:text-white text-sm">Edit</a>
 
-                            <form action="{{ route('branches.destroy', $branch) }}" method="POST" class="inline-block"
+                            <form action="{{ route('vet.branches.destroy', $branch) }}" method="POST" class="inline-block"
                                   onsubmit="return confirm('Delete this branch?')">
                                 @csrf
                                 @method('DELETE')
