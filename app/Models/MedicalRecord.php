@@ -16,6 +16,21 @@ class MedicalRecord extends Model
     ];
 
     protected $casts = [
-        'prescription' => 'array', // ✅ JSON -> Array
+        'prescription' => 'array', // ✅ JSON cast
     ];
+
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    public function vet()
+    {
+        return $this->belongsTo(User::class, 'vet_id'); // assuming vet is user
+    }
+
+    public function files()
+    {
+        return $this->hasMany(MedicalRecordFile::class);
+    }
 }

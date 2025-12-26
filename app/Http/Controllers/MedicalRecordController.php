@@ -3,62 +3,77 @@
 namespace App\Http\Controllers;
 
 use App\Models\MedicalRecord;
+use App\Models\MedicalRecordFile;
 use App\Models\Pet;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MedicalRecordController extends Controller
 {
-    // ✅ add medical record form
-    public function create(Pet $pet)
-    {
-        return view('vet.medical_records.create', compact('pet'));
-    }
-
-    // ✅ store medical record endpoint (Task 2.2 #2)
-    public function store(Request $request, Pet $pet)
-    {
-        $validated = $request->validate([
-            'symptoms' => ['required', 'string'],
-            'diagnosis' => ['required', 'string'],
-            'notes' => ['nullable', 'string', 'max:2000'],
-
-            // ✅ prescriptions JSON input
-            'prescription' => ['nullable', 'array'],
-            'prescription.*.medicine' => ['required_with:prescription', 'string'],
-            'prescription.*.dose' => ['required_with:prescription', 'string'],
-            'prescription.*.duration' => ['required_with:prescription', 'string'],
-
-            'attachment' => ['nullable', 'file', 'max:5120', 'mimes:jpg,jpeg,png,pdf'],
-        ]);
-
-        $path = null;
-        if ($request->hasFile('attachment')) {
-            $path = $request->file('attachment')->store('medical_records', 'public');
-        }
-
-        MedicalRecord::create([
-            'pet_id' => $pet->id,
-            'veterinarian_id' => Auth::id(),
-            'symptoms' => $validated['symptoms'],
-            'diagnosis' => $validated['diagnosis'],
-            'notes' => $validated['notes'] ?? null,
-            'prescription' => $validated['prescription'] ?? [],
-            'attachment' => $path,
-        ]);
-
-        return redirect()
-            ->route('vet.medical.history', $pet)
-            ->with('success', 'Medical record added successfully.');
-    }
-
-    // ✅ fetch history by pet (Task 2.2 #3)
     public function history(Pet $pet)
     {
-        $records = MedicalRecord::where('pet_id', $pet->id)
-            ->orderBy('created_at', 'desc')
+        $records = MedicalRecord::with(['vet', 'files'])
+            ->where('pet_id', $pet->id)
+            ->latest()
             ->get();
 
-        return view('vet.medical_records.history', compact('pet', 'records'));
+        return view('vet.medical.history', compact('pet', 'records'));
+    }
+
+    public function create(Pet $pet)
+    {
+        return view('vet.medical.create', compact('pet'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'pet_id' => ['required', 'exists:pets,id'],
+            'symptoms' => ['required', 'string', 'max:2000'],
+            'diagnosis' => ['required', 'string', 'max:2000'],
+            'notes' => ['nullable', 'string', 'max:2000'],
+
+            // Prescription JSON inputs
+            'prescription.*.medicine' => ['required', 'string', 'max:255'],
+            'prescription.*.dose' => ['required', 'string', 'max:255'],
+            'prescription.*.duration' => ['required', 'string', 'max:255'],
+
+            // Files
+            'attachments.*' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'], // 5MB each
+        ]);
+
+        $record = MedicalRecord::create([
+            'pet_id' => $validated['pet_id'],
+            'vet_id' => auth()->id() ?? 1, // ✅ if not using auth yet, keep 1
+            'symptoms' => $validated['symptoms'],
+            'diagnosis' => $validated['diagnosis'],
+            'prescription' => $request->input('prescription', []),
+            'notes' => $validated['notes'] ?? null,
+        ]);
+
+        // ✅ Store attachments
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+
+                $path = $file->store('medical_records', 'public');
+
+                MedicalRecordFile::create([
+                    'medical_record_id' => $record->id,
+                    'file_path' => $path,
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_type' => $file->getClientMimeType(),
+                    'file_size' => $file->getSize(),
+                ]);
+            }
+        }
+
+        return redirect()
+            ->route('medical.history', $record->pet_id)
+            ->with('success', 'Medical record added successfully!');
+    }
+
+    public function download(MedicalRecordFile $file)
+    {
+        return Storage::disk('public')->download($file->file_path, $file->file_name);
     }
 }
