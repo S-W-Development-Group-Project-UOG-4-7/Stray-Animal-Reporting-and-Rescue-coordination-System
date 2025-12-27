@@ -5,13 +5,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RescueController;
 use App\Http\Controllers\RescueStatusController;
+use App\Http\Controllers\ReportAssignmentController;
+use App\Http\Controllers\AnimalController;
+use App\Http\Controllers\AdoptionController;
+use App\Http\Controllers\DashboardController;
 use App\Models\Rescue;
 
 // ------------------------
 // Home Page
 // ------------------------
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 })->name('home');
 
 // ------------------------
@@ -64,14 +68,15 @@ Route::prefix('rescue')->group(function () {
     })->name('rescue.adoptions');
 
 });
-use App\Http\Controllers\ReportAssignmentController;
 
 Route::get('/reports/{id}', [ReportAssignmentController::class, 'show'])
     ->name('reports.show');
 
 Route::post('/reports/{id}/accept', [ReportAssignmentController::class, 'accept'])
     ->name('reports.accept');
-use App\Http\Controllers\AnimalController;
+
+Route::post('/reports/{id}/update-status', [ReportController::class, 'updateStatus'])
+    ->name('reports.updateStatus');
 
 // Route group for Rescue Team (optional)
 Route::prefix('rescue')->name('rescue.')->group(function () {
@@ -83,20 +88,19 @@ Route::prefix('rescue')->name('rescue.')->group(function () {
     Route::get('/animals', [AnimalController::class, 'index'])->name('animals');
     Route::get('/animals/create', [AnimalController::class, 'create'])->name('animals.create');
     Route::post('/animals', [AnimalController::class, 'store'])->name('animals.store');
+    Route::get('/animals/{id}', [AnimalController::class, 'show'])->name('animals.show');
+    Route::get('/animals/{id}/edit', [AnimalController::class, 'edit'])->name('animals.edit');
+    Route::put('/animals/{id}', [AnimalController::class, 'update'])->name('animals.update');
+    Route::delete('/animals/{id}', [AnimalController::class, 'destroy'])->name('animals.destroy');
 
+    // Adoptions routes
     Route::get('/adoptions', [AdoptionController::class, 'index'])->name('adoptions');
+    Route::get('/adoptions/create', [AdoptionController::class, 'create'])->name('adoptions.create');
+    Route::post('/adoptions', [AdoptionController::class, 'store'])->name('adoptions.store');
+    Route::get('/adoptions/{id}', [AdoptionController::class, 'show'])->name('adoptions.show');
+    Route::post('/adoptions/{id}/approve', [AdoptionController::class, 'approve'])->name('adoptions.approve');
+    Route::post('/adoptions/{id}/reject', [AdoptionController::class, 'reject'])->name('adoptions.reject');
+    Route::post('/adoptions/batch-approve', [AdoptionController::class, 'batchApprove'])->name('adoptions.batchApprove');
+    Route::post('/adoptions/{id}/update-status', [AdoptionController::class, 'updateStatus'])->name('adoptions.updateStatus');
 
 });
-Route::prefix('rescue')->name('rescue.')->group(function () {
-
-    Route::get('/animals', [AnimalController::class, 'index'])->name('animals');
-    Route::get('/animals/create', [AnimalController::class, 'create'])->name('animals.create');
-    Route::post('/animals', [AnimalController::class, 'store'])->name('animals.store');
-
-});
-use App\Http\Controllers\DashboardController;
-
-Route::get('/rescue/dashboard', [DashboardController::class, 'index'])->name('rescue.dashboard');
-use App\Http\Controllers\AdoptionController;
-
-Route::get('/rescue/adoptions', [AdoptionController::class, 'index'])->name('rescue.adoptions');

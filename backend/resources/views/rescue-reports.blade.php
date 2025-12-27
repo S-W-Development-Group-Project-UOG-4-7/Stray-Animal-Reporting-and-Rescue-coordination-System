@@ -260,117 +260,29 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-5 py-8">
-        <!-- SRI LANKA FLOOD EMERGENCY BANNER -->
-        <div class="alert-banner mb-6">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.886-.833-2.656 0L4.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                    </svg>
-                    <div>
-                        <h2 class="text-xl font-bold">🚨 SRI LANKA FLOOD EMERGENCY 🚨</h2>
-                        <p class="text-sm opacity-90">Veterinary Association on standby to provide assistance for animals affected by floods</p>
-                    </div>
-                </div>
-                <button class="emergency-btn" onclick="launchEmergencyResponse()">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                    EMERGENCY RESPONSE
-                </button>
-            </div>
-        </div>
-
         <!-- Page Header -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-white">Animal Reports Management</h1>
             <p class="text-gray-300 mt-2">Manage all incoming animal reports, assign to team members, and track progress.</p>
         </div>
 
-        <!-- Flood Emergency Dashboard -->
-        <div class="emergency-card mb-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold flex items-center gap-2">
-                    <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4 4 0 003 15z"/>
-                    </svg>
-                    FLOOD EMERGENCY RESPONSE
-                </h2>
-                <div class="flex gap-2">
-                    <button class="warning-btn" onclick="coordinateVets()">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        Coordinate Vets
-                    </button>
-                    <button class="danger-btn" onclick="dispatchEmergencyTeam()">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                        Dispatch Teams
-                    </button>
-                </div>
+        <!-- Success/Error Messages -->
+        @if(session('success'))
+            <div class="bg-green-500/20 border border-green-500 text-green-300 px-4 py-3 rounded mb-6">
+                {{ session('success') }}
             </div>
-            
-            <!-- Flood Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                <div class="bg-blue-900/30 p-4 rounded-lg">
-                    <div class="text-2xl font-bold text-blue-300">47</div>
-                    <div class="text-sm text-gray-300">Flood-Affected Reports</div>
-                </div>
-                <div class="bg-red-900/30 p-4 rounded-lg">
-                    <div class="text-2xl font-bold text-red-300">18</div>
-                    <div class="text-sm text-gray-300">Critical Cases</div>
-                </div>
-                <div class="bg-green-900/30 p-4 rounded-lg">
-                    <div class="text-2xl font-bold text-green-300">12</div>
-                    <div class="text-sm text-gray-300">Animals Rescued</div>
-                </div>
-                <div class="bg-purple-900/30 p-4 rounded-lg">
-                    <div class="text-2xl font-bold text-purple-300">8</div>
-                    <div class="text-sm text-gray-300">Vets Deployed</div>
-                </div>
+        @endif
+
+        @if(session('error'))
+            <div class="bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded mb-6">
+                {{ session('error') }}
             </div>
-            
-            <!-- Affected Districts -->
-            <div class="mb-4">
-                <h3 class="font-bold mb-2 text-blue-300">Most Affected Districts:</h3>
-                <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Colombo</span>
-                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Gampaha</span>
-                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Kalutara</span>
-                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Ratnapura</span>
-                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Kegalle</span>
-                </div>
-            </div>
-            
-            <!-- Progress -->
-            <div>
-                <div class="flex justify-between text-sm mb-1">
-                    <span class="text-gray-300">Rescue Progress</span>
-                    <span class="text-gray-300">25%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 25%"></div>
-                </div>
-            </div>
-        </div>
+        @endif
 
         <!-- Filters Section -->
         <div class="card mb-6">
             <h2 class="text-xl font-bold mb-4">Filter Reports</h2>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <!-- Emergency Filter -->
-                <div>
-                    <label class="filter-label">Emergency Type</label>
-                    <select class="filter-select" id="emergencyFilter">
-                        <option value="" class="text-white bg-[#071331]">All Reports</option>
-                        <option value="flood" class="text-white bg-[#071331]">Flood Emergency</option>
-                        <option value="critical" class="text-white bg-[#071331]">Critical Only</option>
-                        <option value="veterinary" class="text-white bg-[#071331]">Vet Required</option>
-                    </select>
-                </div>
-                
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <!-- Status Filter -->
                 <div>
                     <label class="filter-label">Status</label>
@@ -379,11 +291,10 @@
                         <option value="pending" class="text-white bg-[#071331]">Pending</option>
                         <option value="assigned" class="text-white bg-[#071331]">Assigned</option>
                         <option value="in_progress" class="text-white bg-[#071331]">In Progress</option>
-                        <option value="resolved" class="text-white bg-[#071331]">Resolved</option>
-                        <option value="urgent" class="text-white bg-[#071331]">Urgent</option>
+                        <option value="completed" class="text-white bg-[#071331]">Completed</option>
                     </select>
                 </div>
-                
+
                 <!-- Animal Type Filter -->
                 <div>
                     <label class="filter-label">Animal Type</label>
@@ -391,29 +302,25 @@
                         <option value="" class="text-white bg-[#071331]">All Types</option>
                         <option value="dog" class="text-white bg-[#071331]">Dog</option>
                         <option value="cat" class="text-white bg-[#071331]">Cat</option>
-                        <option value="livestock" class="text-white bg-[#071331]">Livestock</option>
+                        <option value="bird" class="text-white bg-[#071331]">Bird</option>
+                        <option value="rabbit" class="text-white bg-[#071331]">Rabbit</option>
                         <option value="other" class="text-white bg-[#071331]">Other</option>
                     </select>
                 </div>
-                
-                <!-- Priority Filter -->
+
+                <!-- Location Filter -->
                 <div>
-                    <label class="filter-label">Priority</label>
-                    <select class="filter-select">
-                        <option value="" class="text-white bg-[#071331]">All Priorities</option>
-                        <option value="high" class="text-white bg-[#071331]">High</option>
-                        <option value="medium" class="text-white bg-[#071331]">Medium</option>
-                        <option value="low" class="text-white bg-[#071331]">Low</option>
-                    </select>
+                    <label class="filter-label">Location</label>
+                    <input type="text" class="filter-input" placeholder="Search location...">
                 </div>
-                
+
                 <!-- Date Filter -->
                 <div>
                     <label class="filter-label">Reported Date</label>
                     <input type="date" class="filter-input">
                 </div>
             </div>
-            
+
             <!-- Action Buttons -->
             <div class="flex gap-3 mt-4">
                 <button class="primary-btn" onclick="applyFilters()">
@@ -423,42 +330,30 @@
                     Apply Filters
                 </button>
                 <button class="outline-btn" onclick="clearFilters()">Clear Filters</button>
-                <button class="success-btn" onclick="exportReports()">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                    Export Reports
-                </button>
-                <button class="emergency-btn" onclick="reportFloodEmergency()">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.886-.833-2.656 0L4.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                    </svg>
-                    Report Flood Emergency
-                </button>
             </div>
         </div>
 
         <!-- Reports Statistics -->
         <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
             <div class="filter-card">
-                <div class="text-2xl font-bold text-white">24</div>
-                <div class="text-sm text-gray-300">Pending Reports</div>
+                <div class="text-2xl font-bold text-white">{{ $stats['total'] }}</div>
+                <div class="text-sm text-gray-300">Total Reports</div>
             </div>
             <div class="filter-card">
-                <div class="text-2xl font-bold text-white">18</div>
+                <div class="text-2xl font-bold text-white">{{ $stats['pending'] }}</div>
+                <div class="text-sm text-gray-300">Pending</div>
+            </div>
+            <div class="filter-card">
+                <div class="text-2xl font-bold text-white">{{ $stats['assigned'] }}</div>
                 <div class="text-sm text-gray-300">Assigned</div>
             </div>
             <div class="filter-card">
-                <div class="text-2xl font-bold text-white">6</div>
-                <div class="text-sm text-gray-300">Urgent</div>
-            </div>
-            <div class="filter-card bg-gradient-to-r from-blue-900/30 to-cyan-900/30">
-                <div class="text-2xl font-bold text-blue-300">47</div>
-                <div class="text-sm text-blue-200">Flood Reports</div>
+                <div class="text-2xl font-bold text-white">{{ $stats['in_progress'] }}</div>
+                <div class="text-sm text-gray-300">In Progress</div>
             </div>
             <div class="filter-card">
-                <div class="text-2xl font-bold text-white">42</div>
-                <div class="text-sm text-gray-300">Total Today</div>
+                <div class="text-2xl font-bold text-white">{{ $stats['completed'] }}</div>
+                <div class="text-sm text-gray-300">Completed</div>
             </div>
         </div>
 
@@ -467,18 +362,11 @@
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-bold text-white">All Incoming Reports</h2>
                 <div class="flex gap-2">
-                    <button class="primary-btn text-sm" onclick="createNewReport()">
+                    <button class="outline-btn text-sm" onclick="window.location.reload()">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
-                        New Report
-                    </button>
-                    <button class="outline-btn text-sm" onclick="refreshReports()">Refresh</button>
-                    <button class="warning-btn text-sm" onclick="viewVetCoordination()">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        Vet Coordination
+                        Refresh
                     </button>
                 </div>
             </div>
@@ -487,24 +375,20 @@
                 <table class="dashboard-table">
                     <thead>
                         <tr>
-                            <th class="w-12">
-                                <input type="checkbox" class="rounded">
-                            </th>
                             <th>Report ID</th>
-                            <th>Animal</th>
-                            <th>Condition</th>
+                            <th>Title</th>
+                            <th>Animal Type</th>
                             <th>Location</th>
-                            <th>Priority</th>
                             <th>Status</th>
                             <th>Reported</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- FLOOD EMERGENCY REPORT 1 -->
-                        <tr class="emergency-row">
-                            <td><input type="checkbox" class="rounded"></td>
-                            <td class="font-medium">#SL-FLOOD-001</td>
+                        @forelse($reports as $report)
+                        <tr>
+                            <td class="font-medium">#{{ $report->id }}</td>
+                            <td>{{ $report->title ?? 'Animal Report' }}</td>
                             <td>
                                 <div class="flex items-center gap-2">
                                     <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
@@ -512,206 +396,65 @@
                                             <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                                         </svg>
                                     </div>
-                                    <span>Dog (Multiple)</span>
+                                    <span>{{ $report->animal_type ?? 'Unknown' }}</span>
                                 </div>
                             </td>
-                            <td>Trapped in floodwaters, urgent rescue needed</td>
-                            <td>Colombo - Flood Zone A</td>
-                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full animate-pulse">FLOOD EMERGENCY</span></td>
-                            <td><span class="status-badge status-emergency">Flood Emergency</span></td>
-                            <td>15 min ago</td>
+                            <td>{{ $report->location }}</td>
+                            <td><span class="status-badge status-{{ str_replace('_', '-', $report->status) }}">{{ ucfirst(str_replace('_', ' ', $report->status)) }}</span></td>
+                            <td>{{ $report->created_at->diffForHumans() }}</td>
                             <td>
                                 <div class="flex gap-2">
-                                    <button class="text-xs emergency-btn px-3 py-1" onclick="dispatchToFlood('SL-FLOOD-001')">
-                                        Rescue Now
-                                    </button>
-                                    <button class="text-xs outline-btn px-3 py-1" onclick="viewFloodDetails('SL-FLOOD-001')">
-                                        <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4 4 0 003 15z"/>
-                                        </svg>
-                                        Flood Info
-                                    </button>
+                                    @if($report->status == 'pending')
+                                    <form action="{{ route('reports.accept', $report->id) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="text-xs primary-btn px-3 py-1">Accept</button>
+                                    </form>
+                                    @endif
+                                    <a href="{{ route('reports.show', $report->id) }}" class="text-xs outline-btn px-3 py-1">View</a>
                                 </div>
                             </td>
                         </tr>
-                        
-                        <!-- FLOOD EMERGENCY REPORT 2 -->
-                        <tr class="flood-row">
-                            <td><input type="checkbox" class="rounded"></td>
-                            <td class="font-medium">#SL-FLOOD-002</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Cats (Colony)</span>
-                                </div>
-                            </td>
-                            <td>Colony stranded on rooftop, water rising</td>
-                            <td>Gampaha - Flood Zone B</td>
-                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">HIGH</span></td>
-                            <td><span class="status-badge status-flood">Flood Rescue</span></td>
-                            <td>30 min ago</td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs primary-btn px-3 py-1" onclick="assignVeterinary('SL-FLOOD-002')">
-                                        <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        Vet Required
-                                    </button>
-                                    <button class="text-xs outline-btn px-3 py-1" onclick="viewReport('SL-FLOOD-002')">View</button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- Report 1 -->
+                        @empty
                         <tr>
-                            <td><input type="checkbox" class="rounded"></td>
-                            <td class="font-medium">#SP-2048</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 a3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Dog</span>
-                                </div>
-                            </td>
-                            <td>Injured leg</td>
-                            <td>Central Park</td>
-                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">HIGH</span></td>
-                            <td><span class="status-badge status-urgent">Urgent</span></td>
-                            <td>10 min ago</td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs primary-btn px-3 py-1" onclick="assignReport('SP-2048')">Assign</button>
-                                    <button class="text-xs outline-btn px-3 py-1" onclick="viewReport('SP-2048')">View</button>
-                                </div>
+                            <td colspan="7" class="text-center py-8">
+                                <p class="text-gray-400">No reports found</p>
+                                <p class="text-sm text-gray-500 mt-1">New animal reports will appear here</p>
                             </td>
                         </tr>
-                        
-                        <!-- Report 2 -->
-                        <tr>
-                            <td><input type="checkbox" class="rounded"></td>
-                            <td class="font-medium">#SP-2047</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Cat</span>
-                                </div>
-                            </td>
-                            <td>Stray, hungry</td>
-                            <td>Downtown Mall</td>
-                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-yellow-500 rounded-full">MEDIUM</span></td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>25 min ago</td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs primary-btn px-3 py-1" onclick="assignReport('SP-2047')">Assign</button>
-                                    <button class="text-xs outline-btn px-3 py-1" onclick="viewReport('SP-2047')">View</button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- VETERINARY ASSISTANCE REQUIRED -->
-                        <tr class="flood-row">
-                            <td><input type="checkbox" class="rounded"></td>
-                            <td class="font-medium">#SL-VET-003</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                                        </svg>
-                                    </div>
-                                    <span>Livestock (Cattle)</span>
-                                </div>
-                            </td>
-                            <td>Drowning risk, need veterinary assessment</td>
-                            <td>Kalutara - Flood Zone C</td>
-                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">HIGH</span></td>
-                            <td><span class="status-badge status-flood">Vet Required</span></td>
-                            <td>45 min ago</td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs success-btn px-3 py-1" onclick="assignVeterinary('SL-VET-003')">
-                                        Assign Vet
-                                    </button>
-                                    <button class="text-xs warning-btn px-3 py-1" onclick="coordinateRescue('SL-VET-003')">
-                                        Rescue Plan
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
             
-            <!-- Bulk Actions & Pagination -->
+            <!-- Pagination -->
             <div class="flex items-center justify-between mt-6">
-                <div class="flex items-center gap-3">
-                    <button class="outline-btn text-sm" onclick="bulkAssign()">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Bulk Assign
-                    </button>
-                    <button class="outline-btn text-sm" onclick="deleteSelected()">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                        </svg>
-                        Delete Selected
-                    </button>
-                    <button class="emergency-btn text-sm" onclick="bulkFloodResponse()">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                        Flood Response
-                    </button>
+                <div class="text-sm text-gray-400">
+                    Showing {{ $reports->firstItem() ?? 0 }}-{{ $reports->lastItem() ?? 0 }} of {{ $reports->total() }} reports
                 </div>
-                
+
+                @if($reports->hasPages())
                 <div class="flex items-center gap-2">
-                    <button class="px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white">1</button>
-                    <button class="px-3 py-1 rounded hover:bg-white/10 text-white">2</button>
-                    <button class="px-3 py-1 rounded hover:bg-white/10 text-white">3</button>
-                    <span class="text-gray-400">...</span>
-                    <button class="px-3 py-1 rounded hover:bg-white/10 text-white">Next →</button>
+                    @if($reports->onFirstPage())
+                        <span class="px-3 py-1 rounded bg-white/5 text-gray-500">← Previous</span>
+                    @else
+                        <a href="{{ $reports->previousPageUrl() }}" class="px-3 py-1 rounded hover:bg-white/10 text-white">← Previous</a>
+                    @endif
+
+                    @foreach ($reports->getUrlRange(1, $reports->lastPage()) as $page => $url)
+                        @if ($page == $reports->currentPage())
+                            <button class="px-3 py-1 rounded bg-[#0ea5e9] text-white">{{ $page }}</button>
+                        @else
+                            <a href="{{ $url }}" class="px-3 py-1 rounded hover:bg-white/10 text-white">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    @if($reports->hasMorePages())
+                        <a href="{{ $reports->nextPageUrl() }}" class="px-3 py-1 rounded hover:bg-white/10 text-white">Next →</a>
+                    @else
+                        <span class="px-3 py-1 rounded bg-white/5 text-gray-500">Next →</span>
+                    @endif
                 </div>
-            </div>
-        </div>
-        
-        <!-- Veterinary Coordination Section -->
-        <div class="card mt-6">
-            <h2 class="text-xl font-bold mb-4 text-white">Veterinary Association Coordination</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-green-900/20 p-4 rounded-lg">
-                    <h3 class="font-bold text-green-300 mb-2">Available Veterinarians</h3>
-                    <div class="text-2xl font-bold text-white">24</div>
-                    <p class="text-sm text-gray-300">On standby for flood response</p>
-                    <button class="text-xs success-btn mt-2 w-full" onclick="deployVets()">Deploy to Flood Zones</button>
-                </div>
-                
-                <div class="bg-blue-900/20 p-4 rounded-lg">
-                    <h3 class="font-bold text-blue-300 mb-2">Emergency Supplies</h3>
-                    <div class="text-2xl font-bold text-white">✓ Ready</div>
-                    <p class="text-sm text-gray-300">Medical kits, boats, rescue equipment</p>
-                    <button class="text-xs primary-btn mt-2 w-full" onclick="manageSupplies()">Manage Inventory</button>
-                </div>
-                
-                <div class="bg-purple-900/20 p-4 rounded-lg">
-                    <h3 class="font-bold text-purple-300 mb-2">Coordination Center</h3>
-                    <div class="text-2xl font-bold text-white">Active</div>
-                    <p class="text-sm text-gray-300">24/7 emergency hotline: 011-234-5678</p>
-                    <button class="text-xs outline-btn mt-2 w-full" onclick="openCoordinationCenter()">Open Center</button>
-                </div>
+                @endif
             </div>
         </div>
     </main>
@@ -721,7 +464,7 @@
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
-        
+
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
@@ -744,179 +487,14 @@
             });
         });
 
-        // ====================
-        // FLOOD EMERGENCY FUNCTIONS
-        // ====================
-        
-        function launchEmergencyResponse() {
-            alert("🚨 LAUNCHING SRI LANKA FLOOD EMERGENCY RESPONSE 🚨\n\nEmergency actions initiated:\n1. Activating all rescue teams\n2. Contacting Veterinary Association\n3. Deploying emergency supplies\n4. Opening coordination centers\n5. Alerting government authorities");
-            
-            // Show emergency modal
-            showEmergencyModal();
-        }
-        
-        function reportFloodEmergency() {
-            const location = prompt("Enter flood-affected location in Sri Lanka:");
-            const animalCount = prompt("Approximate number of animals affected:");
-            const urgency = prompt("Urgency level (Critical/High/Medium):");
-            
-            if (location && animalCount && urgency) {
-                alert(`✅ Flood Emergency Reported!\n\nLocation: ${location}\nAnimals Affected: ${animalCount}\nUrgency: ${urgency}\n\nEmergency response team has been notified. Veterinary Association alerted.`);
-            }
-        }
-        
-        function coordinateVets() {
-            alert("📞 Coordinating with Sri Lanka Veterinary Association...\n\nActions:\n1. Alerting all available veterinarians\n2. Dispatching emergency medical kits\n3. Setting up field clinics in flood zones\n4. Coordinating with government disaster management");
-        }
-        
-        function dispatchEmergencyTeam() {
-            const teamSize = prompt("Enter number of rescue team members to dispatch:");
-            const equipment = prompt("Required equipment (Boats/Medical/Rescue):");
-            
-            if (teamSize && equipment) {
-                alert(`🚤 Emergency Team Dispatched!\n\nTeam Size: ${teamSize} members\nEquipment: ${equipment}\nStatus: En route to flood zones\nETA: 15-30 minutes\n\nVeterinary support coordinated.`);
-            }
-        }
-        
-        function assignVeterinary(reportId) {
-            alert(`🩺 Veterinary Assistance Requested!\n\nReport: ${reportId}\n\nVeterinary Association notified.\nEmergency vet team dispatched.\nMedical supplies en route.`);
-        }
-        
-        function dispatchToFlood(reportId) {
-            alert(`🚁 IMMEDIATE FLOOD RESCUE DEPLOYED!\n\nReport: ${reportId}\n\nRescue team with boats dispatched.\nVeterinary team on standby.\nCoordination with Disaster Management Center.`);
-        }
-        
-        function viewFloodDetails(reportId) {
-            alert(`🌊 FLOOD SITUATION DETAILS:\n\nReport: ${reportId}\nLocation: Colombo Flood Zone A\nWater Level: 1.5m rising\nAnimals: Multiple dogs trapped\nRescue Status: Boats required\nVet Support: On standby\n\nEmergency Hotline: 011-234-5678`);
-        }
-        
-        function coordinateRescue(reportId) {
-            alert(`🔄 COORDINATING RESCUE PLAN:\n\nReport: ${reportId}\n\n1. Assess water levels\n2. Deploy rescue boats\n3. Veterinary assessment on-site\n4. Temporary shelter setup\n5. Medical treatment if needed\n\nVeterinary Association notified.`);
-        }
-        
-        function deployVets() {
-            const zone = prompt("Which flood zone to deploy veterinarians? (A/B/C/All):");
-            if (zone) {
-                alert(`👨‍⚕️ VETERINARIANS DEPLOYED!\n\nZone: ${zone}\nVets: 8 veterinarians\nMedical Kits: 15 emergency kits\nTransport: 4 rescue vehicles\n\nCoordination with Sri Lanka Veterinary Association complete.`);
-            }
-        }
-        
-        function bulkFloodResponse() {
-            alert(`🌊 BULK FLOOD RESPONSE INITIATED!\n\nSelected all flood emergency reports.\n\nActions:\n1. Mass alert to rescue teams\n2. Veterinary Association emergency meeting\n3. Government disaster management coordination\n4. Emergency supplies distribution\n5. Public alert system activated`);
-        }
-        
-        function viewVetCoordination() {
-            alert(`🏥 VETERINARY COORDINATION CENTER\n\nSri Lanka Veterinary Association:\n• 24/7 Emergency Hotline: 011-234-5678\n• Available Vets: 24\n• Field Clinics: 6 established\n• Medical Supplies: Fully stocked\n• Rescue Equipment: Boats, cages, medical kits\n\nCoordination with:\n• Disaster Management Center\n• Local Government\n• Army/Navy rescue teams`);
-        }
-        
-        function showEmergencyModal() {
-            // In a real app, this would show a modal
-            const modalContent = `
-                <div class="fixed inset-0 bg-black/75 flex items-center justify-center z-50 p-4">
-                    <div class="bg-gradient-to-br from-red-900 to-blue-900 rounded-xl p-6 max-w-2xl w-full">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-bold text-white">🚨 SRI LANKA FLOOD EMERGENCY 🚨</h2>
-                            <button onclick="closeModal()" class="text-white hover:text-gray-300">✕</button>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="bg-white/10 p-4 rounded-lg">
-                                <h3 class="font-bold text-yellow-300 mb-2">Veterinary Association Alert</h3>
-                                <p>The Sri Lanka Veterinary Association is on standby with 24 veterinarians ready to assist flood-affected animals.</p>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-4">
-                                <button class="emergency-btn w-full" onclick="dispatchEmergencyTeam()">
-                                    Dispatch Rescue Teams
-                                </button>
-                                <button class="warning-btn w-full" onclick="coordinateVets()">
-                                    Coordinate Vets
-                                </button>
-                            </div>
-                            
-                            <div class="text-sm text-gray-300">
-                                <p><strong>Emergency Contacts:</strong></p>
-                                <p>• Veterinary Association: 011-234-5678</p>
-                                <p>• Disaster Management: 117</p>
-                                <p>• Police Emergency: 119</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            const modal = document.createElement('div');
-            modal.innerHTML = modalContent;
-            document.body.appendChild(modal);
-        }
-        
-        function closeModal() {
-            const modal = document.querySelector('.fixed.inset-0.bg-black');
-            if (modal) modal.remove();
-        }
-
-        // ====================
-        // EXISTING FUNCTIONS
-        // ====================
-        
+        // Filter functions
         function applyFilters() {
-            alert("Filters applied to reports.");
-        }
-        
-        function clearFilters() {
-            alert("All filters cleared.");
-        }
-        
-        function exportReports() {
-            alert("Exporting reports data...");
-        }
-        
-        function createNewReport() {
-            alert("Opening new report form...");
-        }
-        
-        function refreshReports() {
-            alert("Refreshing reports data...");
-        }
-        
-        function assignReport(reportId) {
-            alert(`Assigning report ${reportId} to team member...`);
-        }
-        
-        function viewReport(reportId) {
-            alert(`Viewing details for report ${reportId}...`);
-        }
-        
-        function bulkAssign() {
-            alert("Bulk assigning selected reports...");
-        }
-        
-        function deleteSelected() {
-            alert("Deleting selected reports...");
-        }
-        
-        function manageSupplies() {
-            alert("Opening emergency supplies inventory...");
-        }
-        
-        function openCoordinationCenter() {
-            alert("Opening emergency coordination center interface...");
+            alert("Filter functionality will be implemented in future update.");
         }
 
-        // Demo functionality for buttons
-        document.querySelectorAll('button').forEach(btn => {
-            if (!btn.onclick) {
-                btn.addEventListener('click', function(e) {
-                    if (this.textContent.includes('Assign') || 
-                        this.textContent.includes('View') || 
-                        this.textContent.includes('Update')) {
-                        e.preventDefault();
-                        const action = this.textContent.trim();
-                        alert(`[Demo] ${action} - This would trigger backend action in production.`);
-                    }
-                });
-            }
-        });
+        function clearFilters() {
+            window.location.reload();
+        }
     </script>
 </body>
 </html>

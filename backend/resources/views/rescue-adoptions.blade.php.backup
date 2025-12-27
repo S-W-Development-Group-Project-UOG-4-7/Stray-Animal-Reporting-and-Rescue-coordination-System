@@ -354,29 +354,27 @@
 
         <!-- Adoption Applications Table -->
         <div class="card">
-            <form id="batchApproveForm" action="{{ route('rescue.adoptions.batchApprove') }}" method="POST">
-                @csrf
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold">Adoption Applications</h2>
-                    <div class="flex gap-2">
-                        <a href="{{ route('rescue.adoptions.create') }}" class="primary-btn text-sm inline-flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            Create Record
-                        </a>
-                        <button type="button" class="outline-btn text-sm" onclick="window.location.reload()">Refresh</button>
-                        <button type="button" class="approve-btn text-sm" onclick="approveSelected()">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            Approve Selected
-                        </button>
-                    </div>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold">Adoption Applications</h2>
+                <div class="flex gap-2">
+                    <button class="primary-btn text-sm" onclick="createAdoptionRecord()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Create Record
+                    </button>
+                    <button class="outline-btn text-sm" onclick="refreshApplications()">Refresh</button>
+                    <button class="approve-btn text-sm" onclick="approveSelected()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Approve Selected
+                    </button>
                 </div>
-
-                <div class="table-container">
-                    <table class="dashboard-table">
+            </div>
+            
+            <div class="table-container">
+                <table class="dashboard-table">
                     <thead>
                         <tr>
                             <th class="w-12">
@@ -388,17 +386,18 @@
                             <th>Status</th>
                             <th>Applied</th>
                             <th>Assigned To</th>
+                            <th>Priority</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($adoptions as $adoption)
-                        <tr>
-                            <td><input type="checkbox" name="adoption_ids[]" value="{{ $adoption->id }}" class="rounded adoption-checkbox"></td>
-                            <td class="font-medium">{{ $adoption->application_id }}</td>
+                        <!-- Urgent Application -->
+                        <tr class="urgent-row">
+                            <td><input type="checkbox" class="rounded" checked></td>
+                            <td class="font-medium">#ADP-1042</td>
                             <td>
-                                <div class="font-medium">{{ $adoption->applicant_name }}</div>
-                                <div class="text-xs text-gray-400">{{ $adoption->applicant_type }}@if($adoption->applicant_details) • {{ Str::limit($adoption->applicant_details, 30) }}@endif</div>
+                                <div class="font-medium">Sarah Johnson</div>
+                                <div class="text-xs text-gray-400">Family of 4, House with yard</div>
                             </td>
                             <td>
                                 <div class="flex items-center gap-2">
@@ -408,81 +407,227 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="font-medium">{{ $adoption->animal->name }} ({{ $adoption->animal->species }})</div>
-                                        <div class="text-xs text-gray-400">#SP{{ str_pad($adoption->animal->id, 3, '0', STR_PAD_LEFT) }} • {{ $adoption->animal->breed }}</div>
+                                        <div class="font-medium">Buddy (Dog)</div>
+                                        <div class="text-xs text-gray-400">#SP045 • Golden Retriever</div>
                                     </div>
                                 </div>
                             </td>
+                            <td><span class="status-badge status-homecheck">Home Check Scheduled</span></td>
                             <td>
-                                <span class="status-badge 
-                                    @if($adoption->status == 'Pending Review') status-pending
-                                    @elseif($adoption->status == 'Home Check Scheduled') status-homecheck
-                                    @elseif($adoption->status == 'Ready for Pickup') status-approved
-                                    @elseif($adoption->status == 'Completed') status-completed
-                                    @else status-rejected
-                                    @endif">
-                                    {{ $adoption->status }}
-                                </span>
+                                <div class="text-white">Nov 14, 2023</div>
+                                <div class="text-xs text-gray-400">3 days ago</div>
                             </td>
                             <td>
-                                <div class="text-white">{{ $adoption->created_at->format('M d, Y') }}</div>
-                                <div class="text-xs text-gray-400">{{ $adoption->created_at->diffForHumans() }}</div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-[#0ea5e9] rounded-full flex items-center justify-center text-xs">J</div>
+                                    <span>John (Team Lead)</span>
+                                </div>
                             </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">URGENT</span></td>
                             <td>
-                                @if($adoption->assignedUser)
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-6 h-6 bg-[#0ea5e9] rounded-full flex items-center justify-center text-xs">
-                                            {{ strtoupper(substr($adoption->assignedUser->name, 0, 1)) }}
-                                        </div>
-                                        <span>{{ $adoption->assignedUser->name }}</span>
-                                    </div>
-                                @else
-                                    <span class="text-gray-400 text-sm">Unassigned</span>
-                                @endif
-                            </td>
-                            <td>
-                                <div class="flex gap-2 flex-wrap">
-                                    <a href="{{ route('rescue.adoptions.show', $adoption->id) }}" class="text-xs outline-btn px-3 py-1">View</a>
-
-                                    @if($adoption->status == 'Pending Review')
-                                        <form action="{{ route('rescue.adoptions.approve', $adoption->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-xs success-btn px-3 py-1">Approve</button>
-                                        </form>
-                                        <form action="{{ route('rescue.adoptions.reject', $adoption->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-xs danger-btn px-3 py-1">Reject</button>
-                                        </form>
-                                    @elseif($adoption->status == 'Home Check Scheduled')
-                                        <form action="{{ route('rescue.adoptions.approve', $adoption->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-xs success-btn px-3 py-1">Approve</button>
-                                        </form>
-                                    @elseif($adoption->status == 'Ready for Pickup')
-                                        <form action="{{ route('rescue.adoptions.approve', $adoption->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-xs success-btn px-3 py-1">Complete</button>
-                                        </form>
-                                    @elseif($adoption->status == 'Completed')
-                                        <span class="text-xs text-green-400">✓ Adopted</span>
-                                    @else
-                                        <span class="text-xs text-red-400">✗ Rejected</span>
-                                    @endif
+                                <div class="flex gap-2">
+                                    <button class="text-xs success-btn px-3 py-1" onclick="approveAdoption('ADP-1042')">
+                                        Approve
+                                    </button>
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewApplication('ADP-1042')">
+                                        View
+                                    </button>
+                                    <button class="text-xs warning-btn px-3 py-1" onclick="rescheduleHomeCheck('ADP-1042')">
+                                        Reschedule
+                                    </button>
                                 </div>
                             </td>
                         </tr>
-                        @empty
+                        
+                        <!-- Pending Application -->
                         <tr>
-                            <td colspan="7" class="text-center text-gray-400 py-8">
-                                <p>No adoption applications found.</p>
+                            <td><input type="checkbox" class="rounded"></td>
+                            <td class="font-medium">#ADP-1041</td>
+                            <td>
+                                <div class="font-medium">Michael Chen</div>
+                                <div class="text-xs text-gray-400">Single, Apartment</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Whiskers (Cat)</div>
+                                        <div class="text-xs text-gray-400">#SP039 • Tabby</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-pending">Pending Review</span></td>
+                            <td>
+                                <div class="text-white">Nov 12, 2023</div>
+                                <div class="text-xs text-gray-400">5 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs">S</div>
+                                    <span>Sarah</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-yellow-500 rounded-full">NORMAL</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="assignToMe('ADP-1041')">
+                                        Assign to Me
+                                    </button>
+                                    <button class="text-xs outline-btn px-3 py-1" onclick="viewApplication('ADP-1041')">
+                                        Review
+                                    </button>
+                                    <button class="text-xs danger-btn px-3 py-1" onclick="rejectApplication('ADP-1041')">
+                                        Reject
+                                    </button>
+                                </div>
                             </td>
                         </tr>
-                        @endforelse
+                        
+                        <!-- Approved Application -->
+                        <tr class="approved-row">
+                            <td><input type="checkbox" class="rounded"></td>
+                            <td class="font-medium">#ADP-1040</td>
+                            <td>
+                                <div class="font-medium">Emma Wilson</div>
+                                <div class="text-xs text-gray-400">Family of 3, House</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Rocky (Dog)</div>
+                                        <div class="text-xs text-gray-400">#SP038 • German Shepherd Mix</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-approved">Ready for Pickup</span></td>
+                            <td>
+                                <div class="text-white">Nov 10, 2023</div>
+                                <div class="text-xs text-gray-400">7 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">M</div>
+                                    <span>Mike</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">READY</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs success-btn px-3 py-1" onclick="completeAdoption('ADP-1040')">
+                                        Complete
+                                    </button>
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewApplication('ADP-1040')">
+                                        Details
+                                    </button>
+                                    <button class="text-xs outline-btn px-3 py-1" onclick="sendReminder('ADP-1040')">
+                                        Remind
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Completed Adoption -->
+                        <tr>
+                            <td><input type="checkbox" class="rounded"></td>
+                            <td class="font-medium">#ADP-1039</td>
+                            <td>
+                                <div class="font-medium">Robert Davis</div>
+                                <div class="text-xs text-gray-400">Retired, House with yard</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Charlie (Dog)</div>
+                                        <div class="text-xs text-gray-400">#SP037 • Labrador</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td>
+                                <div class="text-white">Nov 8, 2023</div>
+                                <div class="text-xs text-gray-400">9 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-[#0ea5e9] rounded-full flex items-center justify-center text-xs">J</div>
+                                    <span>John (Team Lead)</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-blue-500 rounded-full">DONE</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewApplication('ADP-1039')">
+                                        View Record
+                                    </button>
+                                    <button class="text-xs outline-btn px-3 py-1" onclick="followUp('ADP-1039')">
+                                        Follow-up
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Rejected Application -->
+                        <tr>
+                            <td><input type="checkbox" class="rounded"></td>
+                            <td class="font-medium">#ADP-1038</td>
+                            <td>
+                                <div class="font-medium">James Miller</div>
+                                <div class="text-xs text-gray-400">Student, Small apartment</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">Luna (Cat)</div>
+                                        <div class="text-xs text-gray-400">#SP036 • Siamese</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-rejected">Rejected</span></td>
+                            <td>
+                                <div class="text-white">Nov 5, 2023</div>
+                                <div class="text-xs text-gray-400">12 days ago</div>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs">S</div>
+                                    <span>Sarah</span>
+                                </div>
+                            </td>
+                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-gray-500 rounded-full">CLOSED</span></td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <button class="text-xs primary-btn px-3 py-1" onclick="viewApplication('ADP-1038')">
+                                        View Reason
+                                    </button>
+                                    <button class="text-xs outline-btn px-3 py-1" onclick="reopenApplication('ADP-1038')">
+                                        Reopen
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            </form>
-
+            
             <!-- Bulk Actions & Pagination -->
             <div class="flex items-center justify-between mt-6">
                 <div class="flex items-center gap-3">
@@ -703,18 +848,7 @@
         }
         
         function approveSelected() {
-            const checkboxes = document.querySelectorAll('.adoption-checkbox:checked');
-
-            if (checkboxes.length === 0) {
-                alert("Please select at least one adoption application to approve.");
-                return;
-            }
-
-            const confirmed = confirm(`Approving selected adoption applications...\n\nSelected applications will be:\n- Moved to 'Ready for Pickup'\n- Applicants notified via email\n- Animals marked as 'Adopted'\n- Records updated in system\n\nDo you want to continue?`);
-
-            if (confirmed) {
-                document.getElementById('batchApproveForm').submit();
-            }
+            alert("Approving selected adoption applications...\n\nSelected applications will be:\n- Moved to 'Ready for Pickup'\n- Applicants notified via email\n- Animals marked as 'Adopted'\n- Records updated in system");
         }
         
         function processBatchAdoptions() {

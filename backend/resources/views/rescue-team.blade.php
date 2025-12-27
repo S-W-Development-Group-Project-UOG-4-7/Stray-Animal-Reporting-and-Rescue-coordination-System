@@ -191,25 +191,25 @@
         <!-- Stats Overview -->
         <div class="stats-grid mb-8">
             <div class="stats-card">
-                <div class="stats-value">8</div>
-                <div class="stats-label">Assigned to You</div>
-                <div class="mt-2 text-xs text-gray-400">Active rescue missions</div>
+                <div class="stats-value">{{ $stats['active_assignments'] }}</div>
+                <div class="stats-label">Active Assignments</div>
+                <div class="mt-2 text-xs text-gray-400">In progress rescue missions</div>
             </div>
-            
+
             <div class="stats-card">
-                <div class="stats-value">12</div>
+                <div class="stats-value">{{ $stats['completed_today'] }}</div>
                 <div class="stats-label">Completed Today</div>
                 <div class="mt-2 text-xs text-gray-400">Successful rescues</div>
             </div>
-            
+
             <div class="stats-card">
-                <div class="stats-value">3</div>
+                <div class="stats-value">{{ $stats['urgent_cases'] }}</div>
                 <div class="stats-label">Urgent Cases</div>
                 <div class="mt-2 text-xs text-gray-400">Require immediate attention</div>
             </div>
-            
+
             <div class="stats-card">
-                <div class="stats-value">15</div>
+                <div class="stats-value">{{ $stats['animals_in_shelter'] }}</div>
                 <div class="stats-label">Animals in Shelter</div>
                 <div class="mt-2 text-xs text-gray-400">Under your care</div>
             </div>
@@ -252,99 +252,81 @@
         <div class="mb-8">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-bold text-white">My Active Assignments</h2>
-                <button class="text-sm text-[#0ea5e9] hover:text-[#0891b2]">View All →</button>
+                @if($activeAssignments->count() > 5)
+                    <a href="{{ route('rescue.reports') }}" class="text-sm text-[#0ea5e9] hover:text-[#0891b2]">View All →</a>
+                @endif
             </div>
-            
+
+            @if(session('success'))
+                <div class="bg-green-500/20 border border-green-500 text-green-300 px-4 py-3 rounded mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="table-container">
                 <table class="dashboard-table">
                     <thead>
                         <tr>
                             <th>Report ID</th>
-                            <th>Animal</th>
-                            <th>Condition</th>
+                            <th>Title</th>
                             <th>Location</th>
-                            <th>Priority</th>
                             <th>Status</th>
+                            <th>Assigned</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Assignment 1 -->
-                        <tr>
-                            <td class="font-medium">#SP-2047</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01 \\
-        -3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                                        </svg>
+                        @forelse($activeAssignments as $assignment)
+                            <tr>
+                                <td class="font-medium">#{{ $assignment->id }}</td>
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                            </svg>
+                                        </div>
+                                        <span>{{ $assignment->title }}</span>
                                     </div>
-                                    <span>Dog (Sick)</span>
-                                </div>
-                            </td>
-                            <td>Severe infection</td>
-                            <td>Central Park</td>
-                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">HIGH</span></td>
-                            <td><span class="status-badge status-in-progress">En Route</span></td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs primary-btn px-3 py-1">Update Location</button>
-                                    <button class="text-xs success-btn px-3 py-1">Arrived</button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- Assignment 2 -->
-                        <tr>
-                            <td class="font-medium">#SP-2046</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4z"/>
-                                        </svg>
+                                </td>
+                                <td>{{ $assignment->location }}</td>
+                                <td>
+                                    <span class="status-badge status-{{ str_replace('_', '-', $assignment->status) }}">
+                                        {{ ucfirst(str_replace('_', ' ', $assignment->status)) }}
+                                    </span>
+                                </td>
+                                <td class="text-gray-300 text-xs">{{ $assignment->updated_at->diffForHumans() }}</td>
+                                <td>
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('reports.show', $assignment->id) }}" class="text-xs primary-btn px-3 py-1">View Details</a>
+                                        <button class="text-xs outline-btn px-3 py-1" onclick="updateReportStatus({{ $assignment->id }}, '{{ $assignment->status }}')">Update Status</button>
                                     </div>
-                                    <span>Cat (Aggressive)</span>
-                                </div>
-                            </td>
-                            <td>Cornered, scared</td>
-                            <td>Downtown Area</td>
-                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-yellow-500 rounded-full">MEDIUM</span></td>
-                            <td><span class="status-badge status-assigned">Assigned</span></td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs primary-btn px-3 py-1">Start Rescue</button>
-                                    <button class="text-xs outline-btn px-3 py-1">Need Assistance</button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- Assignment 3 -->
-                        <tr>
-                            <td class="font-medium">#SP-2045</td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01 \\
-        -3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-8 text-gray-400">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                         </svg>
+                                        <p class="font-medium">No active assignments yet</p>
+                                        <p class="text-sm">Accept a report from the section below to get started</p>
                                     </div>
-                                    <span>Dog (Injured)</span>
-                                </div>
-                            </td>
-                            <td>Leg injury</td>
-                            <td>River Street</td>
-                            <td><span class="px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">LOW</span></td>
-                            <td><span class="status-badge status-rescued">At Shelter</span></td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="text-xs primary-btn px-3 py-1">Add Medical Notes</button>
-                                    <button class="text-xs success-btn px-3 py-1">Mark Treated</button>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -503,41 +485,39 @@
         <div class="mb-8">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-bold text-white">New Reports Needing Assignment</h2>
-                <button class="text-sm text-[#0ea5e9] hover:text-[#0891b2]">View All →</button>
+                <a href="{{ route('rescue.reports') }}" class="text-sm text-[#0ea5e9] hover:text-[#0891b2]">View All →</a>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- New Report 1 -->
-                <div class="card">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="font-bold">Stray Dogs Group</h3>
-                            <p class="text-sm text-gray-300 mt-1">Location: Industrial Area</p>
-                            <p class="text-sm text-gray-400 mt-2">Reported: 1 hour ago • 3 dogs, appears healthy but need shelter</p>
+                @forelse($pendingReports as $report)
+                    <!-- Report #{{ $report->id }} -->
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="font-bold">{{ $report->title }}</h3>
+                                <p class="text-sm text-gray-300 mt-1">Location: {{ $report->location }}</p>
+                                <p class="text-sm text-gray-400 mt-2">
+                                    Reported: {{ $report->created_at->diffForHumans() }}
+                                    @if($report->description)
+                                        • {{ Str::limit($report->description, 50) }}
+                                    @endif
+                                </p>
+                            </div>
+                            <span class="status-badge status-pending">Pending</span>
                         </div>
-                        <span class="status-badge status-pending">Pending</span>
-                    </div>
-                    <div class="flex gap-2 mt-4">
-                        <button class="primary-btn flex-1">Accept Assignment</button>
-                        <button class="outline-btn">View Details</button>
-                    </div>
-                </div>
-                
-                <!-- New Report 2 -->
-                <div class="card">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="font-bold">Injured Puppy</h3>
-                            <p class="text-sm text-gray-300 mt-1">Location: City Park</p>
-                            <p class="text-sm text-gray-400 mt-2">Reported: 45 min ago • Limping, seems to have leg injury</p>
+                        <div class="flex gap-2 mt-4">
+                            <form action="{{ route('reports.accept', $report->id) }}" method="POST" class="flex-1">
+                                @csrf
+                                <button type="submit" class="primary-btn w-full">Accept Assignment</button>
+                            </form>
+                            <a href="{{ route('reports.show', $report->id) }}" class="outline-btn">View Details</a>
                         </div>
-                        <span class="status-badge status-pending">Pending</span>
                     </div>
-                    <div class="flex gap-2 mt-4">
-                        <button class="primary-btn flex-1">Accept Assignment</button>
-                        <button class="outline-btn">View Details</button>
+                @empty
+                    <div class="col-span-2 text-center text-gray-400 py-8">
+                        <p>No pending reports at the moment.</p>
                     </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </main>
@@ -698,7 +678,43 @@
             .catch(() => alert('Failed to update rescue status'));
         }
 
-        
+        // Update Report Status
+        function updateReportStatus(reportId, currentStatus) {
+            const statuses = ['pending', 'assigned', 'in_progress', 'completed'];
+            let statusOptions = '';
+
+            statuses.forEach(status => {
+                const selected = status === currentStatus ? 'selected' : '';
+                const displayStatus = status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                statusOptions += `<option value="${status}" ${selected}>${displayStatus}</option>`;
+            });
+
+            const newStatus = prompt(`Update Report #${reportId} Status\n\nCurrent Status: ${currentStatus.replace('_', ' ').toUpperCase()}\n\nEnter new status:\n- pending\n- assigned\n- in_progress\n- completed`, currentStatus);
+
+            if (newStatus && newStatus !== currentStatus) {
+                // Submit form to update status
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/reports/${reportId}/update-status`;
+
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = '{{ csrf_token() }}';
+
+                const statusInput = document.createElement('input');
+                statusInput.type = 'hidden';
+                statusInput.name = 'status';
+                statusInput.value = newStatus;
+
+                form.appendChild(csrfInput);
+                form.appendChild(statusInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+
         // ADD THIS CODE - Hash-based navigation for SPA
         function navigateTo(section) {
             console.log('Navigating to:', section);

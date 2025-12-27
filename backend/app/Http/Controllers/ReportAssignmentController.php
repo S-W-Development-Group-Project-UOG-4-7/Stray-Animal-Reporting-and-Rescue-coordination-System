@@ -7,10 +7,7 @@ use Illuminate\Http\Request;
 
 class ReportAssignmentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth'); // must be logged in
-    }
+    // Removed middleware - will handle auth in routes if needed
 
     // View Details
     public function show($id)

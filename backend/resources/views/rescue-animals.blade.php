@@ -258,12 +258,12 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-white">42</div>
+                        <div class="text-2xl font-bold text-white">{{ $stats['total'] }}</div>
                         <div class="text-sm text-gray-300">Total Animals</div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="filter-card">
                 <div class="flex items-center gap-3">
                     <div class="p-3 bg-green-500/20 rounded-lg">
@@ -272,12 +272,12 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-white">24</div>
+                        <div class="text-2xl font-bold text-white">{{ $stats['available'] }}</div>
                         <div class="text-sm text-gray-300">Available for Adoption</div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="filter-card">
                 <div class="flex items-center gap-3">
                     <div class="p-3 bg-purple-500/20 rounded-lg">
@@ -286,12 +286,12 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-white">8</div>
+                        <div class="text-2xl font-bold text-white">{{ $stats['medical'] }}</div>
                         <div class="text-sm text-gray-300">Medical Care</div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="filter-card">
                 <div class="flex items-center gap-3">
                     <div class="p-3 bg-yellow-500/20 rounded-lg">
@@ -300,7 +300,7 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-white">6</div>
+                        <div class="text-2xl font-bold text-white">{{ $stats['quarantine'] }}</div>
                         <div class="text-sm text-gray-300">In Quarantine</div>
                     </div>
                 </div>
@@ -454,7 +454,7 @@
                 </button>
             </div>
             <div class="text-sm text-gray-400">
-                Showing <span id="animalCount" class="text-white">8</span> animals
+                Showing <span id="animalCount" class="text-white">{{ $stats['total'] }}</span> animals
             </div>
         </div>
 
@@ -463,9 +463,17 @@
     @foreach($animals as $animal)
     <div class="animal-card">
         <div class="relative">
-            <img src="{{ asset($animal->image ?? 'default.jpg') }}" 
-                 alt="{{ $animal->name }}" 
-                 class="animal-image">
+            @if($animal->image)
+                <img src="{{ asset('storage/' . $animal->image) }}"
+                     alt="{{ $animal->name }}"
+                     class="animal-image">
+            @else
+                <div class="animal-image bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+                    <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+            @endif
             <div class="absolute top-3 right-3">
                 <span class="status-badge status-{{ strtolower($animal->status) }}">
                     {{ ucfirst($animal->status) }}
@@ -490,12 +498,12 @@
                 </div>
             </div>
             <div class="flex gap-2">
-                <button class="flex-1 text-xs primary-btn px-3 py-2" onclick="viewAnimal('{{ $animal->id }}')">
-                    View Details
-                </button>
-                <button class="text-xs outline-btn px-3 py-2" onclick="editAnimal('{{ $animal->id }}')">
+                <a href="{{ route('rescue.animals.show', $animal->id) }}" class="flex-1 text-xs outline-btn px-3 py-2 text-center">
+                    View
+                </a>
+                <a href="{{ route('rescue.animals.edit', $animal->id) }}" class="flex-1 text-xs primary-btn px-3 py-2 text-center">
                     Edit
-                </button>
+                </a>
             </div>
         </div>
     </div>
@@ -504,57 +512,97 @@
 
 
         <!-- Animals Table View (Hidden by default) -->
-        <tbody>
-@foreach ($animals as $animal)
-<tr>
-    <td><input type="checkbox" class="rounded"></td>
-    <td class="font-medium">{{ $animal->animal_id }}</td>
-    <td>
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-full overflow-hidden">
-                <img src="{{ asset('storage/' . $animal->image) }}" class="w-full h-full object-cover" alt="{{ $animal->name }}">
-            </div>
-            <span class="text-white">{{ $animal->name }}</span>
+        <div id="animalsTableView" class="table-container hidden">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="rounded"></th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Species</th>
+                        <th>Breed</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Status</th>
+                        <th>Intake Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($animals as $animal)
+                    <tr>
+                        <td><input type="checkbox" class="rounded"></td>
+                        <td class="font-medium">#SP{{ str_pad($animal->id, 4, '0', STR_PAD_LEFT) }}</td>
+                        <td>
+                            <div class="flex items-center gap-2">
+                                @if($animal->image)
+                                    <div class="w-8 h-8 rounded-full overflow-hidden">
+                                        <img src="{{ asset('storage/' . $animal->image) }}" class="w-full h-full object-cover" alt="{{ $animal->name }}">
+                                    </div>
+                                @else
+                                    <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+                                        <span class="text-xs">{{ substr($animal->name, 0, 1) }}</span>
+                                    </div>
+                                @endif
+                                <span class="text-white">{{ $animal->name }}</span>
+                            </div>
+                        </td>
+                        <td class="text-white">{{ ucfirst($animal->species) }}</td>
+                        <td class="text-white">{{ $animal->breed }}</td>
+                        <td class="text-white">{{ $animal->age }} years</td>
+                        <td class="text-white">{{ ucfirst($animal->gender ?? 'Unknown') }}</td>
+                        <td>
+                            <span class="status-badge status-{{ strtolower($animal->status) }}">
+                                {{ ucfirst($animal->status) }}
+                            </span>
+                        </td>
+                        <td class="text-white">{{ $animal->created_at->format('Y-m-d') }}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <a href="{{ route('rescue.animals.show', $animal->id) }}" class="text-xs outline-btn px-3 py-1 inline-block text-center">View</a>
+                                <a href="{{ route('rescue.animals.edit', $animal->id) }}" class="text-xs primary-btn px-3 py-1 inline-block text-center">Edit</a>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-    </td>
-    <td class="text-white">{{ ucfirst($animal->species) }}</td>
-    <td class="text-white">{{ $animal->breed }}</td>
-    <td class="text-white">{{ $animal->age }} years</td>
-    <td class="text-white">{{ ucfirst($animal->gender) }}</td>
-    <td>
-        <span class="status-badge status-{{ strtolower($animal->status) }}">
-            {{ ucfirst($animal->status) }}
-        </span>
-    </td>
-    <td class="text-white">{{ $animal->intake_date }}</td>
-    <td>
-        <div class="flex gap-2">
-            <button class="text-xs primary-btn px-3 py-1" onclick="viewAnimal('{{ $animal->animal_id }}')">View</button>
-            <button class="text-xs outline-btn px-3 py-1" onclick="editAnimal('{{ $animal->animal_id }}')">Edit</button>
-        </div>
-    </td>
-</tr>
-@endforeach
-</tbody>
 
         <!-- Pagination -->
         <div class="flex items-center justify-between mt-8">
             <div class="text-sm text-gray-400">
-                Showing 1-8 of 42 animals
+                Showing {{ $animals->firstItem() ?? 0 }}-{{ $animals->lastItem() ?? 0 }} of {{ $animals->total() }} animals
             </div>
-            
+
             <div class="flex items-center gap-2">
-                <button class="px-3 py-1 rounded bg-white/10 hover:bg-white/20 disabled:opacity-50 text-white" disabled>
-                    ← Previous
-                </button>
-                <button class="px-3 py-1 rounded bg-[#0ea5e9] text-white">1</button>
-                <button class="px-3 py-1 rounded hover:bg-white/10 text-white">2</button>
-                <button class="px-3 py-1 rounded hover:bg-white/10 text-white">3</button>
-                <span class="text-gray-400">...</span>
-                <button class="px-3 py-1 rounded hover:bg-white/10 text-white">6</button>
-                <button class="px-3 py-1 rounded hover:bg-white/10 text-white">
-                    Next →
-                </button>
+                @if ($animals->onFirstPage())
+                    <button class="px-3 py-1 rounded bg-white/10 text-white opacity-50 cursor-not-allowed" disabled>
+                        ← Previous
+                    </button>
+                @else
+                    <a href="{{ $animals->previousPageUrl() }}" class="px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white">
+                        ← Previous
+                    </a>
+                @endif
+
+                @foreach ($animals->getUrlRange(1, $animals->lastPage()) as $page => $url)
+                    @if ($page == $animals->currentPage())
+                        <button class="px-3 py-1 rounded bg-[#0ea5e9] text-white">{{ $page }}</button>
+                    @else
+                        <a href="{{ $url }}" class="px-3 py-1 rounded hover:bg-white/10 text-white">{{ $page }}</a>
+                    @endif
+                @endforeach
+
+                @if ($animals->hasMorePages())
+                    <a href="{{ $animals->nextPageUrl() }}" class="px-3 py-1 rounded hover:bg-white/10 text-white">
+                        Next →
+                    </a>
+                @else
+                    <button class="px-3 py-1 rounded bg-white/10 text-white opacity-50 cursor-not-allowed" disabled>
+                        Next →
+                    </button>
+                @endif
             </div>
         </div>
     </main>

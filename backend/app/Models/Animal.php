@@ -11,6 +11,7 @@ class Animal extends Model
         'species',
         'breed',
         'age',
+        'gender',
         'status',
         'image'
     ];

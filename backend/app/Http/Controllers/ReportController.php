@@ -12,8 +12,18 @@ class ReportController extends Controller
     // List all reports
     public function index()
     {
-        $reports = Report::all();
-        return view('reports.index', compact('reports'));
+        $reports = Report::orderBy('created_at', 'desc')->paginate(10);
+
+        // Calculate stats
+        $stats = [
+            'total' => Report::count(),
+            'pending' => Report::where('status', 'pending')->count(),
+            'assigned' => Report::where('status', 'assigned')->count(),
+            'in_progress' => Report::where('status', 'in_progress')->count(),
+            'completed' => Report::where('status', 'completed')->count(),
+        ];
+
+        return view('rescue-reports', compact('reports', 'stats'));
     }
 
     // Accept assignment for a report
@@ -40,5 +50,21 @@ class ReportController extends Controller
     {
         $report = Report::findOrFail($id);
         return view('reports.show', compact('report'));
+    }
+
+    // Update report status
+    public function updateStatus(Request $request, $id)
+    {
+        $report = Report::findOrFail($id);
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,assigned,in_progress,completed',
+        ]);
+
+        $report->update(['status' => $validated['status']]);
+
+        return redirect()
+            ->route('rescue.dashboard')
+            ->with('success', 'Report status updated successfully!');
     }
 }
