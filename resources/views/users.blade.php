@@ -199,49 +199,42 @@
                     <i class="fas fa-home"></i>
                     <span>Adoptions</span>
                 </a>
-                
-                <a href="{{ url('/users') }}" class="nav-link active">
-                    <i class="fas fa-users"></i>
-                    <span>Users & Teams</span>
+
+                <a href="{{ url('/users_management') }}" class="nav-link">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Users Management</span>
                 </a>
-                
+
                 <a href="{{ url('/veterinarians') }}" class="nav-link">
                     <i class="fas fa-stethoscope"></i>
                     <span>Vet Collaborators</span>
                 </a>
-                
+
+                <a href="{{ url('/products') }}" class="nav-link">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
+                </a>
+
                 <a href="{{ url('/donations') }}" class="nav-link">
                     <i class="fas fa-donate"></i>
                     <span>Donations</span>
                 </a>
-                
+
                 <a href="{{ url('/ecommerce') }}" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     <span>E-commerce</span>
                 </a>
-                
+
                 <a href="{{ url('/analytics') }}" class="nav-link">
                     <i class="fas fa-chart-bar"></i>
                     <span>Analytics</span>
                 </a>
-                
+
                 <a href="{{ url('/settings') }}" class="nav-link">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
             </nav>
-
-            <!-- User Profile -->
-            <div class="absolute bottom-0 w-64 p-4 border-t border-white/10">
-                <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=HR+Manager&background=0ea5e9&color=fff" 
-                         alt="HR Manager" class="w-10 h-10 rounded-full">
-                    <div class="flex-1">
-                        <h4 class="text-sm font-semibold text-white">Administrator</h4>
-                        <p class="text-xs text-gray-400">Dashboard</p>
-                    </div>
-                </div>
-            </div>
         </aside>
 
         <!-- Main Content -->

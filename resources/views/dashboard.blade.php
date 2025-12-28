@@ -225,49 +225,54 @@
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
-                
+
                 <a href="{{ url('/reports') }}" class="nav-link">
                     <i class="fas fa-flag"></i>
                     <span>Animal Reports</span>
                     <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">24</span>
                 </a>
-                
+
                 <a href="{{ url('/rescues') }}" class="nav-link">
                     <i class="fas fa-ambulance"></i>
                     <span>Rescue Operations</span>
                 </a>
-                
+
                 <a href="{{ url('/adoptions') }}" class="nav-link">
                     <i class="fas fa-home"></i>
                     <span>Adoptions</span>
                     <span class="ml-auto bg-green-500 text-white text-xs px-2 py-1 rounded-full">12</span>
                 </a>
-                
-                <a href="{{ url('/users') }}" class="nav-link">
-                    <i class="fas fa-users"></i>
-                    <span>Users & Teams</span>
+
+                <a href="{{ url('/users_management') }}" class="nav-link">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Users Management</span>
                 </a>
-                
+
                 <a href="{{ url('/veterinarians') }}" class="nav-link">
                     <i class="fas fa-stethoscope"></i>
                     <span>Vet Collaborators</span>
                 </a>
-                
+
+                <a href="{{ url('/products') }}" class="nav-link">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
+                </a>
+
                 <a href="{{ url('/donations') }}" class="nav-link">
                     <i class="fas fa-donate"></i>
                     <span>Donations</span>
                 </a>
-                
+
                 <a href="{{ url('/ecommerce') }}" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     <span>E-commerce</span>
                 </a>
-                
+
                 <a href="{{ url('/analytics') }}" class="nav-link">
                     <i class="fas fa-chart-bar"></i>
                     <span>Analytics</span>
                 </a>
-                
+
                 <a href="{{ url('/settings') }}" class="nav-link">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
@@ -277,21 +282,11 @@
             <!-- User Profile -->
             <div class="absolute bottom-0 w-64 p-4 border-t border-white/10">
                 <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=0ea5e9&color=fff" 
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=0ea5e9&color=fff"
                          alt="Admin" class="w-10 h-10 rounded-full">
                     <div class="flex-1">
                         <h4 class="text-sm font-semibold text-white">Admin User</h4>
                         <p class="text-xs text-gray-400">Administrator</p>
-                    </div>
-                    <div class="relative">
-                        <button class="text-gray-400 hover:text-white dropdown-toggle">
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="absolute bottom-full right-0 mb-2 w-48 bg-[#0b2447] border border-white/10 rounded-lg shadow-lg hidden dropdown-menu">
-                            <a href="{{ url('/profile') }}" class="block px-4 py-2 text-sm hover:bg-white/10">Profile</a>
-                            <a href="{{ url('/settings') }}" class="block px-4 py-2 text-sm hover:bg-white/10">Settings</a>
-                            <a href="{{ url('/logout') }}" class="block w-full text-left px-4 py-2 text-sm hover:bg-red-500/20 text-red-400">Logout</a>
-                        </div>
                     </div>
                 </div>
             </div>

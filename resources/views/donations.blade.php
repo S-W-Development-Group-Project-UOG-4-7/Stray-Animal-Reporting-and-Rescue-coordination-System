@@ -47,8 +47,9 @@
             <a href="{{ url('/reports') }}" class="nav-link"><i class="fas fa-flag"></i>Animal Reports</a>
             <a href="{{ url('/rescues') }}" class="nav-link"><i class="fas fa-ambulance"></i>Rescue Operations</a>
             <a href="{{ url('/adoptions') }}" class="nav-link"><i class="fas fa-home"></i>Adoptions</a>
-            <a href="{{ url('/users') }}" class="nav-link"><i class="fas fa-users"></i>Users & Teams</a>
+            <a href="{{ url('/users_management') }}" class="nav-link"><i class="fas fa-users-cog"></i>Users Management</a>
             <a href="{{ url('/veterinarians') }}" class="nav-link"><i class="fas fa-stethoscope"></i>Vet Collaborators</a>
+            <a href="{{ url('/products') }}" class="nav-link"><i class="fas fa-box"></i>Products</a>
 
             <!-- ACTIVE MENU ITEM -->
             <a href="{{ url('/donations') }}" class="nav-link active">
@@ -59,6 +60,18 @@
             <a href="{{ url('/analytics') }}" class="nav-link"><i class="fas fa-chart-bar"></i>Analytics</a>
             <a href="{{ url('/settings') }}" class="nav-link"><i class="fas fa-cog"></i>Settings</a>
         </nav>
+
+        <!-- User Profile -->
+        <div class="absolute bottom-0 w-64 p-4 border-t border-white/10">
+            <div class="flex items-center gap-3">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=0ea5e9&color=fff"
+                     alt="Admin" class="w-10 h-10 rounded-full">
+                <div class="flex-1">
+                    <h4 class="text-sm font-semibold text-white">Admin User</h4>
+                    <p class="text-xs text-gray-400">Administrator</p>
+                </div>
+            </div>
+        </div>
     </aside>
 
     <!-- MAIN PAGE -->

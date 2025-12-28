@@ -34,8 +34,7 @@ Route::get('/veterinarians/collaboration', fn() => 'Vet Collaboration Coming Soo
 // Donations
 Route::get('/donations', fn() => view('donations'));
 
-// E-commerce
-Route::get('/ecommerce', fn() => view('ecommerce'));
+// E-commerce - removed (using controller below)
 
 // Analytics
 Route::get('/analytics', fn() => view('analytics'));
@@ -77,5 +76,11 @@ Route::get('/rescues-json', function () {
 // routes/web.php
 
 use App\Http\Controllers\VeterinarianController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EcommerceController;
 
 Route::resource('veterinarians', VeterinarianController::class);
+Route::resource('products', ProductController::class);
+Route::resource('users_management', UserController::class)->parameters(['users_management' => 'user']);
+Route::get('/ecommerce', [EcommerceController::class, 'index'])->name('ecommerce.index');
