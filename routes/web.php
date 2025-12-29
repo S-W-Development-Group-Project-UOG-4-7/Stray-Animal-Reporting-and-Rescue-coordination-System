@@ -1,20 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
 
-// Route for home page
-Route::get('/', function () {
-    // Returns the Blade view located at resources/views/home.blade.php
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+// Home page
+Route::get('/home', function () {
     return view('home');
-});
+})->name('home');
 
-// Route with parameter
-Route::get('/user/{name}', function ($name) {
-    // Pass data to the Blade view
-    return view('user', ['name' => ucfirst($name)]);
-})->where('name', '[A-Za-z]+'); // Validation: only letters allowed
+// Report animal form page
+Route::get('/', [ReportController::class, 'create'])->name('animal.report.form');
 
-// Named route example
-Route::get('/about', function () {
-    return view('about');
-})->name('about.page');
+// Form submission - Store report
+Route::post('/animal-report/store', [ReportController::class, 'store'])->name('animal.report.store');
+
+// Reports history page
+Route::get('/reports/history', [ReportController::class, 'history'])->name('reports.history');
+
+// Tracking status page for individual report
+Route::get('/track/{id}', [ReportController::class, 'track'])->name('track.report');
+
+// Update report status (admin only)
+Route::patch('/report/{id}/status', [ReportController::class, 'updateStatus'])->name('report.update.status');

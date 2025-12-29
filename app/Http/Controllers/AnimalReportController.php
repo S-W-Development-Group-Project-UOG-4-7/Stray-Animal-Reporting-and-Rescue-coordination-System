@@ -22,13 +22,15 @@ class AnimalReport extends Model
         'contact_phone',
         'contact_email',
         'status',
-        'notes',
-        'expires_at'
+        'is_active',           // Changed from 'notes'
+        'expires_at',
+        'admin_notes'          // Changed from 'notes'
     ];
 
     protected $casts = [
         'last_seen' => 'datetime',
         'expires_at' => 'datetime',
+        'is_active' => 'boolean'
     ];
 
     // Generate a unique report ID
@@ -44,7 +46,7 @@ class AnimalReport extends Model
     // Check if report is active
     public function isActive()
     {
-        return $this->status !== 'closed' && 
+        return $this->is_active && 
                ($this->expires_at === null || $this->expires_at > now());
     }
 
@@ -52,10 +54,10 @@ class AnimalReport extends Model
     public function getStatusBadgeClass()
     {
         $statusClasses = [
-            'submitted' => 'bg-blue-500/20 text-blue-300',
+            'pending' => 'bg-blue-500/20 text-blue-300',
             'under_review' => 'bg-cyan-500/20 text-cyan-300',
-            'team_dispatched' => 'bg-purple-500/20 text-purple-300',
-            'rescued' => 'bg-green-500/20 text-green-300',
+            'rescue_dispatched' => 'bg-purple-500/20 text-purple-300',
+            'rescue_completed' => 'bg-green-500/20 text-green-300',
             'completed' => 'bg-yellow-500/20 text-yellow-300',
             'closed' => 'bg-gray-500/20 text-gray-300',
         ];
@@ -67,10 +69,10 @@ class AnimalReport extends Model
     public function getStatusText()
     {
         $statusTexts = [
-            'submitted' => 'Submitted',
+            'pending' => 'Pending',
             'under_review' => 'Under Review',
-            'team_dispatched' => 'Team Dispatched',
-            'rescued' => 'Rescued',
+            'rescue_dispatched' => 'Rescue Dispatched',
+            'rescue_completed' => 'Rescue Completed',
             'completed' => 'Completed',
             'closed' => 'Closed',
         ];

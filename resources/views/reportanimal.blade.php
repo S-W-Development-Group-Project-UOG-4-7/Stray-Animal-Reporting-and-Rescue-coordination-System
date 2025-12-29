@@ -375,7 +375,7 @@
             <div class="px-5 py-3 container-custom">
                 <div class="flex items-center justify-between">
                     <!-- Logo -->
-                    <a href="index.html" class="flex items-center gap-3">
+                    <a href="{{ route('home') }}" class="flex items-center gap-3">
                         <div class="flex items-center justify-center w-10 h-10 shadow-lg gradient-bg rounded-xl shadow-cyan-500/30">
                             <i class="text-lg text-white fas fa-paw"></i>
                         </div>
@@ -387,27 +387,27 @@
 
                     <!-- Desktop Navigation -->
                     <nav class="items-center hidden gap-1 lg:flex">
-                        <a href="index.html" class="nav-link">Home</a>
-                        <a href="index.html#about" class="nav-link">About</a>
+                        <a href="{{ route('home') }}" class="nav-link">Home</a>
+                        <a href="{{ route('home') }}#about" class="nav-link">About</a>
                         
                         <div class="relative dropdown">
                             <button class="flex items-center gap-1 nav-link">
                                 Our Work <i class="text-xs fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <a href="index.html#sterilization" class="dropdown-item">
+                                <a href="{{ route('home') }}#sterilization" class="dropdown-item">
                                     <i class="mr-3 fas fa-stethoscope text-cyan-400"></i>
                                     Sterilization & Vaccination
                                 </a>
-                                <a href="index.html#rescue" class="dropdown-item">
+                                <a href="{{ route('home') }}#rescue" class="dropdown-item">
                                     <i class="mr-3 fas fa-heart text-cyan-400"></i>
                                     Rescue Operations
                                 </a>
-                                <a href="index.html#adoption" class="dropdown-item">
+                                <a href="{{ route('home') }}#adoption" class="dropdown-item">
                                     <i class="mr-3 fas fa-home text-cyan-400"></i>
                                     Adoption Programs
                                 </a>
-                                <a href="index.html#shelters" class="dropdown-item">
+                                <a href="{{ route('home') }}#shelters" class="dropdown-item">
                                     <i class="mr-3 fas fa-shield-alt text-cyan-400"></i>
                                     Safe Shelters
                                 </a>
@@ -419,38 +419,38 @@
                                 Get Involved <i class="text-xs fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <a href="index.html#volunteer" class="dropdown-item">
+                                <a href="{{ route('home') }}#volunteer" class="dropdown-item">
                                     <i class="mr-3 fas fa-hands-helping text-cyan-400"></i>
                                     Volunteer
                                 </a>
-                                <a href="index.html#donate" class="dropdown-item">
+                                <a href="{{ route('home') }}#donate" class="dropdown-item">
                                     <i class="mr-3 fas fa-donate text-cyan-400"></i>
                                     Donate
                                 </a>
-                                <a href="index.html#foster" class="dropdown-item">
+                                <a href="{{ route('home') }}#foster" class="dropdown-item">
                                     <i class="mr-3 fas fa-heartbeat text-cyan-400"></i>
                                     Foster
                                 </a>
-                                <a href="index.html#sponsor" class="dropdown-item">
+                                <a href="{{ route('home') }}#sponsor" class="dropdown-item">
                                     <i class="mr-3 fas fa-star text-cyan-400"></i>
                                     Sponsor
                                 </a>
                             </div>
                         </div>
 
-                        <a href="index.html#success" class="nav-link">Success Stories</a>
-                        <a href="index.html#contact" class="nav-link">Contact</a>
+                        <a href="{{ route('home') }}#success" class="nav-link">Success Stories</a>
+                        <a href="{{ route('home') }}#contact" class="nav-link">Contact</a>
                         
                         <!-- Navigation Actions - Beautifully Arranged -->
                         <div class="nav-actions">
                             <!-- Report Animal Button - Active on this page -->
-                            <button class="report-btn active" onclick="window.location.href='report-animal.html'">
+                            <button class="report-btn active" onclick="window.location.href='{{ route('animal.report.form') }}'">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 Report Animal
                             </button>
 
                             <!-- Donate Button -->
-                            <a href="index.html#donate" class="border small-btn bg-cyan-500/20 hover:bg-cyan-500/30 border-cyan-500/30 text-cyan-300 hover:text-white">
+                            <a href="{{ route('home') }}#donate" class="border small-btn bg-cyan-500/20 hover:bg-cyan-500/30 border-cyan-500/30 text-cyan-300 hover:text-white">
                                 <i class="mr-1 fas fa-heart"></i>
                                 Donate
                             </a>
@@ -521,21 +521,21 @@
             <!-- Mobile Menu -->
             <div id="mobile-menu" class="hidden px-5 py-4 border-t lg:hidden nav-glass border-white/10">
                 <div class="space-y-2">
-                    <a href="index.html" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Home</a>
-                    <a href="index.html#about" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">About</a>
-                    <a href="index.html#work" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Our Work</a>
-                    <a href="index.html#involve" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Get Involved</a>
-                    <a href="index.html#success" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Success Stories</a>
-                    <a href="index.html#contact" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Contact</a>
+                    <a href="{{ route('home') }}" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Home</a>
+                    <a href="{{ route('home') }}#about" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">About</a>
+                    <a href="{{ route('home') }}#work" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Our Work</a>
+                    <a href="{{ route('home') }}#involve" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Get Involved</a>
+                    <a href="{{ route('home') }}#success" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Success Stories</a>
+                    <a href="{{ route('home') }}#contact" class="block px-3 py-2.5 rounded-lg hover:bg-white/5 text-sm">Contact</a>
                     
                     <!-- Action Buttons for Mobile -->
                     <div class="pt-3 mt-3 space-y-2 border-t border-white/10">
-                        <button class="justify-center w-full report-btn active" onclick="window.location.href='report-animal.html'">
+                        <button class="justify-center w-full report-btn active" onclick="window.location.href='{{ route('animal.report.form') }}'">
                             <i class="fas fa-exclamation-triangle"></i>
                             Report Animal
                         </button>
                         
-                        <a href="index.html#donate" class="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/30 text-cyan-300 hover:text-white text-sm">
+                        <a href="{{ route('home') }}#donate" class="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/30 text-cyan-300 hover:text-white text-sm">
                             <i class="fas fa-heart"></i>
                             Donate Now
                         </a>
@@ -718,7 +718,9 @@
                     </div>
 
                     <!-- Form Steps -->
-                    <form id="animal-report-form" class="space-y-8">
+                    <form id="animal-report-form" action="{{ route('animal.report.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                        @csrf
+                        
                         <!-- Step 1: Animal Type -->
                         <div id="step-1" class="form-step card">
                             <h3 class="mb-6 text-2xl font-bold gradient-text">1. Select Animal Type</h3>
@@ -983,10 +985,11 @@
                                     <i class="mr-2 fas fa-arrow-left"></i>
                                     Previous
                                 </button>
-                                <button type="submit" class="primary-btn">
-                                    <i class="mr-2 fas fa-paper-plane"></i>
-                                    Submit Report
-                                </button>
+                                <!-- Simple link to test history page -->
+<a href="{{ route('reports.history') }}" class="primary-btn">
+    <i class="mr-2 fas fa-paper-plane"></i>
+    Submit Report 
+</a>
                             </div>
                         </div>
                     </form>
@@ -1000,14 +1003,14 @@
                         </p>
                         <div class="max-w-md mx-auto mb-6 card bg-white/5">
                             <p class="mb-2 text-gray-400">Your Report ID:</p>
-                            <p id="report-id" class="text-2xl font-bold gradient-text">SP-2024-XXXXX</p>
+                            <p id="report-id" class="text-2xl font-bold gradient-text"></p>
                             <p class="mt-3 text-sm text-gray-300">
                                 <i class="mr-1 fas fa-info-circle"></i>
-                                Use this ID to track your report status
+                                This ID will expire on: <span id="expiry-date" class="font-medium"></span>
                             </p>
                         </div>
                         <div class="flex flex-col justify-center gap-4 sm:flex-row">
-                            <a href="track-report.html" class="primary-btn">
+                            <a href="#" id="track-report-link" class="primary-btn">
                                 <i class="mr-2 fas fa-search"></i>
                                 Track Report Status
                             </a>
@@ -1136,7 +1139,7 @@
                         <i class="mr-2 fas fa-phone"></i>
                         Call Emergency: (555) 911-ANIMAL
                     </a>
-                    <a href="index.html" class="secondary-btn">
+                    <a href="{{ route('home') }}" class="secondary-btn">
                         <i class="mr-2 fas fa-home"></i>
                         Back to Homepage
                     </a>
@@ -1149,7 +1152,7 @@
             <div class="px-5 container-custom">
                 <div class="grid gap-8 mb-12 md:grid-cols-4">
                     <div>
-                        <a href="index.html" class="flex items-center gap-3 mb-6">
+                        <a href="{{ route('home') }}" class="flex items-center gap-3 mb-6">
                             <div class="flex items-center justify-center w-12 h-12 gradient-bg rounded-xl">
                                 <i class="text-xl text-white fas fa-paw"></i>
                             </div>
@@ -1180,18 +1183,18 @@
                     <div>
                         <h4 class="mb-6 text-lg font-bold">Quick Links</h4>
                         <ul class="space-y-3">
-                            <li><a href="index.html" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Home</a></li>
-                            <li><a href="report-animal.html" class="font-medium text-cyan-400">Report Animal</a></li>
-                            <li><a href="track-report.html" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Track Report</a></li>
-                            <li><a href="index.html#adopt" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Adopt a Pet</a></li>
-                            <li><a href="index.html#team" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Our Team</a></li>
+                            <li><a href="{{ route('home') }}" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Home</a></li>
+                            <li><a href="{{ route('animal.report.form') }}" class="font-medium text-cyan-400">Report Animal</a></li>
+                            <li><a href="{{ route('track.report', 'sample') }}" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Track Report</a></li>
+                            <li><a href="{{ route('home') }}#adopt" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Adopt a Pet</a></li>
+                            <li><a href="{{ route('home') }}#team" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Our Team</a></li>
                         </ul>
                     </div>
                     
                     <div>
                         <h4 class="mb-6 text-lg font-bold">Emergency Services</h4>
                         <ul class="space-y-3">
-                            <li><a href="report-animal.html#emergency" class="text-gray-300 transition-colors duration-300 hover:text-red-400">Emergency Hotline</a></li>
+                            <li><a href="{{ route('animal.report.form') }}#emergency" class="text-gray-300 transition-colors duration-300 hover:text-red-400">Emergency Hotline</a></li>
                             <li><a href="#" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Animal Rescue</a></li>
                             <li><a href="#" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Medical Emergency</a></li>
                             <li><a href="#" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Aggressive Animals</a></li>
@@ -1241,448 +1244,499 @@
         <button id="back-to-top" class="fixed flex items-center justify-center hidden w-12 h-12 text-white transition-all duration-300 rounded-full shadow-lg bottom-8 right-8 gradient-bg shadow-cyan-500/30 hover:scale-110">
             <i class="fas fa-arrow-up"></i>
         </button>
+<script>
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        <script>
-            // Set current year in footer
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-            // Mobile menu toggle
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                    mobileMenuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
-                        ? '<i class="fas fa-bars"></i>' 
-                        : '<i class="fas fa-times"></i>';
-                });
-            }
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
+                ? '<i class="fas fa-bars"></i>' 
+                : '<i class="fas fa-times"></i>';
+        });
+    }
 
-            // Back to top button
-            const backToTopBtn = document.getElementById('back-to-top');
-            
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.remove('hidden');
-                } else {
-                    backToTopBtn.classList.add('hidden');
-                }
-            });
-            
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+    // Back to top button
+    const backToTopBtn = document.getElementById('back-to-top');
 
-            // Form handling
-            let currentStep = 1;
-            const totalSteps = 4;
-            const formProgress = document.getElementById('form-progress');
-            const steps = document.querySelectorAll('.step-indicator');
-            
-            // Update progress bar and step indicators
-            function updateProgress() {
-                // Update progress bar width
-                const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-                formProgress.style.width = `${progressPercentage}%`;
-                
-                // Update step indicators
-                steps.forEach((step, index) => {
-                    const stepNumber = index + 1;
-                    if (stepNumber < currentStep) {
-                        step.classList.remove('active');
-                        step.classList.add('completed');
-                        step.innerHTML = '<i class="fas fa-check"></i>';
-                    } else if (stepNumber === currentStep) {
-                        step.classList.add('active');
-                        step.classList.remove('completed');
-                        step.textContent = stepNumber;
-                    } else {
-                        step.classList.remove('active', 'completed');
-                        step.textContent = stepNumber;
-                    }
-                });
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.remove('hidden');
+        } else {
+            backToTopBtn.classList.add('hidden');
+        }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Form handling
+    let currentStep = 1;
+    const totalSteps = 4;
+    const formProgress = document.getElementById('form-progress');
+    const steps = document.querySelectorAll('.step-indicator');
+
+    // Update progress bar and step indicators
+    function updateProgress() {
+        // Update progress bar width
+        const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        formProgress.style.width = `${progressPercentage}%`;
+        
+        // Update step indicators
+        steps.forEach((step, index) => {
+            const stepNumber = index + 1;
+            if (stepNumber < currentStep) {
+                step.classList.remove('active');
+                step.classList.add('completed');
+                step.innerHTML = '<i class="fas fa-check"></i>';
+            } else if (stepNumber === currentStep) {
+                step.classList.add('active');
+                step.classList.remove('completed');
+                step.textContent = stepNumber;
+            } else {
+                step.classList.remove('active', 'completed');
+                step.textContent = stepNumber;
             }
-            
-            // Show specific step
-            function showStep(stepNumber) {
-                // Hide all steps
-                document.querySelectorAll('.form-step').forEach(step => {
-                    step.classList.add('hidden');
-                });
-                
-                // Show requested step
-                const stepToShow = document.getElementById(`step-${stepNumber}`);
-                if (stepToShow) {
-                    stepToShow.classList.remove('hidden');
-                    currentStep = stepNumber;
-                    updateProgress();
-                    
-                    // If on review step, populate review
-                    if (stepNumber === 4) {
-                        populateReview();
-                    }
-                }
-            }
-            
-            // Validate current step
-            function validateStep(stepNumber) {
-                let isValid = true;
-                
-                if (stepNumber === 1) {
-                    const animalTypeSelected = document.querySelector('input[name="animal_type"]:checked');
-                    if (!animalTypeSelected) {
-                        alert('Please select an animal type');
-                        isValid = false;
-                    }
-                }
-                
-                if (stepNumber === 2) {
-                    const imageInput = document.getElementById('animal_photo');
-                    const description = document.getElementById('description').value.trim();
-                    
-                    if (!imageInput.files || imageInput.files.length === 0) {
-                        document.getElementById('image-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('image-error').classList.add('hidden');
-                    }
-                    
-                    if (!description) {
-                        document.getElementById('description-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('description-error').classList.add('hidden');
-                    }
-                }
-                
-                if (stepNumber === 3) {
-                    const location = document.getElementById('location').value.trim();
-                    const lastSeen = document.getElementById('last_seen').value;
-                    
-                    if (!location) {
-                        document.getElementById('location-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('location-error').classList.add('hidden');
-                    }
-                    
-                    if (!lastSeen) {
-                        document.getElementById('last-seen-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('last-seen-error').classList.add('hidden');
-                    }
-                }
-                
-                if (stepNumber === 4) {
-                    const termsAccepted = document.getElementById('terms').checked;
-                    if (!termsAccepted) {
-                        document.getElementById('terms-error').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('terms-error').classList.add('hidden');
-                    }
-                }
-                
-                return isValid;
-            }
-            
-            // Populate review step
-            function populateReview() {
-                // Animal type
-                const animalType = document.querySelector('input[name="animal_type"]:checked');
-                if (animalType) {
-                    document.getElementById('review-type').textContent = animalType.value;
-                }
-                
-                // Location
-                const location = document.getElementById('location').value;
-                document.getElementById('review-location').textContent = location || 'Not provided';
-                
-                // Last seen
-                const lastSeen = document.getElementById('last_seen').value;
-                if (lastSeen) {
-                    const date = new Date(lastSeen);
-                    document.getElementById('review-last-seen').textContent = date.toLocaleString();
-                } else {
-                    document.getElementById('review-last-seen').textContent = 'Not provided';
-                }
-                
-                // Description
-                const description = document.getElementById('description').value;
-                document.getElementById('review-description').textContent = description || 'Not provided';
-                
-                // Contact info
-                const contactName = document.getElementById('contact_name').value;
-                const contactPhone = document.getElementById('contact_phone').value;
-                const contactEmail = document.getElementById('contact_email').value;
-                
-                if (contactName || contactPhone || contactEmail) {
-                    let contactDetails = [];
-                    if (contactName) contactDetails.push(`Name: ${contactName}`);
-                    if (contactPhone) contactDetails.push(`Phone: ${contactPhone}`);
-                    if (contactEmail) contactDetails.push(`Email: ${contactEmail}`);
-                    
-                    document.getElementById('review-contact-details').textContent = contactDetails.join(', ');
-                    document.getElementById('review-contact').classList.remove('hidden');
-                } else {
-                    document.getElementById('review-contact').classList.add('hidden');
-                }
-            }
-            
-            // Next step button handlers
-            document.querySelectorAll('.next-step').forEach(button => {
-                button.addEventListener('click', function() {
-                    const nextStep = parseInt(this.getAttribute('data-next'));
-                    if (validateStep(currentStep)) {
-                        showStep(nextStep);
-                    }
-                });
-            });
-            
-            // Previous step button handlers
-            document.querySelectorAll('.prev-step').forEach(button => {
-                button.addEventListener('click', function() {
-                    const prevStep = parseInt(this.getAttribute('data-prev'));
-                    showStep(prevStep);
-                });
-            });
-            
-            // File upload handling
-            const fileUploadArea = document.getElementById('file-upload-area');
-            const fileInput = document.getElementById('animal_photo');
-            const filePreview = document.getElementById('file-preview');
-            const fileName = document.getElementById('file-name');
-            const fileSize = document.getElementById('file-size');
-            const imagePreview = document.getElementById('image-preview');
-            const removeImageBtn = document.getElementById('remove-image');
-            
-            if (fileUploadArea && fileInput) {
-                // Click to upload
-                fileUploadArea.addEventListener('click', () => {
-                    fileInput.click();
-                });
-                
-                // Drag and drop
-                fileUploadArea.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    fileUploadArea.classList.add('border-cyan-500', 'bg-cyan-500/10');
-                });
-                
-                fileUploadArea.addEventListener('dragleave', () => {
-                    fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
-                });
-                
-                fileUploadArea.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
-                    
-                    if (e.dataTransfer.files.length) {
-                        fileInput.files = e.dataTransfer.files;
-                        handleFileSelection(fileInput.files[0]);
-                    }
-                });
-                
-                // File input change
-                fileInput.addEventListener('change', () => {
-                    if (fileInput.files.length) {
-                        handleFileSelection(fileInput.files[0]);
-                    }
-                });
-                
-                // Remove image
-                removeImageBtn.addEventListener('click', () => {
-                    fileInput.value = '';
-                    filePreview.classList.add('hidden');
-                });
-            }
-            
-            function handleFileSelection(file) {
-                if (file && file.type.startsWith('image/')) {
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert('File size must be less than 5MB');
-                        return;
-                    }
-                    
-                    // Show preview
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                    
-                    // Update file info
-                    fileName.textContent = file.name;
-                    fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
-                    
-                    // Show preview
-                    filePreview.classList.remove('hidden');
-                    document.getElementById('image-error').classList.add('hidden');
-                } else {
-                    alert('Please select a valid image file (JPG, PNG, etc.)');
-                }
-            }
-            
-            // Form submission
-            const reportForm = document.getElementById('animal-report-form');
-            const successMessage = document.getElementById('success-message');
-            
-            if (reportForm) {
-                reportForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    // Validate all steps
-                    let allValid = true;
-                    for (let i = 1; i <= 4; i++) {
-                        if (!validateStep(i)) {
-                            allValid = false;
-                            showStep(i);
-                            break;
-                        }
-                    }
-                    
-                    if (!allValid) {
-                        return;
-                    }
-                    
-                    // Generate report ID
-                    const reportId = 'SP-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
-                    document.getElementById('report-id').textContent = reportId;
-                    
-                    // Show success message
-                    reportForm.classList.add('hidden');
-                    successMessage.classList.remove('hidden');
-                    
-                    // In real app, send data to server here
-                    console.log('Form submitted successfully');
-                    
-                    // Scroll to success message
-                    successMessage.scrollIntoView({ behavior: 'smooth' });
-                });
-            }
-            
-            // Reset form function
-            function resetForm() {
-                // Reset form fields
-                document.getElementById('animal-report-form').reset();
-                document.getElementById('file-preview').classList.add('hidden');
-                document.getElementById('file-input').value = '';
-                
-                // Hide success message, show form
-                successMessage.classList.add('hidden');
-                reportForm.classList.remove('hidden');
-                
-                // Reset to step 1
-                showStep(1);
-                
-                // Scroll to form
-                document.getElementById('report-form').scrollIntoView({ behavior: 'smooth' });
-            }
-            
-            // Copy emergency number
-            function copyEmergencyNumber() {
-                const number = '(555) 911-ANIMAL';
-                navigator.clipboard.writeText(number).then(() => {
-                    alert('Emergency number copied to clipboard: ' + number);
-                });
-            }
-            
-            // FAQ toggle
-            document.querySelectorAll('.faq-question').forEach(question => {
-                question.addEventListener('click', () => {
-                    const answer = question.nextElementSibling;
-                    const icon = question.querySelector('i');
-                    
-                    answer.classList.toggle('hidden');
-                    icon.classList.toggle('fa-chevron-down');
-                    icon.classList.toggle('fa-chevron-up');
-                });
-            });
-            
-            // Animated counters
-            function animateCounter(element, target) {
-                let current = 0;
-                const increment = target / 100;
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    element.textContent = Math.floor(current);
-                }, 20);
-            }
-            
-            // Start counters when in viewport
-            const observerOptions = {
-                threshold: 0.5
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const counters = document.querySelectorAll('.stats-counter');
-                        counters.forEach(counter => {
-                            const target = parseInt(counter.getAttribute('data-count'));
-                            animateCounter(counter, target);
-                        });
-                        observer.disconnect();
-                    }
-                });
-            }, observerOptions);
-            
-            const statsSection = document.querySelector('#report-hero');
-            if (statsSection) {
-                observer.observe(statsSection);
-            }
-            
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                        }
-                        
-                        // Scroll to target
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // Initialize progress bar
+        });
+    }
+
+    // Show specific step
+    function showStep(stepNumber) {
+        // Hide all steps
+        document.querySelectorAll('.form-step').forEach(step => {
+            step.classList.add('hidden');
+        });
+        
+        // Show requested step
+        const stepToShow = document.getElementById(`step-${stepNumber}`);
+        if (stepToShow) {
+            stepToShow.classList.remove('hidden');
+            currentStep = stepNumber;
             updateProgress();
             
-            // Set default date/time to now
-            const now = new Date();
-            const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-            document.getElementById('last_seen').value = localDateTime;
-            
-            // Language selector functionality
-            document.querySelectorAll('.language-option, .mobile-language-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const lang = this.getAttribute('data-lang');
-                    alert(`Language changed to: ${lang}`);
-                    // Here you would typically make an AJAX call to set the language
-                });
-            });
-            
-            // Login function
-            function openLogin() {
-                alert('Login feature coming soon!');
+            // If on review step, populate review
+            if (stepNumber === 4) {
+                populateReview();
             }
-        </script>
+        }
+    }
+
+    // Validate current step
+    function validateStep(stepNumber) {
+        let isValid = true;
+        
+        if (stepNumber === 1) {
+            const animalTypeSelected = document.querySelector('input[name="animal_type"]:checked');
+            if (!animalTypeSelected) {
+                alert('Please select an animal type');
+                isValid = false;
+            }
+        }
+        
+        if (stepNumber === 2) {
+            const imageInput = document.getElementById('animal_photo');
+            const description = document.getElementById('description').value.trim();
+            
+            if (!imageInput.files || imageInput.files.length === 0) {
+                document.getElementById('image-error').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('image-error').classList.add('hidden');
+            }
+            
+            if (!description) {
+                document.getElementById('description-error').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('description-error').classList.add('hidden');
+            }
+        }
+        
+        if (stepNumber === 3) {
+            const location = document.getElementById('location').value.trim();
+            const lastSeen = document.getElementById('last_seen').value;
+            
+            if (!location) {
+                document.getElementById('location-error').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('location-error').classList.add('hidden');
+            }
+            
+            if (!lastSeen) {
+                document.getElementById('last-seen-error').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('last-seen-error').classList.add('hidden');
+            }
+        }
+        
+        if (stepNumber === 4) {
+            const termsAccepted = document.getElementById('terms').checked;
+            if (!termsAccepted) {
+                document.getElementById('terms-error').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('terms-error').classList.add('hidden');
+            }
+        }
+        
+        return isValid;
+    }
+
+    // Populate review step
+    function populateReview() {
+        // Animal type
+        const animalType = document.querySelector('input[name="animal_type"]:checked');
+        if (animalType) {
+            document.getElementById('review-type').textContent = animalType.value;
+        }
+        
+        // Location
+        const location = document.getElementById('location').value;
+        document.getElementById('review-location').textContent = location || 'Not provided';
+        
+        // Last seen
+        const lastSeen = document.getElementById('last_seen').value;
+        if (lastSeen) {
+            const date = new Date(lastSeen);
+            document.getElementById('review-last-seen').textContent = date.toLocaleString();
+        } else {
+            document.getElementById('review-last-seen').textContent = 'Not provided';
+        }
+        
+        // Description
+        const description = document.getElementById('description').value;
+        document.getElementById('review-description').textContent = description || 'Not provided';
+        
+        // Contact info
+        const contactName = document.getElementById('contact_name').value;
+        const contactPhone = document.getElementById('contact_phone').value;
+        const contactEmail = document.getElementById('contact_email').value;
+        
+        if (contactName || contactPhone || contactEmail) {
+            let contactDetails = [];
+            if (contactName) contactDetails.push(`Name: ${contactName}`);
+            if (contactPhone) contactDetails.push(`Phone: ${contactPhone}`);
+            if (contactEmail) contactDetails.push(`Email: ${contactEmail}`);
+            
+            document.getElementById('review-contact-details').textContent = contactDetails.join(', ');
+            document.getElementById('review-contact').classList.remove('hidden');
+        } else {
+            document.getElementById('review-contact').classList.add('hidden');
+        }
+    }
+
+    // Next step button handlers
+    document.querySelectorAll('.next-step').forEach(button => {
+        button.addEventListener('click', function() {
+            const nextStep = parseInt(this.getAttribute('data-next'));
+            if (validateStep(currentStep)) {
+                showStep(nextStep);
+            }
+        });
+    });
+
+    // Previous step button handlers
+    document.querySelectorAll('.prev-step').forEach(button => {
+        button.addEventListener('click', function() {
+            const prevStep = parseInt(this.getAttribute('data-prev'));
+            showStep(prevStep);
+        });
+    });
+
+    // File upload handling
+    const fileUploadArea = document.getElementById('file-upload-area');
+    const fileInput = document.getElementById('animal_photo');
+    const filePreview = document.getElementById('file-preview');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+    const imagePreview = document.getElementById('image-preview');
+    const removeImageBtn = document.getElementById('remove-image');
+
+    if (fileUploadArea && fileInput) {
+        // Click to upload
+        fileUploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        // Drag and drop
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('border-cyan-500', 'bg-cyan-500/10');
+        });
+        
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
+        });
+        
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelection(fileInput.files[0]);
+            }
+        });
+        
+        // File input change
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length) {
+                handleFileSelection(fileInput.files[0]);
+            }
+        });
+        
+        // Remove image
+        removeImageBtn.addEventListener('click', () => {
+            fileInput.value = '';
+            filePreview.classList.add('hidden');
+        });
+    }
+
+    function handleFileSelection(file) {
+        if (file && file.type.startsWith('image/')) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                return;
+            }
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            
+            // Update file info
+            fileName.textContent = file.name;
+            fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+            
+            // Show preview
+            filePreview.classList.remove('hidden');
+            document.getElementById('image-error').classList.add('hidden');
+        } else {
+            alert('Please select a valid image file (JPG, PNG, etc.)');
+        }
+    }
+
+   // Form submission - Add debug logging
+const reportForm = document.getElementById('animal-report-form');
+const successMessage = document.getElementById('success-message');
+
+if (reportForm) {
+    reportForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        console.log('Form submit triggered');
+        
+        // Validate all steps
+        let allValid = true;
+        for (let i = 1; i <= 4; i++) {
+            console.log(`Validating step ${i}:`, validateStep(i));
+            if (!validateStep(i)) {
+                allValid = false;
+                showStep(i);
+                break;
+            }
+        }
+        
+        console.log('All valid?', allValid);
+        
+        if (!allValid) {
+            alert('Please complete all required fields');
+            return;
+        }
+
+        // Create FormData object
+        const formData = new FormData(this);
+        console.log('FormData created');
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i> Submitting...';
+        submitBtn.disabled = true;
+
+        // Submit via AJAX
+        console.log('Sending AJAX request to:', this.action);
+        
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            console.log('Response received:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
+            
+            if (data.success) {
+                console.log('Success! Redirecting to:', data.history_url);
+                
+                // Show success message briefly then redirect
+                document.getElementById('report-id').textContent = data.report_id;
+                
+                // Show success message
+                reportForm.classList.add('hidden');
+                successMessage.classList.remove('hidden');
+                
+                // Auto-redirect to history page after 3 seconds
+                setTimeout(() => {
+                    console.log('Redirecting now...');
+                    window.location.href = data.history_url;
+                }, 3000);
+                
+            } else {
+                console.error('Server returned error:', data);
+                alert('Error submitting report. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            alert('Error submitting report. Please try again.');
+        })
+        .finally(() => {
+            console.log('Request completed');
+            // Reset button state
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+}
+    // Reset form function
+    function resetForm() {
+        // Reset form fields
+        document.getElementById('animal-report-form').reset();
+        document.getElementById('file-preview').classList.add('hidden');
+        fileInput.value = '';
+        
+        // Hide success message, show form
+        successMessage.classList.add('hidden');
+        reportForm.classList.remove('hidden');
+        
+        // Reset to step 1
+        showStep(1);
+        
+        // Scroll to form
+        document.getElementById('report-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Copy emergency number
+    function copyEmergencyNumber() {
+        const number = '(555) 911-ANIMAL';
+        navigator.clipboard.writeText(number).then(() => {
+            alert('Emergency number copied to clipboard: ' + number);
+        });
+    }
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            const icon = question.querySelector('i');
+            
+            answer.classList.toggle('hidden');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        });
+    });
+
+    // Animated counters
+    function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 100;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current);
+        }, 20);
+    }
+
+    // Start counters when in viewport
+    const observerOptions = {
+        threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = document.querySelectorAll('.stats-counter');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-count'));
+                    animateCounter(counter, target);
+                });
+                observer.disconnect();
+            }
+        });
+    }, observerOptions);
+
+    const statsSection = document.querySelector('#report-hero');
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Close mobile menu if open
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+                
+                // Scroll to target
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Initialize progress bar
+    updateProgress();
+
+    // Set default date/time to now
+    const now = new Date();
+    const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    document.getElementById('last_seen').value = localDateTime;
+
+    // Language selector functionality
+    document.querySelectorAll('.language-option, .mobile-language-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            alert(`Language changed to: ${lang}`);
+            // Here you would typically make an AJAX call to set the language
+        });
+    });
+
+    // Login function
+    function openLogin() {
+        alert('Login feature coming soon!');
+    }
+</script>
     </body>
 </html>

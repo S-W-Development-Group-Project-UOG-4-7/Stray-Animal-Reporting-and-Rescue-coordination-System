@@ -19,9 +19,14 @@ return new class extends Migration
             $table->string('contact_name')->nullable();
             $table->string('contact_phone')->nullable();
             $table->string('contact_email')->nullable();
-            $table->enum('status', ['pending', 'in_progress', 'resolved', 'cancelled'])->default('pending');
-            $table->text('notes')->nullable();
+            $table->enum('status', ['pending', 'under_review', 'rescue_dispatched', 'rescue_completed', 'closed'])->default('pending');
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('expires_at')->nullable();
+            $table->text('admin_notes')->nullable();
             $table->timestamps();
+            
+            $table->index(['report_id', 'status', 'is_active']);
+            $table->index('expires_at');
         });
     }
 

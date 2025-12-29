@@ -2,100 +2,122 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AnimalReport;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
+    // Show report form
     public function create()
     {
-        return view('home');
+        return view('reportanimal');
     }
 
+    // Store new report
     public function store(Request $request)
     {
-        // Validate the request
+        // Validate request
         $validated = $request->validate([
-            'animal_type' => 'required|string',
-            'description' => 'required|string|max:1000',
-            'location' => 'required|string|max:255',
+            'animal_type' => 'required|string|max:255',
+            'description' => 'required|string|min:10',
+            'location' => 'required|string|max:500',
             'last_seen' => 'required|date',
-            'animal_photo' => 'required|image|max:5120', // 5MB max
-            'contact_name' => 'nullable|string|max:100',
+            'animal_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'contact_name' => 'nullable|string|max:255',
             'contact_phone' => 'nullable|string|max:20',
-            'contact_email' => 'nullable|email|max:100',
+            'contact_email' => 'nullable|email|max:255',
+            'terms' => 'required|accepted',
         ]);
 
-        // Generate report ID
-        $reportId = 'SP-' . date('Y') . '-' . strtoupper(Str::random(8));
-
         // Handle file upload
+        $photoPath = null;
         if ($request->hasFile('animal_photo')) {
-            $path = $request->file('animal_photo')->store('animal_photos', 'public');
-            $validated['animal_photo'] = $path;
+            // Store in 'animal-photos' folder as defined in your form
+            $photoPath = $request->file('animal_photo')->store('animal-photos', 'public');
         }
 
-        // Add report ID and status
-        $validated['report_id'] = $reportId;
-        $validated['status'] = 'pending';
+        // Create report
+        $report = AnimalReport::create([
+            'report_id' => AnimalReport::generateReportId(),
+            'animal_type' => $validated['animal_type'],
+            'description' => $validated['description'],
+            'location' => $validated['location'],
+            'last_seen' => $validated['last_seen'],
+            'animal_photo' => $photoPath,
+            'contact_name' => $validated['contact_name'] ?? null,
+            'contact_phone' => $validated['contact_phone'] ?? null,
+            'contact_email' => $validated['contact_email'] ?? null,
+            'status' => 'pending',           // Match your migration enum
+            'is_active' => true,             // Set as active
+            'expires_at' => now()->addDays(30),
+            'admin_notes' => null,           // Initial admin notes
+        ]);
 
-        // Store in database (create a model and migration first)
-        // $report = AnimalReport::create($validated);
+        // Store report ID in session for easy access
+        session(['last_report_id' => $report->report_id]);
 
-        // In a real app, you would save to database
-        // For now, return JSON response for AJAX
+        // Return JSON response for AJAX
         return response()->json([
             'success' => true,
-            'report_id' => $reportId,
+            'report_id' => $report->report_id,
+            'history_url' => route('reports.history'),
+            'track_url' => route('track.report', $report->report_id),
             'message' => 'Report submitted successfully!'
         ]);
     }
 
-    public function track(Request $request)
+    // Show all reports (history)
+    public function history()
     {
-        $reportId = $request->query('id');
+        $reports = AnimalReport::orderBy('created_at', 'desc')->get();
         
-        // In real app, fetch from database
-        // $report = AnimalReport::where('report_id', $reportId)->first();
-        
-        // For demo, return fake data
-        return response()->json([
-            'report_id' => $reportId,
-            'animal_type' => 'Dog - Aggressive',
-            'status' => 'in_progress',
-            'location' => 'Central Park, New York',
-            'last_seen' => now()->subHours(2),
-            'updates' => [
-                [
-                    'title' => 'Report Received',
-                    'description' => 'Your report has been received and assigned to our team',
-                    'time' => now()->subHours(2),
-                    'completed' => true
-                ],
-                [
-                    'title' => 'Team Dispatched',
-                    'description' => 'Rescue Team Alpha has been dispatched to the location',
-                    'time' => now()->subHours(1),
-                    'completed' => true
-                ],
-                [
-                    'title' => 'Rescue in Progress',
-                    'description' => 'Team is en route to the reported location',
-                    'time' => now()->subMinutes(30),
-                    'completed' => false
-                ]
-            ]
+        return view('reports-history', [
+            'reports' => $reports,
+            'total_reports' => $reports->count(),
+            'active_reports' => $reports->where('is_active', true)->count(),
+            'completed_reports' => $reports->where('status', 'rescue_completed')->count(),
         ]);
     }
 
-    public function show($id)
+    // Show tracking status for specific report
+    public function track($id)
     {
-        // Fetch report details
-        // $report = AnimalReport::where('report_id', $id)->firstOrFail();
-        // return view('report.show', compact('report'));
+        $report = AnimalReport::where('report_id', $id)->first();
         
-        // For demo
-        return response()->json(['id' => $id]);
+        if (!$report) {
+            return redirect()->route('reports.history')->with('error', 'Report not found');
+        }
+        
+        return view('tracking-status', [
+            'report' => $report,
+            'error' => null
+        ]);
+    }
+
+    // Update report status (for admin)
+    public function updateStatus(Request $request, $id)
+    {
+        $report = AnimalReport::where('report_id', $id)->first();
+        
+        if (!$report) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Report not found'
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,under_review,rescue_dispatched,rescue_completed,closed',
+            'admin_notes' => 'nullable|string',
+        ]);
+
+        $report->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Report status updated successfully!'
+        ]);
     }
 }
