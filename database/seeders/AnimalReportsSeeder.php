@@ -4,82 +4,55 @@ namespace Database\Seeders;
 
 use App\Models\AnimalReport;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
 
 class AnimalReportsSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
         $reports = [
             [
-                'report_id' => 'SP-20241228-2835A7',
                 'animal_type' => 'Sick/Injured',
-                'description' => 'Medium-sized brown dog, appears dirty and injured, limping on front left leg',
-                'location' => 'Central Park, near the fountain',
-                'last_seen' => Carbon::parse('2025-12-28 21:58:00'),
-                'contact_name' => 'Rose Mamy',
-                'contact_phone' => '0755028786',
-                'contact_email' => 'rose2335041@gmail.com',
-                'status' => 'rescued',
-                'notes' => 'Rescue team located the dog. Front left leg appears injured. Administered first aid.',
-                'created_at' => Carbon::parse('2025-12-28 21:58:00'),
-                'expires_at' => Carbon::parse('2026-01-27 21:58:00'),
+                'description' => 'Found a limping dog near Central Park. Seems to have an injured front leg.',
+                'location' => 'Central Park, Main Entrance',
+                'last_seen' => now()->subHours(2),
+                'contact_name' => 'John Doe',
+                'contact_phone' => '555-1234',
+                'contact_email' => 'john@example.com',
+                'report_id' => 'SP-ABC12345',
+                'status' => 'in_progress'
             ],
             [
-                'report_id' => 'SP-20241227-8C2D9F',
                 'animal_type' => 'Stray/Lost',
-                'description' => 'Small black and white cat, appears hungry and lost, no collar',
-                'location' => 'Maple Street, near the grocery store',
-                'last_seen' => Carbon::parse('2025-12-27 15:20:00'),
-                'contact_name' => 'John Smith',
-                'contact_phone' => '0712345678',
-                'contact_email' => 'john.smith@email.com',
-                'status' => 'completed',
-                'notes' => 'Cat rescued and adopted by local family.',
-                'created_at' => Carbon::parse('2025-12-27 15:20:00'),
-                'expires_at' => Carbon::parse('2026-01-26 15:20:00'),
+                'description' => 'Friendly cat without collar, appears lost. Hanging around 5th Avenue.',
+                'location' => '5th Avenue & 42nd Street',
+                'last_seen' => now()->subDays(1),
+                'contact_name' => 'Jane Smith',
+                'contact_phone' => '555-5678',
+                'contact_email' => 'jane@example.com',
+                'report_id' => 'SP-DEF67890',
+                'status' => 'resolved'
             ],
             [
-                'report_id' => 'SP-20241226-4E9F2B',
-                'animal_type' => 'Aggressive/Dangerous',
-                'description' => 'Large stray dog showing aggressive behavior near school',
-                'location' => 'Near City Elementary School',
-                'last_seen' => Carbon::parse('2025-12-26 11:45:00'),
-                'contact_name' => 'Sarah Johnson',
-                'contact_phone' => '0723456789',
-                'contact_email' => 'sarah.j@email.com',
-                'status' => 'team_dispatched',
-                'notes' => 'Emergency response team dispatched. Caution advised.',
-                'created_at' => Carbon::parse('2025-12-26 11:45:00'),
-                'expires_at' => Carbon::parse('2026-01-25 11:45:00'),
+                'animal_type' => 'Aggressive',
+                'description' => 'Dog showing aggressive behavior near school. Please handle with caution.',
+                'location' => 'Maple Street Elementary School',
+                'last_seen' => now()->subHours(1),
+                'contact_name' => 'Mike Johnson',
+                'contact_phone' => '555-9012',
+                'contact_email' => 'mike@example.com',
+                'report_id' => 'SP-GHI34567',
+                'status' => 'pending'
             ],
             [
-                'report_id' => 'SP-20241225-1A7B3C',
                 'animal_type' => 'Abandoned',
-                'description' => 'Puppy left in a box near the park entrance',
-                'location' => 'Riverside Park entrance',
-                'last_seen' => Carbon::parse('2025-12-25 09:30:00'),
-                'contact_name' => 'Michael Brown',
-                'contact_phone' => '0734567890',
-                'contact_email' => 'michael.b@email.com',
-                'status' => 'under_review',
-                'notes' => 'Report received, assessing situation.',
-                'created_at' => Carbon::parse('2025-12-25 09:30:00'),
-                'expires_at' => Carbon::parse('2026-01-24 09:30:00'),
-            ],
-            [
-                'report_id' => 'SP-20241224-5D8E1F',
-                'animal_type' => 'Sick/Injured',
-                'description' => 'Bird with broken wing, unable to fly',
-                'location' => 'Backyard, Oak Street',
-                'last_seen' => Carbon::parse('2025-12-24 14:15:00'),
-                'contact_name' => 'Emma Wilson',
-                'contact_phone' => '0745678901',
-                'contact_email' => 'emma.w@email.com',
-                'status' => 'submitted',
-                'notes' => 'Awaiting volunteer availability.',
-                'created_at' => Carbon::parse('2025-12-24 14:15:00'),
-                'expires_at' => Carbon::parse('2026-01-23 14:15:00'),
+                'description' => 'Kittens left in a box near the supermarket. Approximately 4 weeks old.',
+                'location' => 'SuperMart Parking Lot',
+                'last_seen' => now()->subHours(3),
+                'contact_name' => 'Sarah Williams',
+                'contact_phone' => '555-3456',
+                'contact_email' => 'sarah@example.com',
+                'report_id' => 'SP-JKL89012',
+                'status' => 'in_progress'
             ],
         ];
 
@@ -87,6 +60,6 @@ class AnimalReportsSeeder extends Seeder
             AnimalReport::create($report);
         }
 
-        $this->command->info('✅ 5 sample animal reports seeded successfully!');
+        $this->command->info('Sample animal reports created successfully!');
     }
 }

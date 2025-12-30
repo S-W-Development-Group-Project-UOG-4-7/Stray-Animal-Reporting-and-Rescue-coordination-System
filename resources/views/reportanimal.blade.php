@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Report Animal - SafePaws</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -465,25 +466,25 @@
                                 </button>
                                 <div class="language-dropdown">
                                     <div class="language-option" data-lang="en">
-                                        <div class="text-white flag-icon bg-gradient-to-r from-blue-500 to-red-500">
+                                        <div class="text-white flag-icon bg-gradient-to-r from-blue-500 via-white to-red-500">
                                             EN
                                         </div>
                                         <span class="text-white/90">English</span>
                                     </div>
                                     <div class="language-option" data-lang="es">
-                                        <div class="text-white flag-icon bg-gradient-to-r from-red-500 to-yellow-500">
+                                        <div class="text-white flag-icon bg-gradient-to-r from-red-500 via-yellow-500 to-red-500">
                                             ES
                                         </div>
                                         <span class="text-white/90">Español</span>
                                     </div>
                                     <div class="language-option" data-lang="fr">
-                                        <div class="text-blue-600 flag-icon bg-gradient-to-r from-blue-500 to-white">
+                                        <div class="text-blue-600 flag-icon bg-gradient-to-r from-blue-500 via-white to-red-500">
                                             FR
                                         </div>
                                         <span class="text-white/90">Français</span>
                                     </div>
                                     <div class="language-option" data-lang="de">
-                                        <div class="text-white flag-icon bg-gradient-to-r from-black to-red-500 to-yellow-500">
+                                        <div class="text-white flag-icon bg-gradient-to-r from-black via-red-500 to-yellow-500">
                                             DE
                                         </div>
                                         <span class="text-white/90">Deutsch</span>
@@ -546,25 +547,25 @@
                         <h4 class="px-2 mb-2 text-xs font-semibold tracking-wider text-gray-400 uppercase">Language</h4>
                         <div class="grid grid-cols-2 gap-1">
                             <button class="mobile-language-btn" data-lang="en">
-                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-blue-500 to-red-500">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-blue-500 via-white to-red-500">
                                     EN
                                 </div>
                                 <span>English</span>
                             </button>
                             <button class="mobile-language-btn" data-lang="es">
-                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-red-500 to-yellow-500">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-red-500 via-yellow-500 to-red-500">
                                     ES
                                 </div>
                                 <span>Español</span>
                             </button>
                             <button class="mobile-language-btn" data-lang="fr">
-                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-blue-600 rounded-full bg-gradient-to-r from-blue-500 to-white">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-blue-600 rounded-full bg-gradient-to-r from-blue-500 via-white to-red-500">
                                     FR
                                 </div>
                                 <span>Français</span>
                             </button>
                             <button class="mobile-language-btn" data-lang="de">
-                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-black to-red-500 to-yellow-500">
+                                <div class="flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-gradient-to-r from-black via-red-500 to-yellow-500">
                                     DE
                                 </div>
                                 <span>Deutsch</span>
@@ -969,9 +970,12 @@
                                 
                                 <div class="mb-6">
                                     <div class="flex items-start">
-                                        <input type="checkbox" id="terms" name="terms" class="mt-1 mr-3" required>
+                                        <input type="checkbox" id="terms" name="terms" class="mt-1 mr-3" required value="1">
                                         <label for="terms" class="text-sm text-gray-300">
-                                            I confirm that the information provided is accurate to the best of my knowledge. I understand that SafePaws may use this information to coordinate rescue efforts and contact me if necessary. I agree to the <a href="#" class="text-cyan-400 hover:underline">Terms of Service</a> and <a href="#" class="text-cyan-400 hover:underline">Privacy Policy</a>.
+                                            I confirm that the information provided is accurate to the best of my knowledge. 
+                                            I understand that SafePaws may use this information to coordinate rescue efforts and contact me if necessary. 
+                                            I agree to the <a href="#" class="text-cyan-400 hover:underline">Terms of Service</a> and 
+                                            <a href="#" class="text-cyan-400 hover:underline">Privacy Policy</a>.
                                         </label>
                                     </div>
                                     <div id="terms-error" class="hidden mt-2 text-sm text-red-400">
@@ -985,11 +989,10 @@
                                     <i class="mr-2 fas fa-arrow-left"></i>
                                     Previous
                                 </button>
-                                <!-- Simple link to test history page -->
-<a href="{{ route('reports.history') }}" class="primary-btn">
-    <i class="mr-2 fas fa-paper-plane"></i>
-    Submit Report 
-</a>
+                                <button type="submit" class="primary-btn">
+                                    <i class="mr-2 fas fa-paper-plane"></i>
+                                    Submit Report 
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -1244,14 +1247,15 @@
         <button id="back-to-top" class="fixed flex items-center justify-center hidden w-12 h-12 text-white transition-all duration-300 rounded-full shadow-lg bottom-8 right-8 gradient-bg shadow-cyan-500/30 hover:scale-110">
             <i class="fas fa-arrow-up"></i>
         </button>
-<script>
+
+        <script>
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
     // Mobile menu toggle
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-
+    
     if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
@@ -1263,7 +1267,7 @@
 
     // Back to top button
     const backToTopBtn = document.getElementById('back-to-top');
-
+    
     window.addEventListener('scroll', () => {
         if (window.scrollY > 300) {
             backToTopBtn.classList.remove('hidden');
@@ -1271,7 +1275,7 @@
             backToTopBtn.classList.add('hidden');
         }
     });
-
+    
     backToTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -1281,14 +1285,12 @@
     const totalSteps = 4;
     const formProgress = document.getElementById('form-progress');
     const steps = document.querySelectorAll('.step-indicator');
-
+    
     // Update progress bar and step indicators
     function updateProgress() {
-        // Update progress bar width
         const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
         formProgress.style.width = `${progressPercentage}%`;
         
-        // Update step indicators
         steps.forEach((step, index) => {
             const stepNumber = index + 1;
             if (stepNumber < currentStep) {
@@ -1305,28 +1307,25 @@
             }
         });
     }
-
+    
     // Show specific step
     function showStep(stepNumber) {
-        // Hide all steps
         document.querySelectorAll('.form-step').forEach(step => {
             step.classList.add('hidden');
         });
         
-        // Show requested step
         const stepToShow = document.getElementById(`step-${stepNumber}`);
         if (stepToShow) {
             stepToShow.classList.remove('hidden');
             currentStep = stepNumber;
             updateProgress();
             
-            // If on review step, populate review
             if (stepNumber === 4) {
                 populateReview();
             }
         }
     }
-
+    
     // Validate current step
     function validateStep(stepNumber) {
         let isValid = true;
@@ -1389,20 +1388,17 @@
         
         return isValid;
     }
-
+    
     // Populate review step
     function populateReview() {
-        // Animal type
         const animalType = document.querySelector('input[name="animal_type"]:checked');
         if (animalType) {
             document.getElementById('review-type').textContent = animalType.value;
         }
         
-        // Location
         const location = document.getElementById('location').value;
         document.getElementById('review-location').textContent = location || 'Not provided';
         
-        // Last seen
         const lastSeen = document.getElementById('last_seen').value;
         if (lastSeen) {
             const date = new Date(lastSeen);
@@ -1411,11 +1407,9 @@
             document.getElementById('review-last-seen').textContent = 'Not provided';
         }
         
-        // Description
         const description = document.getElementById('description').value;
         document.getElementById('review-description').textContent = description || 'Not provided';
         
-        // Contact info
         const contactName = document.getElementById('contact_name').value;
         const contactPhone = document.getElementById('contact_phone').value;
         const contactEmail = document.getElementById('contact_email').value;
@@ -1432,7 +1426,7 @@
             document.getElementById('review-contact').classList.add('hidden');
         }
     }
-
+    
     // Next step button handlers
     document.querySelectorAll('.next-step').forEach(button => {
         button.addEventListener('click', function() {
@@ -1442,7 +1436,7 @@
             }
         });
     });
-
+    
     // Previous step button handlers
     document.querySelectorAll('.prev-step').forEach(button => {
         button.addEventListener('click', function() {
@@ -1450,7 +1444,7 @@
             showStep(prevStep);
         });
     });
-
+    
     // File upload handling
     const fileUploadArea = document.getElementById('file-upload-area');
     const fileInput = document.getElementById('animal_photo');
@@ -1459,14 +1453,18 @@
     const fileSize = document.getElementById('file-size');
     const imagePreview = document.getElementById('image-preview');
     const removeImageBtn = document.getElementById('remove-image');
-
+    
     if (fileUploadArea && fileInput) {
-        // Click to upload
         fileUploadArea.addEventListener('click', () => {
             fileInput.click();
         });
         
-        // Drag and drop
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                handleFileSelection(this.files[0]);
+            }
+        });
+        
         fileUploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             fileUploadArea.classList.add('border-cyan-500', 'bg-cyan-500/10');
@@ -1486,60 +1484,56 @@
             }
         });
         
-        // File input change
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length) {
-                handleFileSelection(fileInput.files[0]);
-            }
-        });
-        
-        // Remove image
-        removeImageBtn.addEventListener('click', () => {
-            fileInput.value = '';
+        removeImageBtn.addEventListener('click', function() {
             filePreview.classList.add('hidden');
+            fileInput.value = '';
+            document.getElementById('image-error').classList.remove('hidden');
         });
     }
-
+    
     function handleFileSelection(file) {
-        if (file && file.type.startsWith('image/')) {
-            if (file.size > 5 * 1024 * 1024) {
-                alert('File size must be less than 5MB');
-                return;
-            }
-            
-            // Show preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-            
-            // Update file info
+        if (!file) return;
+        
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!validTypes.includes(file.type)) {
+            alert('Please upload a valid image file (JPG, PNG, WEBP)');
+            return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+            alert('File size must be less than 5MB');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
             fileName.textContent = file.name;
-            fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
-            
-            // Show preview
+            fileSize.textContent = formatFileSize(file.size);
             filePreview.classList.remove('hidden');
             document.getElementById('image-error').classList.add('hidden');
-        } else {
-            alert('Please select a valid image file (JPG, PNG, etc.)');
-        }
+        };
+        reader.readAsDataURL(file);
     }
-
-   // Form submission - Add debug logging
-const reportForm = document.getElementById('animal-report-form');
-const successMessage = document.getElementById('success-message');
-
+    
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' bytes';
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        else return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+    
+    // Form submission
+    const reportForm = document.getElementById('animal-report-form');
+    
+    // Find this section in your JavaScript and update it:
 if (reportForm) {
-    reportForm.addEventListener('submit', function(e) {
+    reportForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
-        console.log('Form submit triggered');
+        console.log('Form submission started');
         
         // Validate all steps
         let allValid = true;
         for (let i = 1; i <= 4; i++) {
-            console.log(`Validating step ${i}:`, validateStep(i));
             if (!validateStep(i)) {
                 allValid = false;
                 showStep(i);
@@ -1547,93 +1541,68 @@ if (reportForm) {
             }
         }
         
-        console.log('All valid?', allValid);
-        
         if (!allValid) {
-            alert('Please complete all required fields');
+            alert('Please complete all required fields before submitting.');
             return;
         }
-
-        // Create FormData object
-        const formData = new FormData(this);
-        console.log('FormData created');
         
-        // Show loading state
+        // Create FormData
+        const formData = new FormData(this);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        formData.append('_token', csrfToken);
+        
+        // Show loading
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i> Submitting...';
         submitBtn.disabled = true;
-
-        // Submit via AJAX
-        console.log('Sending AJAX request to:', this.action);
         
-        fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => {
-            console.log('Response received:', response.status);
-            return response.json();
-        })
-        .then(data => {
-            console.log('Response data:', data);
+        try {
+            console.log('Sending request to:', this.action);
             
-            if (data.success) {
-                console.log('Success! Redirecting to:', data.history_url);
-                
-                // Show success message briefly then redirect
-                document.getElementById('report-id').textContent = data.report_id;
-                
-                // Show success message
-                reportForm.classList.add('hidden');
-                successMessage.classList.remove('hidden');
-                
-                // Auto-redirect to history page after 3 seconds
-                setTimeout(() => {
-                    console.log('Redirecting now...');
-                    window.location.href = data.history_url;
-                }, 3000);
-                
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            });
+            
+            console.log('Response status:', response.status);
+            
+            const result = await response.json();
+            console.log('Response data:', result);
+            
+            if (response.ok && result.success) {
+                // Redirect to success page
+                console.log('Redirecting to:', result.redirect_url);
+                window.location.href = result.redirect_url;
             } else {
-                console.error('Server returned error:', data);
-                alert('Error submitting report. Please try again.');
+                // Show validation errors
+                if (result.errors) {
+                    let errorMessages = 'Please fix the following errors:\n\n';
+                    Object.values(result.errors).forEach(errorArray => {
+                        errorArray.forEach(error => {
+                            errorMessages += `• ${error}\n`;
+                        });
+                    });
+                    alert(errorMessages);
+                } else {
+                    alert(result.message || 'Failed to submit report. Please try again.');
+                }
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Fetch error:', error);
-            alert('Error submitting report. Please try again.');
-        })
-        .finally(() => {
-            console.log('Request completed');
+            alert('Network error. Please check your connection and try again.');
+        } finally {
             // Reset button state
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
-        });
+        }
     });
 }
-    // Reset form function
-    function resetForm() {
-        // Reset form fields
-        document.getElementById('animal-report-form').reset();
-        document.getElementById('file-preview').classList.add('hidden');
-        fileInput.value = '';
-        
-        // Hide success message, show form
-        successMessage.classList.add('hidden');
-        reportForm.classList.remove('hidden');
-        
-        // Reset to step 1
-        showStep(1);
-        
-        // Scroll to form
-        document.getElementById('report-form').scrollIntoView({ behavior: 'smooth' });
-    }
-
+    
     // Copy emergency number
     function copyEmergencyNumber() {
         const number = '(555) 911-ANIMAL';
@@ -1641,7 +1610,7 @@ if (reportForm) {
             alert('Emergency number copied to clipboard: ' + number);
         });
     }
-
+    
     // FAQ toggle
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
@@ -1653,7 +1622,7 @@ if (reportForm) {
             icon.classList.toggle('fa-chevron-up');
         });
     });
-
+    
     // Animated counters
     function animateCounter(element, target) {
         let current = 0;
@@ -1667,12 +1636,8 @@ if (reportForm) {
             element.textContent = Math.floor(current);
         }, 20);
     }
-
+    
     // Start counters when in viewport
-    const observerOptions = {
-        threshold: 0.5
-    };
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1684,30 +1649,27 @@ if (reportForm) {
                 observer.disconnect();
             }
         });
-    }, observerOptions);
-
+    }, { threshold: 0.5 });
+    
     const statsSection = document.querySelector('#report-hero');
     if (statsSection) {
         observer.observe(statsSection);
     }
-
-    // Smooth scrolling for navigation links
+    
+    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+        anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
             
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                // Close mobile menu if open
-                if (!mobileMenu.classList.contains('hidden')) {
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
                     mobileMenu.classList.add('hidden');
                     mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
                 }
                 
-                // Scroll to target
                 window.scrollTo({
                     top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
@@ -1715,24 +1677,29 @@ if (reportForm) {
             }
         });
     });
-
+    
     // Initialize progress bar
     updateProgress();
-
-    // Set default date/time to now
+    
+    // Set default date/time
     const now = new Date();
     const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-    document.getElementById('last_seen').value = localDateTime;
-
-    // Language selector functionality
+    const lastSeenInput = document.getElementById('last_seen');
+    if (lastSeenInput) {
+        lastSeenInput.value = localDateTime;
+        const minDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000)).toISOString().slice(0, 16);
+        lastSeenInput.min = minDate;
+        lastSeenInput.max = localDateTime;
+    }
+    
+    // Language selector
     document.querySelectorAll('.language-option, .mobile-language-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const lang = this.getAttribute('data-lang');
             alert(`Language changed to: ${lang}`);
-            // Here you would typically make an AJAX call to set the language
         });
     });
-
+    
     // Login function
     function openLogin() {
         alert('Login feature coming soon!');

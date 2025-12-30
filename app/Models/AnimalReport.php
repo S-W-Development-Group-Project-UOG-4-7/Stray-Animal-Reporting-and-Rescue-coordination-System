@@ -4,77 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AnimalReport extends Model
 {
-    use HasFactory;
-
-    protected $table = 'animal_reports';
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'report_id',
         'animal_type',
+        'animal_photo',
         'description',
         'location',
         'last_seen',
-        'animal_photo',
         'contact_name',
         'contact_phone',
         'contact_email',
-        'status',
-        'notes',
-        'expires_at'
+        'report_id',
+        'status'
     ];
 
     protected $casts = [
         'last_seen' => 'datetime',
-        'expires_at' => 'datetime',
     ];
 
-    // Generate a unique report ID
+    // Generate unique report ID
     public static function generateReportId()
     {
-        $prefix = 'SP-';
-        $date = date('Ymd');
-        $random = strtoupper(substr(uniqid(), -6));
-        
-        return $prefix . $date . '-' . $random;
-    }
+        do {
+            $reportId = 'SP-' . strtoupper(substr(md5(uniqid()), 0, 8));
+        } while (self::withTrashed()->where('report_id', $reportId)->exists());
 
-    // Check if report is active
-    public function isActive()
-    {
-        return $this->status !== 'closed' && 
-               ($this->expires_at === null || $this->expires_at > now());
-    }
-
-    // Get status badge class
-    public function getStatusBadgeClass()
-    {
-        $statusClasses = [
-            'submitted' => 'bg-blue-500/20 text-blue-300',
-            'under_review' => 'bg-cyan-500/20 text-cyan-300',
-            'team_dispatched' => 'bg-purple-500/20 text-purple-300',
-            'rescued' => 'bg-green-500/20 text-green-300',
-            'completed' => 'bg-yellow-500/20 text-yellow-300',
-            'closed' => 'bg-gray-500/20 text-gray-300',
-        ];
-
-        return $statusClasses[$this->status] ?? 'bg-gray-500/20 text-gray-300';
-    }
-
-    // Get status text
-    public function getStatusText()
-    {
-        $statusTexts = [
-            'submitted' => 'Submitted',
-            'under_review' => 'Under Review',
-            'team_dispatched' => 'Team Dispatched',
-            'rescued' => 'Rescued',
-            'completed' => 'Completed',
-            'closed' => 'Closed',
-        ];
-
-        return $statusTexts[$this->status] ?? 'Unknown';
+        return $reportId;
     }
 }

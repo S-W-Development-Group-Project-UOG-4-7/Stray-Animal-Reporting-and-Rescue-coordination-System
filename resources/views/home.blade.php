@@ -391,7 +391,7 @@
                         
                         <!-- Navigation Actions - Beautifully Arranged -->
                         <div class="nav-actions">
-                           <a href="{{ route('reportanimal.form') }}" class="report-btn">
+                           <a href="{{ route('animal.report.form') }}" class="report-btn">
     <i class="fas fa-exclamation-triangle"></i>
     Report Animal
 </a>
@@ -1154,7 +1154,7 @@
             // Remove or update the old reportAnimal function
 function reportAnimal() {
     // Redirect to the report form page
-    window.location.href = "{{ route('reportanimal.form') }}";
+    window.location.href = "{{ route('animal.report.form') }}";
 }
             // Set current year in footer
             document.getElementById('current-year').textContent = new Date().getFullYear();
