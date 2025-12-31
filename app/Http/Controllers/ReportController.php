@@ -4,202 +4,265 @@ namespace App\Http\Controllers;
 
 use App\Models\AnimalReport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
-    /**
-     * Show the report form
-     */
-    public function showForm()
-    {
-        return view('reportanimal');
-    }
-
-    /**
-     * Store a new animal report
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Store New Report
+    |--------------------------------------------------------------------------
+    */
     public function store(Request $request)
     {
-        Log::info('Form submission started', $request->all());
-        
         try {
-            // Validate the request
             $validated = $request->validate([
-                'animal_type' => 'required|in:Aggressive,Sick/Injured,Stray/Lost,Abandoned',
-                'animal_photo' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
-                'description' => 'required|string|min:3|max:1000',
-                'location' => 'required|string|max:255',
-                'last_seen' => 'required|date',
-                'contact_name' => 'nullable|string|max:100',
+                'animal_type'   => 'required|in:Aggressive,Sick/Injured,Stray/Lost,Abandoned',
+                'animal_photo'  => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+                'description'   => 'required|string|min:3|max:1000',
+                'location'      => 'required|string|max:255',
+                'last_seen'     => 'required|date',
+                'contact_name'  => 'nullable|string|max:100',
                 'contact_phone' => 'nullable|string|max:20',
                 'contact_email' => 'nullable|email|max:100',
-                'terms' => 'required|accepted'
+                'terms'         => 'required|accepted',
             ]);
 
-            Log::info('Validation passed', $validated);
-
-            // Handle file upload
+            // Upload image
             if ($request->hasFile('animal_photo')) {
                 $file = $request->file('animal_photo');
-                
-                // Clean up the filename
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $file->getClientOriginalExtension();
-                
-                // Remove special characters and spaces
-                $cleanName = preg_replace('/[^A-Za-z0-9\-]/', '', $originalName);
-                $imageName = time() . '_' . $cleanName . '.' . $extension;
-                
-                Log::info('Uploading file', ['original' => $file->getClientOriginalName(), 'clean' => $imageName]);
-                
-                $file->move(public_path('uploads/animal_photos'), $imageName);
-                $validated['animal_photo'] = 'uploads/animal_photos/' . $imageName;
+                $imageName = time() . '_' . $file->getClientOriginalName();
+                $file->storeAs('public/animal-photos', $imageName);
+                $validated['animal_photo'] = 'storage/animal-photos/' . $imageName;
             }
 
-            // Format the date properly
-            if (!empty($validated['last_seen'])) {
-                $validated['last_seen'] = date('Y-m-d H:i:s', strtotime($validated['last_seen']));
-            }
-
-            // Generate report ID
+            $validated['last_seen'] = date('Y-m-d H:i:s', strtotime($validated['last_seen']));
             $validated['report_id'] = AnimalReport::generateReportId();
-            $validated['status'] = 'pending';
+            $validated['status']    = 'pending';
 
-            Log::info('Creating report', $validated);
-
-            // Create the report
             $report = AnimalReport::create($validated);
 
-            Log::info('Report created', ['id' => $report->id, 'report_id' => $report->report_id]);
-
-            // Return success response with report details
             return response()->json([
-                'success' => true,
-                'message' => 'Report submitted successfully!',
-                'report_id' => $report->report_id,
-                'redirect_url' => route('report.success', $report->report_id)
+                'success'      => true,
+                'redirect_url' => route('report.success', $report->report_id),
             ]);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::error('Validation failed', $e->errors());
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
+                'errors'  => $e->errors(),
             ], 422);
-            
-        } catch (\Exception $e) {
-            Log::error('Error submitting report', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ]);
-            
-            return response()->json([
-                'success' => false,
-                'message' => 'Error submitting report: ' . $e->getMessage()
-            ], 500);
         }
     }
 
-    /**
-     * Show success page after report submission
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Report Success Page
+    |--------------------------------------------------------------------------
+    */
     public function success($reportId)
     {
         $report = AnimalReport::where('report_id', $reportId)->firstOrFail();
         return view('report-success', compact('report'));
     }
 
-    /**
-     * Show delete confirmation page
-     */
-    public function showDeleteForm($reportId = null)
-    {
-        if ($reportId) {
-            $report = AnimalReport::where('report_id', $reportId)->first();
-            return view('delete-report', compact('report'));
-        }
-        return view('delete-report');
-    }
-
-    /**
-     * Track and manage reports
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Track Report
+    |--------------------------------------------------------------------------
+    */
     public function trackReport($reportId = null)
     {
+        $report = null;
+
         if ($reportId) {
             $report = AnimalReport::where('report_id', $reportId)->first();
-            return view('track-report', compact('report'));
         }
-        return view('track-report');
+
+        return view('track-report', compact('report'));
     }
 
-    /**
-     * Delete a report
-     */
-    public function destroy(Request $request, $reportId)
+    /*
+    |--------------------------------------------------------------------------
+    | Track Status (with visual timeline)
+    |--------------------------------------------------------------------------
+    */
+    public function trackStatus(Request $request)
     {
-        try {
-            // Find the report by report_id
-            $report = AnimalReport::where('report_id', $reportId)->first();
+        $report = null;
+        
+        if ($request->has('report_id')) {
+            $report = AnimalReport::where('report_id', $request->report_id)->first();
             
             if (!$report) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Report not found with ID: ' . $reportId
-                ], 404);
+                return redirect()->route('track.report')->with('error', 'Report not found');
             }
-            
-            // Get the contact email from the request for verification
-            $userEmail = $request->input('email');
-            
-            // Debug logging
-            Log::info('Delete attempt', [
-                'report_id' => $reportId,
-                'user_email' => $userEmail,
-                'report_email' => $report->contact_email
-            ]);
-            
-            // Simple verification: check if email matches
-            if ($report->contact_email && $report->contact_email !== $userEmail) {
+        }
+        
+        return view('track-report', compact('report'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | My Reports (Search by Email)
+    |--------------------------------------------------------------------------
+    */
+    public function myReports(Request $request)
+    {
+        $query = AnimalReport::query();
+
+        if ($request->filled('report_id')) {
+            $query->where('report_id', $request->report_id);
+        }
+
+        if ($request->filled('email')) {
+            $query->where('contact_email', $request->email);
+        }
+
+        $reports = $query->latest()->paginate(10);
+
+        return view('my-reports', compact('reports'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Verify Email Before Edit
+    |--------------------------------------------------------------------------
+    */
+    public function verifyEditEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'reportId' => 'required|string'
+        ]);
+
+        $report = AnimalReport::where('report_id', $request->reportId)
+                    ->where('contact_email', $request->email)
+                    ->first();
+
+        if ($report) {
+            // Store verification in session
+            session(['edit_email_' . $request->reportId => true]);
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Email does not match report']);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Edit Report Page
+    |--------------------------------------------------------------------------
+    */
+    public function edit($reportId)
+    {
+        if (!session()->has('edit_email_' . $reportId)) {
+            abort(403, 'Unauthorized access');
+        }
+
+        $report = AnimalReport::where('report_id', $reportId)->firstOrFail();
+        return view('edit-report', compact('report'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Report
+    |--------------------------------------------------------------------------
+    */
+    public function update(Request $request, $reportId)
+    {
+        try {
+            if (!session()->has('edit_email_' . $reportId)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Email verification failed. Please use the email you provided when submitting the report.'
+                    'message' => 'Email verification required',
                 ], 403);
             }
-            
-            // Delete the associated image file
-            if ($report->animal_photo && file_exists(public_path($report->animal_photo))) {
-                unlink(public_path($report->animal_photo));
+
+            $report = AnimalReport::where('report_id', $reportId)->firstOrFail();
+
+            $validated = $request->validate([
+                'animal_type'   => 'required|in:Aggressive,Sick/Injured,Stray/Lost,Abandoned',
+                'animal_photo'  => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+                'description'   => 'required|string|min:3|max:1000',
+                'location'      => 'required|string|max:255',
+                'last_seen'     => 'required|date',
+                'contact_name'  => 'nullable|string|max:100',
+                'contact_phone' => 'nullable|string|max:20',
+                'contact_email' => 'nullable|email|max:100',
+            ]);
+
+            // Replace photo
+            if ($request->hasFile('animal_photo')) {
+                if ($report->animal_photo) {
+                    Storage::delete(str_replace('storage/', 'public/', $report->animal_photo));
+                }
+
+                $file = $request->file('animal_photo');
+                $imageName = time() . '_' . $file->getClientOriginalName();
+                $file->storeAs('public/animal-photos', $imageName);
+                $validated['animal_photo'] = 'storage/animal-photos/' . $imageName;
+            } else {
+                $validated['animal_photo'] = $report->animal_photo;
             }
-            
-            // Delete the report (soft delete)
-            $report->delete();
-            
-            Log::info('Report deleted', [
-                'report_id' => $reportId,
-                'deleted_at' => now()
-            ]);
-            
+
+            $validated['last_seen'] = date('Y-m-d H:i:s', strtotime($validated['last_seen']));
+
+            $report->update($validated);
+
+            session()->forget('edit_email_' . $reportId);
+
             return response()->json([
-                'success' => true,
-                'message' => 'Report deleted successfully!'
+                'success'      => true,
+                'redirect_url' => route('track.report', $reportId),
             ]);
-            
-        } catch (\Exception $e) {
-            Log::error('Error deleting report', [
-                'report_id' => $reportId,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete report: ' . $e->getMessage()
-            ], 500);
+                'errors'  => $e->errors(),
+            ], 422);
         }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete Report (Show Page)
+    |--------------------------------------------------------------------------
+    */
+    public function showDeleteForm($reportId = null)
+    {
+        return view('delete-report', compact('reportId'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete Report (Action)
+    |--------------------------------------------------------------------------
+    */
+    public function destroy(Request $request, $reportId)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $report = AnimalReport::where('report_id', $reportId)->firstOrFail();
+
+        if ($report->contact_email !== $request->email) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email verification failed',
+            ], 403);
+        }
+
+        if ($report->animal_photo) {
+            Storage::delete(str_replace('storage/', 'public/', $report->animal_photo));
+        }
+
+        $report->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Report deleted successfully',
+        ]);
     }
 }

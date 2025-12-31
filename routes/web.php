@@ -3,32 +3,89 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 
-// Homepage - Shows the main website
+/*
+|--------------------------------------------------------------------------
+| Home Page
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
-    return view('home'); // This should be your home page view
+    return view('home');
 })->name('home');
 
-// Report animal form page
+/*
+|--------------------------------------------------------------------------
+| Report Animal
+|--------------------------------------------------------------------------
+*/
 Route::get('/report-animal', function () {
-    return view('reportanimal'); // This is your report form page
+    return view('reportanimal');
 })->name('animal.report.form');
 
-// Store report data (form submission)
 Route::post('/report-animal', [ReportController::class, 'store'])
     ->name('animal.report.store');
 
-// Success page after submission
+/*
+|--------------------------------------------------------------------------
+| Report Success Page
+|--------------------------------------------------------------------------
+*/
 Route::get('/report-success/{reportId}', [ReportController::class, 'success'])
     ->name('report.success');
 
-// Track report page
+/*
+|--------------------------------------------------------------------------
+| Track Report
+|--------------------------------------------------------------------------
+*/
 Route::get('/track-report/{reportId?}', [ReportController::class, 'trackReport'])
     ->name('track.report');
 
-// Delete report page
+/*
+|--------------------------------------------------------------------------
+| Track Status (NEW - with visual timeline)
+|--------------------------------------------------------------------------
+*/
+Route::get('/track-status', [ReportController::class, 'trackStatus'])
+    ->name('track.status');
+
+/*
+|--------------------------------------------------------------------------
+| My Reports (Search by Email)
+|--------------------------------------------------------------------------
+*/
+Route::get('/my-reports', [ReportController::class, 'myReports'])
+    ->name('my-reports');  // Fixed route name
+/*
+|--------------------------------------------------------------------------
+| Edit Report
+|--------------------------------------------------------------------------
+*/
+Route::get('/edit-report/{reportId}', [ReportController::class, 'edit'])
+    ->name('report.edit');
+
+/*
+|--------------------------------------------------------------------------
+| Verify Email Before Edit (AJAX)
+|--------------------------------------------------------------------------
+*/
+Route::post('/verify-edit-email', [ReportController::class, 'verifyEditEmail'])
+    ->name('report.verify.edit.email');
+
+/*
+|--------------------------------------------------------------------------
+| Update Report (PUT via fetch + method override)
+|--------------------------------------------------------------------------
+*/
+Route::put('/report/{reportId}', [ReportController::class, 'update'])
+    ->name('report.update');
+
+/*
+|--------------------------------------------------------------------------
+| Delete Report
+|--------------------------------------------------------------------------
+*/
 Route::get('/delete-report/{reportId?}', [ReportController::class, 'showDeleteForm'])
     ->name('report.delete');
 
-// Delete report action
 Route::delete('/report/{reportId}', [ReportController::class, 'destroy'])
     ->name('report.destroy');
