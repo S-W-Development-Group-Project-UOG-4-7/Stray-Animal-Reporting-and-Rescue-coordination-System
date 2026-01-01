@@ -49,16 +49,16 @@
         </div>
 
         <select name="breed"
-          class="w-full rounded-2xl bg-white/10 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-indigo-400/60">
+          class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-indigo-400/60 text-black">
           <option value="">All breeds</option>
           @foreach ($breeds as $b)
-            <option value="{{ $b }}" @selected(request('breed')==$b)>{{ $b }}</option>
+            <option value="{{ $b }}"  @selected(request('breed')==$b)>{{ $b }}</option>
           @endforeach
         </select>
 
         <div class="flex gap-3">
           <select name="sort"
-            class="w-full rounded-2xl bg-white/10 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-indigo-400/60">
+            class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-indigo-400/60 text-black">
             <option value="new" @selected(request('sort')=='new')>Newest</option>
             <option value="age_asc" @selected(request('sort')=='age_asc')>Age ↑</option>
             <option value="age_desc" @selected(request('sort')=='age_desc')>Age ↓</option>
