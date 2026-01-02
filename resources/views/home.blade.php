@@ -335,7 +335,7 @@
 
                     <!-- Desktop Navigation -->
                     <nav class="items-center hidden gap-1 lg:flex">
-                        <a href="#home" class="nav-link active">Home</a>
+                        <a href="{{ route('home') }}" class="nav-link active">Home</a>
                         <a href="#about" class="nav-link">About</a>
                         
                         <div class="relative dropdown">
@@ -371,7 +371,7 @@
                                     <i class="mr-3 fas fa-hands-helping text-cyan-400"></i>
                                     Volunteer
                                 </a>
-                                <a href="#donate" class="dropdown-item">
+                                <a href="{{ route('donation') }}" class="dropdown-item">
                                     <i class="mr-3 fas fa-donate text-cyan-400"></i>
                                     Donate
                                 </a>

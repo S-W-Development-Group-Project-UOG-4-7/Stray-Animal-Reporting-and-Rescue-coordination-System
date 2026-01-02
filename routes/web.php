@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DonationController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +15,29 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+/*
+|--------------------------------------------------------------------------
+| Donation Routes (No Login Required)
+|--------------------------------------------------------------------------
+*/
+
+// Show donation page (GET)
+Route::get('/donate', [DonationController::class, 'index'])->name('donation');
+
+// Submit donation (POST)
+Route::post('/donate', [DonationController::class, 'storeBank'])->name('donation.store');
+
+// Donation history
+Route::get('/donation/history', [DonationController::class, 'history'])
+    ->name('donation.history');
+// Edit donation
+Route::get('/donation/{id}/edit', [DonationController::class, 'edit'])->name('donation-edit');
+
+// Update donation
+Route::put('/donation/{id}', [DonationController::class, 'update'])->name('donation.update');
+
+// Delete donation
+Route::delete('/donation/{id}', [DonationController::class, 'destroy'])->name('donation.delete');
 /*
 |--------------------------------------------------------------------------
 | Report Animal

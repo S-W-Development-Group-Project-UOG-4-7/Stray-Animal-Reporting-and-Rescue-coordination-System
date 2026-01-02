@@ -39,6 +39,8 @@ class ReportController extends Controller
             $validated['last_seen'] = date('Y-m-d H:i:s', strtotime($validated['last_seen']));
             $validated['report_id'] = AnimalReport::generateReportId();
             $validated['status']    = 'pending';
+            $validated['expires_at'] = now()->addDays(30);
+
 
             $report = AnimalReport::create($validated);
 

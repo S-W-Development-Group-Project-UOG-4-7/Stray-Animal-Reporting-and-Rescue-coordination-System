@@ -4,36 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class AnimalReport extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
+        'report_id',
         'animal_type',
-        'animal_photo',
         'description',
         'location',
         'last_seen',
+        'animal_photo',
         'contact_name',
         'contact_phone',
         'contact_email',
-        'report_id',
-        'status'
+        'status',
+        'expires_at',
     ];
 
     protected $casts = [
         'last_seen' => 'datetime',
+        'expires_at' => 'datetime',
     ];
 
-    // Generate unique report ID
     public static function generateReportId()
     {
-        do {
-            $reportId = 'SP-' . strtoupper(substr(md5(uniqid()), 0, 8));
-        } while (self::withTrashed()->where('report_id', $reportId)->exists());
-
-        return $reportId;
+        return 'SP-' . strtoupper(Str::random(8));
     }
 }
