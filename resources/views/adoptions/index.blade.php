@@ -1,132 +1,116 @@
 @extends('layouts.app')
 
-@section('title', 'Adoptions')
+@section('title', 'Find a Friend')
 
 @section('content')
 
-  <!-- Hero -->
-  <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-soft">
-    <div class="absolute inset-0 bg-linear-to-r from-indigo-500/15 via-fuchsia-500/10 to-cyan-500/15"></div>
+  <div class="relative mb-12 text-center pt-8">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-rose-500/30 bg-rose-500/10 text-rose-300 text-xs font-bold uppercase tracking-wider mb-4">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+      </span>
+      Live Adoptions
+    </div>
+    
+    <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight mb-4">
+      Make a <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-400">Friend.</span><br>
+      Save a <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-teal-400">Life.</span>
+    </h1>
+    <p class="text-lg text-slate-400 max-w-2xl mx-auto">
+      Thousands of homeless pets are waiting for a hero like you. Filter below to find your perfect match.
+    </p>
+  </div>
 
-    <div class="relative p-7 md:p-10">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-        <div>
-          <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/25 px-4 py-2 text-sm text-slate-200">
-            <i class="fa-solid fa-shield-dog text-emerald-300"></i>
-            <span>Verified rescues • Safe adoption</span>
+  <div class="sticky top-24 z-40 mb-10 mx-auto max-w-4xl">
+    <form class="grid grid-cols-2 md:grid-cols-12 gap-2 p-2 rounded-3xl bg-black/40 backdrop-blur-xl border border-white/10 shadow-2xl" method="GET">
+      
+      <div class="col-span-2 md:col-span-5 relative group">
+        <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-rose-400 transition"></i>
+        <input name="search" value="{{ request('search') }}" placeholder="Search names..." 
+               class="w-full bg-white/5 border-transparent rounded-2xl py-3 pl-10 pr-4 text-white focus:bg-white/10 focus:ring-0 placeholder-slate-500 transition">
+      </div>
+
+      <div class="col-span-1 md:col-span-2">
+        <select name="type" class="w-full bg-white/5 border-transparent rounded-2xl py-3 px-4 text-slate-300 focus:bg-white/10 focus:text-white cursor-pointer outline-none">
+          <option value="">Type</option>
+          <option value="Dog" @selected(request('type')=='Dog')>Dogs</option>
+          <option value="Cat" @selected(request('type')=='Cat')>Cats</option>
+        </select>
+      </div>
+
+      <div class="col-span-1 md:col-span-2">
+        <select name="gender" class="w-full bg-white/5 border-transparent rounded-2xl py-3 px-4 text-slate-300 focus:bg-white/10 focus:text-white cursor-pointer outline-none">
+          <option value="">Gender</option>
+          <option value="Male" @selected(request('gender')=='Male')>Male</option>
+          <option value="Female" @selected(request('gender')=='Female')>Female</option>
+        </select>
+      </div>
+
+      <div class="col-span-2 md:col-span-3">
+        <button class="w-full h-full bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 text-white font-bold rounded-2xl py-3 transition shadow-lg shadow-rose-500/25">
+          Find Pet
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+    @forelse ($animals as $a)
+      
+      <div class="group relative flex flex-col h-full bg-white/5 rounded-[2rem] border border-white/5 hover:border-white/10 transition duration-500 hover:-translate-y-2 hover:shadow-soft overflow-hidden">
+        
+        <a href="/adoptions/{{ $a->id }}" class="relative w-full aspect-[4/3] overflow-hidden">
+          <img src="{{ $a->image_url }}" alt="{{ $a->name }}" 
+               class="h-full w-full object-cover transition duration-700 group-hover:scale-110 group-hover:rotate-1">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-transparent opacity-80"></div>
+          
+          <div class="absolute top-4 right-4 bg-black/50 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-xs font-bold text-white">
+            {{ $a->age }} yrs
+          </div>
+        </a>
+
+        <div class="flex flex-col flex-1 p-6 -mt-10 relative z-10">
+          
+          <div class="flex justify-between items-end mb-2">
+            <h2 class="text-3xl font-black text-white tracking-tight group-hover:text-rose-400 transition">{{ $a->name }}</h2>
+            <div class="flex gap-2">
+               @if($a->gender == 'Male') 
+                 <span class="h-8 w-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/20"><i class="fa-solid fa-mars"></i></span>
+               @else 
+                 <span class="h-8 w-8 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center border border-pink-500/20"><i class="fa-solid fa-venus"></i></span>
+               @endif
+            </div>
           </div>
 
-          <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">
-            Find your next best friend
-          </h1>
+          <p class="text-slate-400 text-sm font-medium mb-4">{{ $a->breed }}</p>
 
-          <p class="mt-3 max-w-2xl text-slate-300">
-            Search, filter, and explore adoptable animals. Submit an adoption request in seconds.
-          </p>
-        </div>
+          <div class="flex-1"></div>
 
-        <div class="grid grid-cols-2 gap-3">
-          <div class="rounded-2xl border border-white/10 bg-black/25 px-5 py-4">
-            <p class="text-xs text-slate-400">Total shown</p>
-            <p class="text-2xl font-bold">{{ $animals->total() }}</p>
+          <div class="grid grid-cols-2 gap-3 mt-4">
+             <a href="/adoptions/{{ $a->id }}" class="py-3 rounded-2xl bg-white/5 text-center text-slate-300 text-sm font-bold hover:bg-white/10 hover:text-white transition">
+               View Details
+             </a>
+             <a href="/donate/{{ $a->id }}" class="py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-center text-white text-sm font-bold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition">
+               Donate
+             </a>
           </div>
-          <div class="rounded-2xl border border-white/10 bg-black/25 px-5 py-4">
-            <p class="text-xs text-slate-400">Status</p>
-            <p class="text-2xl font-bold text-emerald-200">Adoptable</p>
-          </div>
+
         </div>
       </div>
 
-      <!-- Filters -->
-      <form class="mt-7 grid gap-3 md:grid-cols-4" method="GET">
-        <div class="md:col-span-2">
-          <div class="relative">
-            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-            <input name="search" value="{{ request('search') }}"
-              class="w-full rounded-2xl bg-white/10 border border-white/10 px-11 py-3 outline-none focus:ring-2 focus:ring-fuchsia-400/60"
-              placeholder="Search by name, breed, condition...">
-          </div>
-        </div>
-
-        <select name="breed"
-          class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-indigo-400/60 text-black">
-          <option value="">All breeds</option>
-          @foreach ($breeds as $b)
-            <option value="{{ $b }}"  @selected(request('breed')==$b)>{{ $b }}</option>
-          @endforeach
-        </select>
-
-        <div class="flex gap-3">
-          <select name="sort"
-            class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-indigo-400/60 text-black">
-            <option value="new" @selected(request('sort')=='new')>Newest</option>
-            <option value="age_asc" @selected(request('sort')=='age_asc')>Age ↑</option>
-            <option value="age_desc" @selected(request('sort')=='age_desc')>Age ↓</option>
-          </select>
-
-          <button class="shrink-0 rounded-2xl bg-linear-to-r from-indigo-500 to-fuchsia-500 hover:from-indigo-400 hover:to-fuchsia-400 px-5 py-3 font-semibold shadow-soft transition">
-            Apply
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Cards -->
-  <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-    @forelse ($animals as $a)
-      <a href="/adoptions/{{ $a->id }}"
-         class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-soft transition hover:-translate-y-1">
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-linear-to-r from-indigo-500/10 via-fuchsia-500/10 to-cyan-500/10"></div>
-
-        <div class="relative">
-          <div class="aspect-4/3 bg-black/30 overflow-hidden">
-            <img class="h-full w-full object-cover group-hover:scale-[1.05] transition duration-500"
-                 src="{{ $a->image_url ?? 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=60' }}"
-                 alt="{{ $a->name }}">
-          </div>
-
-          <div class="p-5">
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <h2 class="text-xl font-extrabold">{{ $a->name }}</h2>
-                <p class="text-slate-300 mt-1">
-                  {{ $a->breed ?? 'Unknown breed' }} • {{ $a->age ?? '?' }} yrs
-                </p>
-              </div>
-
-              <span class="text-xs rounded-full bg-emerald-500/15 border border-emerald-500/25 px-3 py-1 text-emerald-100">
-                Adoptable
-              </span>
-            </div>
-
-            <div class="mt-4 grid gap-2 text-sm text-slate-300">
-              <p class="flex items-center gap-2">
-                <i class="fa-solid fa-stethoscope text-cyan-200"></i>
-                <span class="text-slate-400">Condition:</span> {{ $a->condition ?? '—' }}
-              </p>
-              <p class="flex items-center gap-2">
-                <i class="fa-solid fa-people-group text-fuchsia-200"></i>
-                <span class="text-slate-400">Rescue team:</span> {{ $a->rescue_team ?? '—' }}
-              </p>
-            </div>
-
-            <div class="mt-5 flex items-center justify-between">
-              <span class="text-xs text-slate-400">Tap for details</span>
-              <span class="inline-flex items-center gap-2 font-semibold text-pink-200">
-                Adopt <i class="fa-solid fa-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </a>
     @empty
-      <div class="rounded-2xl border border-white/10 bg-white/5 p-7 text-slate-300">
-        No animals found.
+      <div class="col-span-full py-20 text-center">
+        <div class="inline-block p-6 rounded-full bg-white/5 mb-4 text-slate-600 text-4xl"><i class="fa-solid fa-wind"></i></div>
+        <h3 class="text-2xl font-bold text-slate-300">It's quiet here...</h3>
+        <p class="text-slate-500">No pets match your search right now.</p>
+        <a href="/adoptions" class="inline-block mt-4 text-rose-400 hover:text-rose-300 font-bold">Clear Filters</a>
       </div>
     @endforelse
   </div>
 
-  <div class="mt-8">{{ $animals->links() }}</div>
+  <div class="mt-12 flex justify-center">
+    {{ $animals->links() }}
+  </div>
 
 @endsection

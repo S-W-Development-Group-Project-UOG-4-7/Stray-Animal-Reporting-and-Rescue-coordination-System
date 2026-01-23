@@ -1,86 +1,61 @@
 @extends('layouts.app')
 
-@section('title', 'Reviews')
+@section('title', 'Community Reviews')
 
 @section('content')
-  <div class="grid gap-6 lg:grid-cols-2">
-
-    <!-- Review Form -->
-    <div class="rounded-3xl border border-white/10 bg-white/5 shadow-soft p-6">
-      <div class="flex items-center gap-3">
-        <span class="grid h-11 w-11 place-items-center rounded-2xl bg-amber-500/10 border border-amber-500/20">
-          <i class="fa-solid fa-star text-amber-200"></i>
-        </span>
-        <div>
-          <h1 class="text-2xl font-extrabold">Reviews & Feedback</h1>
-          <p class="text-slate-300 text-sm">Help us improve with your honest feedback.</p>
-        </div>
-      </div>
-
-      <form method="POST" action="/reviews" class="mt-6 space-y-4">
-        @csrf
-
-        <div>
-          <label class="text-sm text-slate-300">Full name</label>
-          <input name="full_name" value="{{ old('full_name') }}"
-            class="mt-1 w-full rounded-2xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-amber-400/60">
-          @error('full_name') <p class="text-red-300 text-sm mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-          <label class="text-sm text-slate-300">Rating</label>
-          <select name="rating"
-            class="mt-1 w-full rounded-2xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-amber-400/60">
-            @for ($i=5; $i>=1; $i--)
-              <option value="{{ $i }}" @selected(old('rating')==$i)>{{ $i }} ⭐</option>
-            @endfor
-          </select>
-          @error('rating') <p class="text-red-300 text-sm mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-          <label class="text-sm text-slate-300">Comment (optional)</label>
-          <textarea name="comment" rows="4"
-            class="mt-1 w-full rounded-2xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-amber-400/60">{{ old('comment') }}</textarea>
-          @error('comment') <p class="text-red-300 text-sm mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        <button class="w-full rounded-2xl bg-gradient-to-r from-amber-500 to-pink-500 hover:from-amber-400 hover:to-pink-400 px-5 py-3 font-extrabold shadow-soft transition">
-          <i class="fa-solid fa-bolt"></i>
-          <span class="ml-2">Submit Review</span>
-        </button>
-      </form>
-    </div>
-
-    <!-- Review List -->
-    <div class="space-y-4">
-      <div class="rounded-3xl border border-white/10 bg-white/5 shadow-soft p-6">
-        <h2 class="text-xl font-extrabold">Recent Reviews</h2>
-        <p class="text-slate-300 text-sm mt-1">What people say about the platform</p>
-      </div>
-
-      @foreach ($reviews as $r)
-        <div class="rounded-3xl border border-white/10 bg-white/5 shadow-soft p-6">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <p class="font-extrabold text-lg">{{ $r->full_name }}</p>
-              <p class="text-xs text-slate-500 mt-1">{{ $r->created_at->diffForHumans() }}</p>
-            </div>
-            <div class="text-amber-200 font-semibold">
-              {{ str_repeat('⭐', (int)$r->rating) }}
-            </div>
-          </div>
-
-          @if($r->comment)
-            <p class="text-slate-300 mt-4 leading-relaxed">{{ $r->comment }}</p>
-          @else
-            <p class="text-slate-500 mt-4 italic">No comment provided.</p>
-          @endif
-        </div>
-      @endforeach
-
-      <div class="mt-6">{{ $reviews->links() }}</div>
-    </div>
-
+  <div class="text-center mb-10">
+    <h1 class="text-4xl font-extrabold text-white">Happy Tails</h1>
+    <p class="mt-2 text-slate-400">Real stories from our happy adopters.</p>
   </div>
+
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    @forelse($reviews as $review)
+      <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-soft hover:-translate-y-1 transition duration-300">
+        
+        <div class="flex items-start gap-4 mb-4 border-b border-white/5 pb-4">
+            
+            <div class="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black/30">
+                <img src="{{ $review->animal->image_url ?? 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80' }}" 
+                     class="h-full w-full object-cover" 
+                     alt="Pet">
+            </div>
+
+            <div class="flex-1 min-w-0">
+                <h4 class="font-bold text-white text-sm truncate">{{ $review->reviewer_name }}</h4>
+                <p class="text-xs text-slate-400 truncate">
+                    Adopted <span class="text-indigo-300">{{ $review->animal->name ?? 'a pet' }}</span>
+                </p>
+                <div class="text-amber-400 text-xs mt-1">
+                    @for($i=0; $i < 5; $i++)
+                        @if($i < $review->rating) <i class="fa-solid fa-star"></i>
+                        @else <i class="fa-regular fa-star opacity-30"></i>
+                        @endif
+                    @endfor
+                </div>
+            </div>
+        </div>
+
+        <div class="relative">
+            <i class="fa-solid fa-quote-left absolute -top-1 -left-1 text-2xl text-white/5"></i>
+            <p class="text-slate-300 text-sm leading-relaxed pl-4 relative z-10">
+                "{{ $review->comment }}"
+            </p>
+        </div>
+        
+        <div class="mt-4 text-[10px] text-slate-500 text-right uppercase tracking-wider font-bold">
+          {{ $review->created_at->format('M d, Y') }}
+        </div>
+
+      </div>
+    @empty
+      <div class="col-span-full text-center py-12 rounded-3xl border border-dashed border-white/10">
+        <div class="inline-grid h-16 w-16 place-items-center rounded-full bg-white/5 text-slate-500 text-2xl mb-3">
+            <i class="fa-regular fa-comment-dots"></i>
+        </div>
+        <p class="text-slate-400">No reviews yet.</p>
+      </div>
+    @endforelse
+  </div>
+
+  <div class="mt-8">{{ $reviews->links() }}</div>
 @endsection

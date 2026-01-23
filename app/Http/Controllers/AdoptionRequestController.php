@@ -32,22 +32,37 @@ class AdoptionRequestController extends Controller
         $data = $request->validate([
             'full_name'    => ['required', 'string', 'max:120'],
             'email'        => ['required', 'email', 'max:150'],
-            'phone'        => ['nullable', 'string', 'max:30'],
+            
+            // Sri Lanka Phone Validation (e.g., 0712345678, 0112345678)
+            'phone'        => ['required', 'regex:/^(0)[0-9]{9}$/'], 
+            
+            'nic'          => ['required', 'string', 'max:12'], // NIC Validation
             'address'      => ['required', 'string', 'max:255'],
             'housing_type' => ['required', 'string'],
             'reason'       => ['required', 'string', 'min:10'],
+
+            // Checkboxes must be accepted
+            'age_confirmation'   => ['accepted'],
+            'terms_confirmation' => ['accepted'],
+        ], [
+            'phone.regex' => 'Please enter a valid Sri Lankan phone number (e.g., 071XXXXXXX).',
+            'age_confirmation.accepted' => 'You must be over 18 to adopt.',
+            'terms_confirmation.accepted' => 'You must agree to the terms and conditions.',
         ]);
 
-        $data['has_fenced_yard'] = $request->has('has_fenced_yard');
-        $data['has_other_pets']  = $request->has('has_other_pets');
-        $data['has_children']    = $request->has('has_children');
-        $data['animal_id'] = $animal->id;
+        // Save Data (Excluding the confirmation checkboxes since we don't store them)
+        $saveData = collect($data)->except(['age_confirmation', 'terms_confirmation'])->toArray();
 
-        $adoptionRequest = AdoptionRequest::create($data);
+        $saveData['has_fenced_yard'] = $request->has('has_fenced_yard');
+        $saveData['has_other_pets']  = $request->has('has_other_pets');
+        $saveData['has_children']    = $request->has('has_children');
+        $saveData['animal_id']       = $animal->id;
+
+        $adoptionRequest = AdoptionRequest::create($saveData);
 
         session()->push('my_request_ids', $adoptionRequest->id);
 
-        return back()->with('success', 'Application submitted!');
+        return back()->with('success', 'Application submitted successfully!');
     }
 
     // --- NEW EDIT/UPDATE/DELETE METHODS ---

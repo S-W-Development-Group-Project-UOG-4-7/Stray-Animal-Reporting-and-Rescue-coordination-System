@@ -7,116 +7,103 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['Nunito', 'sans-serif'],
+          },
           boxShadow: {
-            soft: "0 12px 30px rgba(0,0,0,.25)"
+            'glow': '0 0 20px rgba(244, 63, 94, 0.5)',
+            'soft': "0 10px 40px -10px rgba(0,0,0,0.5)"
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            }
           }
         }
       }
     }
   </script>
+
+  <style>
+    body { font-family: 'Nunito', sans-serif; }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
 </head>
 
-<body class="min-h-screen text-slate-100 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-indigo-900 via-slate-950 to-black selection:bg-fuchsia-500 selection:text-white">
+<body class="min-h-screen text-slate-100 bg-[#0B1120] selection:bg-rose-500 selection:text-white overflow-x-hidden">
 
-  <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-    <div class="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-fuchsia-600/20 blur-3xl"></div>
-    <div class="absolute top-40 right-[-120px] h-[420px] w-[420px] rounded-full bg-cyan-500/15 blur-3xl"></div>
-    <div class="absolute -bottom-40 left-[-120px] h-[520px] w-[520px] rounded-full bg-emerald-500/10 blur-3xl"></div>
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div class="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-violet-600/20 blur-3xl mix-blend-screen animate-blob"></div>
+    <div class="absolute top-0 right-1/4 h-96 w-96 rounded-full bg-rose-600/20 blur-3xl mix-blend-screen animate-blob animation-delay-2000"></div>
+    <div class="absolute -bottom-32 left-1/3 h-96 w-96 rounded-full bg-teal-600/20 blur-3xl mix-blend-screen animate-blob animation-delay-4000"></div>
   </div>
 
-  <nav class="sticky top-0 z-50 border-b border-white/10 bg-black/35 backdrop-blur-xl">
-    <div class="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
+  <div class="sticky top-4 z-50 px-4 mb-8">
+    <nav class="mx-auto max-w-5xl rounded-full border border-white/10 bg-black/40 px-6 py-3 backdrop-blur-xl shadow-lg flex items-center justify-between">
       
-      <a href="/" class="flex items-center gap-2 font-extrabold tracking-wide hover:opacity-80 transition">
-        <span class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 shadow-soft text-xl">
-          🐾
-        </span>
-        <span class="hidden xs:block text-lg">Stray Rescue</span>
+      <a href="/" class="flex items-center gap-2 group">
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-orange-500 text-white shadow-lg group-hover:scale-110 transition">
+          <i class="fa-solid fa-paw"></i>
+        </div>
+        <span class="text-xl font-extrabold tracking-tight text-white hidden xs:block">Safe<span class="text-rose-400">Paws</span></span>
       </a>
 
-      <div class="flex items-center gap-1 md:gap-2">
+      <div class="flex items-center gap-1 md:gap-4">
+        <a href="/adoptions" class="rounded-full px-4 py-2 text-sm font-bold text-slate-300 hover:bg-white/10 hover:text-white transition">Adopt</a>
+        <a href="/reviews" class="rounded-full px-4 py-2 text-sm font-bold text-slate-300 hover:bg-white/10 hover:text-white transition hidden sm:block">Stories</a>
+        <a href="/join-us" class="rounded-full px-4 py-2 text-sm font-bold text-slate-300 hover:bg-white/10 hover:text-white transition hidden sm:block">Volunteer</a>
         
-        <a href="/adoptions" class="px-3 py-2 rounded-xl hover:bg-white/10 border border-transparent hover:border-white/10 transition flex items-center text-slate-300 hover:text-white">
-          <i class="fa-solid fa-heart text-pink-400"></i>
-          <span class="ml-2 hidden sm:inline font-medium">Adoptions</span>
+        <a href="/my-requests" class="ml-2 flex items-center gap-2 rounded-full bg-white/10 border border-white/10 px-5 py-2 text-sm font-bold text-white hover:bg-rose-500 hover:border-rose-500 transition shadow-lg group">
+          <span>My Dashboard</span>
+          <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
         </a>
-        
-        <a href="/reviews" class="px-3 py-2 rounded-xl hover:bg-white/10 border border-transparent hover:border-white/10 transition flex items-center text-slate-300 hover:text-white">
-          <i class="fa-solid fa-star text-amber-300"></i>
-          <span class="ml-2 hidden sm:inline font-medium">Reviews</span>
-        </a>
-
-        <a href="/join-us" class="px-3 py-2 rounded-xl hover:bg-white/10 border border-transparent hover:border-white/10 transition flex items-center text-slate-300 hover:text-white">
-          <i class="fa-solid fa-user-plus text-cyan-400"></i>
-          <span class="ml-2 hidden sm:inline font-medium">Join Us</span>
-        </a>
-
-        <div class="h-6 w-px bg-white/10 mx-1 md:mx-2"></div>
-
-        <a href="/my-requests" class="ml-1 flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-100 hover:bg-indigo-600/40 hover:border-indigo-400 transition shadow-lg shadow-indigo-500/10 group">
-          <i class="fa-solid fa-clipboard-list group-hover:scale-110 transition"></i>
-          <span class="font-semibold text-sm md:text-base">My Requests</span>
-        </a>
-
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 
-  <main class="mx-auto max-w-7xl px-4 py-8 min-h-[80vh]">
+  <main class="mx-auto max-w-7xl px-4 py-4 min-h-[80vh]">
     
-    {{-- Success Message --}}
+    {{-- Alerts --}}
     @if (session('success'))
-      <div class="mb-6 rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-6 py-4 animate-in fade-in slide-in-from-top-4 duration-500">
-        <div class="flex items-start gap-4">
-          <div class="mt-0.5 rounded-full bg-emerald-500/20 p-1 text-emerald-300"><i class="fa-solid fa-check circle"></i></div>
-          <div>
-            <h4 class="font-bold text-emerald-200">Success</h4>
-            <div class="text-emerald-100 text-sm mt-1">{{ session('success') }}</div>
-          </div>
-        </div>
+      <div class="mb-8 mx-auto max-w-3xl rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-6 py-4 flex items-center gap-4 shadow-soft">
+        <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400"><i class="fa-solid fa-check"></i></div>
+        <p class="text-emerald-100 font-semibold">{{ session('success') }}</p>
       </div>
     @endif
-
-    {{-- Error Message --}}
-    @if (session('error') || $errors->any())
-      <div class="mb-6 rounded-2xl border border-red-400/20 bg-red-500/10 px-6 py-4 animate-in fade-in slide-in-from-top-4 duration-500">
-        <div class="flex items-start gap-4">
-          <div class="mt-0.5 rounded-full bg-red-500/20 p-1 text-red-300"><i class="fa-solid fa-triangle-exclamation"></i></div>
-          <div>
-            <h4 class="font-bold text-red-200">Attention Needed</h4>
-            <div class="text-red-100 text-sm mt-1">
-                {{ session('error') ?? 'Please check the form for errors.' }}
-            </div>
-          </div>
-        </div>
+    @if (session('error'))
+      <div class="mb-8 mx-auto max-w-3xl rounded-2xl border border-rose-500/20 bg-rose-500/10 px-6 py-4 flex items-center gap-4 shadow-soft">
+        <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-rose-500/20 text-rose-400"><i class="fa-solid fa-xmark"></i></div>
+        <p class="text-rose-100 font-semibold">{{ session('error') }}</p>
       </div>
     @endif
 
     @yield('content')
   </main>
 
-  <footer class="border-t border-white/10 bg-black/20 mt-auto">
-    <div class="mx-auto max-w-7xl px-4 py-8 text-sm text-slate-400 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-      <div class="flex flex-col gap-1">
-        <p class="font-bold text-slate-200">© {{ date('Y') }} Stray Rescue</p>
-        <p>Saving lives, one paw at a time.</p>
-      </div>
-      
-      <div class="flex items-center gap-6">
-        <a href="/join-us" class="hover:text-indigo-300 transition">Volunteer</a>
-        <a href="/adoptions" class="hover:text-indigo-300 transition">Adopt</a>
-        <div class="flex gap-4 text-lg border-l border-white/10 pl-6">
-           <a href="#" class="hover:text-white hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></a>
-           <a href="#" class="hover:text-white hover:scale-110 transition"><i class="fa-brands fa-facebook"></i></a>
-           <a href="#" class="hover:text-white hover:scale-110 transition"><i class="fa-brands fa-twitter"></i></a>
-        </div>
-      </div>
+  <footer class="mt-20 border-t border-white/5 bg-black/20 pt-10 pb-6">
+    <div class="text-center">
+      <div class="mb-4 text-2xl font-black text-slate-700 opacity-20"><i class="fa-solid fa-shield-dog"></i></div>
+      <p class="text-slate-500 text-sm">© {{ date('Y') }} SafePaws Rescue. Built with love.</p>
     </div>
   </footer>
 
