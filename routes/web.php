@@ -29,7 +29,7 @@ Route::post('/donate', [DonationController::class, 'storeBank'])->name('donation
 
 // Donation history
 Route::get('/donation/history', [DonationController::class, 'history'])
-    ->name('donation.history');
+    ->name('donation-history');
 // Edit donation
 Route::get('/donation/{id}/edit', [DonationController::class, 'edit'])->name('donation-edit');
 

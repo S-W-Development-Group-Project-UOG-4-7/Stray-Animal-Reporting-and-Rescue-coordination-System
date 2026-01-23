@@ -81,7 +81,7 @@ class DonationController extends Controller
             'message'
         ]));
 
-       return redirect()->route('donation')
+       return redirect()->route('donation-history')
         ->with('success', 'Donation updated successfully!');
 }
     // Delete donation

@@ -44,7 +44,7 @@
     <div class="mb-8">
         <div class="flex items-start justify-between">
             <div>
-                <a href="{{ route('donation.history') }}" class="inline-flex items-center gap-2 mb-6 text-cyan-400 hover:text-cyan-300">
+                <a href="{{ route('donation-history') }}" class="inline-flex items-center gap-2 mb-6 text-cyan-400 hover:text-cyan-300">
                     <i class="fas fa-arrow-left"></i>
                     Back to Donation History
                 </a>
@@ -190,7 +190,7 @@
             <!-- Form Actions -->
             <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/10">
                 <div>
-                    <a href="{{ route('donation.history') }}" 
+                    <a href="{{ route('donation-history') }}" 
                        class="cancel-btn">
                         <i class="mr-2 fas fa-times"></i>
                         Cancel
