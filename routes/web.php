@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdoptionController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -53,3 +55,21 @@ Route::get('/activity', fn() => 'Activity Log Coming Soon');
 Route::get('/notifications', fn() => 'Notifications Coming Soon');
 Route::get('/logout', fn() => 'Logout Coming Soon');
 Route::get('/profile', fn() => 'Profile Coming Soon');
+
+Route::get('/', function () {
+    return view('home');
+})->name('home');
+
+Route::get('/adoption', function () {
+    return view('adoption.list');
+})->name('adoption.list');
+
+// Additional routes for other pages
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
