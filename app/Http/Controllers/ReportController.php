@@ -13,48 +13,59 @@ class ReportController extends Controller
     | Store New Report
     |--------------------------------------------------------------------------
     */
-    public function store(Request $request)
-    {
-        try {
-            $validated = $request->validate([
-                'animal_type'   => 'required|in:Aggressive,Sick/Injured,Stray/Lost,Abandoned',
-                'animal_photo'  => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
-                'description'   => 'required|string|min:3|max:1000',
-                'location'      => 'required|string|max:255',
-                'last_seen'     => 'required|date',
-                'contact_name'  => 'nullable|string|max:100',
-                'contact_phone' => 'nullable|string|max:20',
-                'contact_email' => 'nullable|email|max:100',
-                'terms'         => 'required|accepted',
-            ]);
+    /*
+|--------------------------------------------------------------------------
+| Store New Report
+|--------------------------------------------------------------------------
+*/
+public function store(Request $request)
+{
+    try {
+        $validated = $request->validate([
+            'animal_species'  => 'required|in:Dog,Cat,Other',
+            'other_species'   => 'nullable|required_if:animal_species,Other|max:100',
+            'animal_type'     => 'required|in:Aggressive,Sick/Injured,Stray/Lost,Abandoned',
+            'animal_photo'    => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'description'     => 'required|string|min:3|max:1000',
+            'location'        => 'required|string|max:255',
+            'last_seen'       => 'required|date',
+            'contact_name'    => 'nullable|string|max:100',
+            'contact_phone'   => 'nullable|string|max:20',
+            'contact_email'   => 'nullable|email|max:100',
+            'terms'           => 'required|accepted',
+        ]);
 
-            // Upload image
-            if ($request->hasFile('animal_photo')) {
-                $file = $request->file('animal_photo');
-                $imageName = time() . '_' . $file->getClientOriginalName();
-                $file->storeAs('public/animal-photos', $imageName);
-                $validated['animal_photo'] = 'storage/animal-photos/' . $imageName;
-            }
-
-            $validated['last_seen'] = date('Y-m-d H:i:s', strtotime($validated['last_seen']));
-            $validated['report_id'] = AnimalReport::generateReportId();
-            $validated['status']    = 'pending';
-            $validated['expires_at'] = now()->addDays(30);
-
-
-            $report = AnimalReport::create($validated);
-
-            return response()->json([
-                'success'      => true,
-                'redirect_url' => route('report.success', $report->report_id),
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'errors'  => $e->errors(),
-            ], 422);
+        // Upload image
+        if ($request->hasFile('animal_photo')) {
+            $file = $request->file('animal_photo');
+            $imageName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/animal-photos', $imageName);
+            $validated['animal_photo'] = 'storage/animal-photos/' . $imageName;
         }
+
+        $validated['last_seen'] = date('Y-m-d H:i:s', strtotime($validated['last_seen']));
+        $validated['report_id'] = AnimalReport::generateReportId();
+        $validated['status'] = 'pending';
+        $validated['expires_at'] = now()->addDays(30);
+
+        // Clean up other_species if not "Other"
+        if ($validated['animal_species'] !== 'Other') {
+            $validated['other_species'] = null;
+        }
+
+        $report = AnimalReport::create($validated);
+
+        return response()->json([
+            'success'      => true,
+            'redirect_url' => route('report.success', $report->report_id),
+        ]);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'errors'  => $e->errors(),
+        ], 422);
     }
+}
 
     /*
     |--------------------------------------------------------------------------
@@ -171,60 +182,72 @@ class ReportController extends Controller
     | Update Report
     |--------------------------------------------------------------------------
     */
-    public function update(Request $request, $reportId)
-    {
-        try {
-            if (!session()->has('edit_email_' . $reportId)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Email verification required',
-                ], 403);
-            }
-
-            $report = AnimalReport::where('report_id', $reportId)->firstOrFail();
-
-            $validated = $request->validate([
-                'animal_type'   => 'required|in:Aggressive,Sick/Injured,Stray/Lost,Abandoned',
-                'animal_photo'  => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-                'description'   => 'required|string|min:3|max:1000',
-                'location'      => 'required|string|max:255',
-                'last_seen'     => 'required|date',
-                'contact_name'  => 'nullable|string|max:100',
-                'contact_phone' => 'nullable|string|max:20',
-                'contact_email' => 'nullable|email|max:100',
-            ]);
-
-            // Replace photo
-            if ($request->hasFile('animal_photo')) {
-                if ($report->animal_photo) {
-                    Storage::delete(str_replace('storage/', 'public/', $report->animal_photo));
-                }
-
-                $file = $request->file('animal_photo');
-                $imageName = time() . '_' . $file->getClientOriginalName();
-                $file->storeAs('public/animal-photos', $imageName);
-                $validated['animal_photo'] = 'storage/animal-photos/' . $imageName;
-            } else {
-                $validated['animal_photo'] = $report->animal_photo;
-            }
-
-            $validated['last_seen'] = date('Y-m-d H:i:s', strtotime($validated['last_seen']));
-
-            $report->update($validated);
-
-            session()->forget('edit_email_' . $reportId);
-
-            return response()->json([
-                'success'      => true,
-                'redirect_url' => route('track.report', $reportId),
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+    /*
+|--------------------------------------------------------------------------
+| Update Report
+|--------------------------------------------------------------------------
+*/
+public function update(Request $request, $reportId)
+{
+    try {
+        if (!session()->has('edit_email_' . $reportId)) {
             return response()->json([
                 'success' => false,
-                'errors'  => $e->errors(),
-            ], 422);
+                'message' => 'Email verification required',
+            ], 403);
         }
+
+        $report = AnimalReport::where('report_id', $reportId)->firstOrFail();
+
+        $validated = $request->validate([
+            'animal_species'  => 'required|in:Dog,Cat,Other',
+            'other_species'   => 'nullable|required_if:animal_species,Other|max:100',
+            'animal_type'     => 'required|in:Aggressive,Sick/Injured,Stray/Lost,Abandoned',
+            'animal_photo'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'description'     => 'required|string|min:3|max:1000',
+            'location'        => 'required|string|max:255',
+            'last_seen'       => 'required|date',
+            'contact_name'    => 'nullable|string|max:100',
+            'contact_phone'   => 'nullable|string|max:20',
+            'contact_email'   => 'nullable|email|max:100',
+        ]);
+
+        // Replace photo
+        if ($request->hasFile('animal_photo')) {
+            if ($report->animal_photo) {
+                Storage::delete(str_replace('storage/', 'public/', $report->animal_photo));
+            }
+
+            $file = $request->file('animal_photo');
+            $imageName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/animal-photos', $imageName);
+            $validated['animal_photo'] = 'storage/animal-photos/' . $imageName;
+        } else {
+            $validated['animal_photo'] = $report->animal_photo;
+        }
+
+        $validated['last_seen'] = date('Y-m-d H:i:s', strtotime($validated['last_seen']));
+        
+        // Clean up other_species if not "Other"
+        if ($validated['animal_species'] !== 'Other') {
+            $validated['other_species'] = null;
+        }
+
+        $report->update($validated);
+
+        session()->forget('edit_email_' . $reportId);
+
+        return response()->json([
+            'success'      => true,
+            'redirect_url' => route('track.report', $reportId),
+        ]);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'errors'  => $e->errors(),
+        ], 422);
     }
+}
 
     /*
     |--------------------------------------------------------------------------

@@ -606,7 +606,7 @@
                             Report an Animal in <span class="gradient-text">Need</span>
                         </h1>
                         <p class="mb-10 subtitle">
-                            Your report could save a life. Help us rescue animals by providing accurate information. Our team responds 24/7 to emergency calls.
+                            Your report could save a life. Help us rescue animals by providing accurate information. Our team responds 24/7 to emergency SMS.
                         </p>
                         <div class="flex flex-col gap-4 sm:flex-row">
                             <a href="#report-form" class="primary-btn animate-pulse-glow">
@@ -614,8 +614,8 @@
                                 Fill Report Form
                             </a>
                             <a href="#emergency" class="secondary-btn">
-                                <i class="fas fa-phone"></i>
-                                Emergency Hotline
+                                <i class="fas fa-sms"></i>
+                                Emergency SMS
                             </a>
                         </div>
                         
@@ -650,31 +650,57 @@
             <div class="mt-16 scroll-indicator"></div>
         </section>
 
-        <!-- Emergency Contact Section -->
+        <!-- Emergency Contact Section - UPDATED FOR SMS -->
         <section id="emergency" class="section-padding bg-gradient-to-b from-red-900/20 to-transparent">
             <div class="container-custom">
                 <div class="max-w-4xl mx-auto">
                     <div class="p-8 text-center border bg-gradient-to-r from-red-500/20 to-red-600/20 rounded-3xl border-red-500/30">
                         <div class="mx-auto mb-6 feature-icon">
-                            <i class="fas fa-phone-alt"></i>
+                            <i class="fas fa-comment-medical"></i>
                         </div>
-                        <h3 class="mb-4 text-3xl font-bold text-red-400">Emergency Hotline</h3>
+                        <h3 class="mb-4 text-3xl font-bold text-red-400">Emergency SMS Hotline</h3>
                         <p class="mb-6 text-xl">
-                            <i class="mr-2 fas fa-phone"></i>
-                            <span class="text-2xl font-bold">(555) 911-ANIMAL</span>
+                            <i class="mr-2 fas fa-sms"></i>
+                            <span class="text-2xl font-bold">0755027869</span>
                         </p>
                         <p class="mb-6 text-gray-300">
-                            Call immediately if the animal is in immediate danger, severely injured, or showing aggressive behavior.
+                            Send an immediate SMS with location details. Our team responds 24/7 to emergency messages.
                         </p>
+                        
+                        <div class="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
+                            <div class="p-4 text-left bg-black/20 rounded-xl">
+                                <h4 class="mb-2 font-bold text-cyan-300">📱 Text Message Format:</h4>
+                                <p class="text-sm text-gray-300">Location: [Address/Landmark]<br>Animal: [Type/Condition]<br>Urgency: [High/Medium/Low]</p>
+                            </div>
+                            <div class="p-4 text-left bg-black/20 rounded-xl">
+                                <h4 class="mb-2 font-bold text-cyan-300">⏱️ Response Time:</h4>
+                                <p class="text-sm text-gray-300">✓ Auto-reply within 2 minutes<br>✓ Rescue team dispatched in 15-45 min<br>✓ 24/7 monitoring</p>
+                            </div>
+                        </div>
+                        
                         <div class="flex flex-col justify-center gap-4 sm:flex-row">
-                            <a href="tel:555911264625" class="bg-red-500 primary-btn hover:bg-red-600">
-                                <i class="fas fa-phone"></i>
-                                Call Emergency Line
+                            <!-- Send SMS Button -->
+                            <a href="sms:0755027869?body=EMERGENCY%20ANIMAL%20REPORT%0A%0ALocation:%20[Address/Landmark]%0AAnimal:%20[Type/Condition]%0AUrgency:%20[High/Medium/Low]%0A%0A(Sent%20via%20SafePaws%20Emergency)" 
+                               class="bg-red-500 primary-btn hover:bg-red-600">
+                                <i class="fas fa-sms"></i>
+                                Send Emergency SMS
                             </a>
+                            
+                            <!-- Copy Number Button -->
                             <button onclick="copyEmergencyNumber()" class="text-red-400 border-red-500 secondary-btn hover:bg-red-500 hover:text-white">
                                 <i class="fas fa-copy"></i>
                                 Copy Number
                             </button>
+                            
+                            <!-- Quick Location Button -->
+                            <button onclick="sendQuickLocationSMS()" class="bg-orange-500 primary-btn hover:bg-orange-600">
+                                <i class="fas fa-location-dot"></i>
+                                Send My Location
+                            </button>
+                        </div>
+                        
+                        <div class="mt-6 text-sm text-gray-400">
+                            <p><i class="mr-1 fas fa-info-circle"></i> Include your location in the message for faster response</p>
                         </div>
                     </div>
                 </div>
@@ -724,71 +750,134 @@
                         
                         <!-- Step 1: Animal Type -->
                         <div id="step-1" class="form-step card">
-                            <h3 class="mb-6 text-2xl font-bold gradient-text">1. Select Animal Type</h3>
+                            <h3 class="mb-6 text-2xl font-bold gradient-text">1. Animal Information</h3>
                             
-                            <div class="grid gap-6 mb-8 md:grid-cols-2">
-                                <div class="animal-type-option">
-                                    <input type="radio" id="aggressive" name="animal_type" value="Aggressive" class="hidden peer" required>
-                                    <label for="aggressive" class="transition-all duration-300 cursor-pointer card peer-checked:border-red-500 peer-checked:bg-red-500/10">
-                                        <div class="flex items-center gap-4">
-                                            <div class="feature-icon bg-gradient-to-r from-red-500 to-orange-500">
-                                                <i class="fas fa-exclamation-triangle"></i>
+                            <!-- Animal Species Selection -->
+                            <div class="mb-8">
+                                <label class="block mb-4 text-lg font-bold required-field">Animal Species</label>
+                                <p class="mb-6 text-gray-300">What type of animal are you reporting?</p>
+                                
+                                <div class="grid gap-4 mb-8 sm:grid-cols-3">
+                                    <div class="animal-species-option">
+                                        <input type="radio" id="species-dog" name="animal_species" value="Dog" class="hidden peer" required>
+                                        <label for="species-dog" class="flex flex-col items-center justify-center h-32 transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
+                                            <div class="mb-3 text-4xl">
+                                                <i class="fas fa-dog"></i>
                                             </div>
-                                            <div>
-                                                <h4 class="text-lg font-bold">Aggressive/Dangerous</h4>
-                                                <p class="text-sm text-gray-300">Animal shows signs of aggression or poses immediate danger</p>
+                                            <h4 class="text-lg font-bold">Dog</h4>
+                                            <p class="text-sm text-gray-300">Domestic dog</p>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="animal-species-option">
+                                        <input type="radio" id="species-cat" name="animal_species" value="Cat" class="hidden peer" required>
+                                        <label for="species-cat" class="flex flex-col items-center justify-center h-32 transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
+                                            <div class="mb-3 text-4xl">
+                                                <i class="fas fa-cat"></i>
                                             </div>
-                                        </div>
-                                    </label>
+                                            <h4 class="text-lg font-bold">Cat</h4>
+                                            <p class="text-sm text-gray-300">Domestic cat</p>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="animal-species-option">
+                                        <input type="radio" id="species-other" name="animal_species" value="Other" class="hidden peer" required>
+                                        <label for="species-other" class="flex flex-col items-center justify-center h-32 transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
+                                            <div class="mb-3 text-4xl">
+                                                <i class="fas fa-paw"></i>
+                                            </div>
+                                            <h4 class="text-lg font-bold">Other</h4>
+                                            <p class="text-sm text-gray-300">Other animals</p>
+                                        </label>
+                                    </div>
                                 </div>
                                 
-                                <div class="animal-type-option">
-                                    <input type="radio" id="sick" name="animal_type" value="Sick/Injured" class="hidden peer" required>
-                                    <label for="sick" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
-                                        <div class="flex items-center gap-4">
-                                            <div class="feature-icon">
-                                                <i class="fas fa-heartbeat"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-lg font-bold">Sick/Injured</h4>
-                                                <p class="text-sm text-gray-300">Animal appears ill, wounded, or in visible distress</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                                
-                                <div class="animal-type-option">
-                                    <input type="radio" id="stray" name="animal_type" value="Stray/Lost" class="hidden peer" required>
-                                    <label for="stray" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
-                                        <div class="flex items-center gap-4">
-                                            <div class="feature-icon">
-                                                <i class="fas fa-home"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-lg font-bold">Stray/Lost</h4>
-                                                <p class="text-sm text-gray-300">Animal appears lost or without visible owner/caretaker</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                                
-                                <div class="animal-type-option">
-                                    <input type="radio" id="abandoned" name="animal_type" value="Abandoned" class="hidden peer" required>
-                                    <label for="abandoned" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
-                                        <div class="flex items-center gap-4">
-                                            <div class="feature-icon">
-                                                <i class="fas fa-sad-tear"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-lg font-bold">Abandoned</h4>
-                                                <p class="text-sm text-gray-300">Animal left behind by owner or in abandonment situation</p>
-                                            </div>
-                                        </div>
-                                    </label>
+                                <!-- Other Animal Type Input (Only shows when "Other" is selected) -->
+                                <div id="other-species-container" class="hidden mb-8">
+                                    <label for="other_species" class="block mb-2 font-bold required-field">Specify Animal Type</label>
+                                    <input type="text" id="other_species" name="other_species" 
+                                           class="w-full px-4 py-3 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500"
+                                           placeholder="e.g., Rabbit, Bird, Squirrel, etc.">
+                                    <div id="other-species-error" class="hidden mt-2 text-sm text-red-400">
+                                        Please specify the animal type
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="flex justify-end">
+                            <!-- Condition Type Selection -->
+                            <div>
+                                <label class="block mb-4 text-lg font-bold required-field">Animal Condition</label>
+                                <p class="mb-6 text-gray-300">What is the animal's current condition?</p>
+                                
+                                <div class="grid gap-6 md:grid-cols-2">
+                                    <div class="animal-type-option">
+                                        <input type="radio" id="aggressive" name="animal_type" value="Aggressive" class="hidden peer" required>
+                                        <label for="aggressive" class="transition-all duration-300 cursor-pointer card peer-checked:border-red-500 peer-checked:bg-red-500/10">
+                                            <div class="flex items-center gap-4">
+                                                <div class="feature-icon bg-gradient-to-r from-red-500 to-orange-500">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-lg font-bold">Aggressive/Dangerous</h4>
+                                                    <p class="text-sm text-gray-300">Animal shows signs of aggression or poses immediate danger</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="animal-type-option">
+                                        <input type="radio" id="sick" name="animal_type" value="Sick/Injured" class="hidden peer" required>
+                                        <label for="sick" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
+                                            <div class="flex items-center gap-4">
+                                                <div class="feature-icon">
+                                                    <i class="fas fa-heartbeat"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-lg font-bold">Sick/Injured</h4>
+                                                    <p class="text-sm text-gray-300">Animal appears ill, wounded, or in visible distress</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="animal-type-option">
+                                        <input type="radio" id="stray" name="animal_type" value="Stray/Lost" class="hidden peer" required>
+                                        <label for="stray" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
+                                            <div class="flex items-center gap-4">
+                                                <div class="feature-icon">
+                                                    <i class="fas fa-home"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-lg font-bold">Stray/Lost</h4>
+                                                    <p class="text-sm text-gray-300">Animal appears lost or without visible owner/caretaker</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="animal-type-option">
+                                        <input type="radio" id="abandoned" name="animal_type" value="Abandoned" class="hidden peer" required>
+                                        <label for="abandoned" class="transition-all duration-300 cursor-pointer card peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10">
+                                            <div class="flex items-center gap-4">
+                                                <div class="feature-icon">
+                                                    <i class="fas fa-sad-tear"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-lg font-bold">Abandoned</h4>
+                                                    <p class="text-sm text-gray-300">Animal left behind by owner or in abandonment situation</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Validation Error -->
+                                <div id="condition-error" class="hidden mt-4 text-sm text-red-400">
+                                    Please select the animal's condition
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end mt-8">
                                 <button type="button" class="primary-btn next-step" data-next="2">
                                     Next Step
                                     <i class="ml-2 fas fa-arrow-right"></i>
@@ -798,7 +887,7 @@
 
                         <!-- Step 2: Details & Image -->
                         <div id="step-2" class="hidden form-step card">
-                            <h3 class="mb-6 text-2xl font-bold gradient-text">2. Animal Details & Photo</h3>
+                            <h3 class="mb-6 text-2xl font-bold gradient-text">2. Animal Photo & Description</h3>
                             
                             <!-- Image Upload -->
                             <div class="mb-8">
@@ -943,9 +1032,13 @@
                                 <div class="mb-6 card bg-white/5">
                                     <h4 class="mb-4 text-xl font-bold">Report Summary</h4>
                                     <div class="space-y-4">
-                                        <div class="grid gap-4 md:grid-cols-2">
+                                        <div class="grid gap-4 md:grid-cols-3">
                                             <div>
-                                                <p class="text-gray-400">Animal Type</p>
+                                                <p class="text-gray-400">Animal Species</p>
+                                                <p id="review-species" class="font-bold">-</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-gray-400">Condition</p>
                                                 <p id="review-type" class="font-bold">-</p>
                                             </div>
                                             <div>
@@ -1134,13 +1227,14 @@
             <div class="text-center container-custom">
                 <h2 class="mb-6 section-title">Need Immediate Help?</h2>
                 <p class="max-w-2xl mx-auto mb-10 section-subtitle">
-                    If the animal is in immediate danger or showing aggressive behavior, call our emergency hotline right away
+                    If the animal is in immediate danger or showing aggressive behavior, send SMS to our emergency hotline right away
                 </p>
                 
                 <div class="flex flex-col justify-center gap-6 sm:flex-row">
-                    <a href="tel:555911264625" class="bg-red-500 primary-btn hover:bg-red-600">
-                        <i class="mr-2 fas fa-phone"></i>
-                        Call Emergency: (555) 911-ANIMAL
+                    <a href="sms:0755027869?body=EMERGENCY%20ANIMAL%20REPORT%0AUrgent:%20Animal%20in%20immediate%20danger%0ALocation:%0AAnimal:%0A%0A(Sent%20via%20SafePaws%20Emergency)" 
+                       class="bg-red-500 primary-btn hover:bg-red-600">
+                        <i class="mr-2 fas fa-sms"></i>
+                        Send Emergency SMS
                     </a>
                     <a href="{{ route('home') }}" class="secondary-btn">
                         <i class="mr-2 fas fa-home"></i>
@@ -1197,7 +1291,7 @@
                     <div>
                         <h4 class="mb-6 text-lg font-bold">Emergency Services</h4>
                         <ul class="space-y-3">
-                            <li><a href="{{ route('animal.report.form') }}#emergency" class="text-gray-300 transition-colors duration-300 hover:text-red-400">Emergency Hotline</a></li>
+                            <li><a href="{{ route('animal.report.form') }}#emergency" class="text-gray-300 transition-colors duration-300 hover:text-red-400">Emergency SMS Hotline</a></li>
                             <li><a href="#" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Animal Rescue</a></li>
                             <li><a href="#" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Medical Emergency</a></li>
                             <li><a href="#" class="text-gray-300 transition-colors duration-300 hover:text-cyan-400">Aggressive Animals</a></li>
@@ -1221,8 +1315,8 @@
                                 <span class="text-gray-300">emergency@safepaws.org</span>
                             </li>
                             <li class="flex items-center gap-3">
-                                <i class="text-red-400 fas fa-phone-alt"></i>
-                                <span class="font-medium text-red-300">(555) 911-ANIMAL</span>
+                                <i class="text-red-400 fas fa-sms"></i>
+                                <span class="font-medium text-red-300">0755027869 (SMS Only)</span>
                             </li>
                         </ul>
                     </div>
@@ -1236,7 +1330,7 @@
                             <a href="#" class="transition-colors duration-300 hover:text-cyan-400">Terms of Service</a>
                         </p>
                         <p class="text-sm text-gray-400">
-                            Emergency Response Available 24/7
+                            Emergency SMS Response Available 24/7
                         </p>
                     </div>
                 </div>
@@ -1249,461 +1343,608 @@
         </button>
 
         <script>
-    // Set current year in footer
-    document.getElementById('current-year').textContent = new Date().getFullYear();
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
-                ? '<i class="fas fa-bars"></i>' 
-                : '<i class="fas fa-times"></i>';
-        });
-    }
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
+                        ? '<i class="fas fa-bars"></i>' 
+                        : '<i class="fas fa-times"></i>';
+                });
+            }
 
-    // Back to top button
-    const backToTopBtn = document.getElementById('back-to-top');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTopBtn.classList.remove('hidden');
-        } else {
-            backToTopBtn.classList.add('hidden');
-        }
-    });
-    
-    backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // Form handling
-    let currentStep = 1;
-    const totalSteps = 4;
-    const formProgress = document.getElementById('form-progress');
-    const steps = document.querySelectorAll('.step-indicator');
-    
-    // Update progress bar and step indicators
-    function updateProgress() {
-        const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-        formProgress.style.width = `${progressPercentage}%`;
-        
-        steps.forEach((step, index) => {
-            const stepNumber = index + 1;
-            if (stepNumber < currentStep) {
-                step.classList.remove('active');
-                step.classList.add('completed');
-                step.innerHTML = '<i class="fas fa-check"></i>';
-            } else if (stepNumber === currentStep) {
-                step.classList.add('active');
-                step.classList.remove('completed');
-                step.textContent = stepNumber;
-            } else {
-                step.classList.remove('active', 'completed');
-                step.textContent = stepNumber;
-            }
-        });
-    }
-    
-    // Show specific step
-    function showStep(stepNumber) {
-        document.querySelectorAll('.form-step').forEach(step => {
-            step.classList.add('hidden');
-        });
-        
-        const stepToShow = document.getElementById(`step-${stepNumber}`);
-        if (stepToShow) {
-            stepToShow.classList.remove('hidden');
-            currentStep = stepNumber;
-            updateProgress();
+            // Back to top button
+            const backToTopBtn = document.getElementById('back-to-top');
             
-            if (stepNumber === 4) {
-                populateReview();
-            }
-        }
-    }
-    
-    // Validate current step
-    function validateStep(stepNumber) {
-        let isValid = true;
-        
-        if (stepNumber === 1) {
-            const animalTypeSelected = document.querySelector('input[name="animal_type"]:checked');
-            if (!animalTypeSelected) {
-                alert('Please select an animal type');
-                isValid = false;
-            }
-        }
-        
-        if (stepNumber === 2) {
-            const imageInput = document.getElementById('animal_photo');
-            const description = document.getElementById('description').value.trim();
-            
-            if (!imageInput.files || imageInput.files.length === 0) {
-                document.getElementById('image-error').classList.remove('hidden');
-                isValid = false;
-            } else {
-                document.getElementById('image-error').classList.add('hidden');
-            }
-            
-            if (!description) {
-                document.getElementById('description-error').classList.remove('hidden');
-                isValid = false;
-            } else {
-                document.getElementById('description-error').classList.add('hidden');
-            }
-        }
-        
-        if (stepNumber === 3) {
-            const location = document.getElementById('location').value.trim();
-            const lastSeen = document.getElementById('last_seen').value;
-            
-            if (!location) {
-                document.getElementById('location-error').classList.remove('hidden');
-                isValid = false;
-            } else {
-                document.getElementById('location-error').classList.add('hidden');
-            }
-            
-            if (!lastSeen) {
-                document.getElementById('last-seen-error').classList.remove('hidden');
-                isValid = false;
-            } else {
-                document.getElementById('last-seen-error').classList.add('hidden');
-            }
-        }
-        
-        if (stepNumber === 4) {
-            const termsAccepted = document.getElementById('terms').checked;
-            if (!termsAccepted) {
-                document.getElementById('terms-error').classList.remove('hidden');
-                isValid = false;
-            } else {
-                document.getElementById('terms-error').classList.add('hidden');
-            }
-        }
-        
-        return isValid;
-    }
-    
-    // Populate review step
-    function populateReview() {
-        const animalType = document.querySelector('input[name="animal_type"]:checked');
-        if (animalType) {
-            document.getElementById('review-type').textContent = animalType.value;
-        }
-        
-        const location = document.getElementById('location').value;
-        document.getElementById('review-location').textContent = location || 'Not provided';
-        
-        const lastSeen = document.getElementById('last_seen').value;
-        if (lastSeen) {
-            const date = new Date(lastSeen);
-            document.getElementById('review-last-seen').textContent = date.toLocaleString();
-        } else {
-            document.getElementById('review-last-seen').textContent = 'Not provided';
-        }
-        
-        const description = document.getElementById('description').value;
-        document.getElementById('review-description').textContent = description || 'Not provided';
-        
-        const contactName = document.getElementById('contact_name').value;
-        const contactPhone = document.getElementById('contact_phone').value;
-        const contactEmail = document.getElementById('contact_email').value;
-        
-        if (contactName || contactPhone || contactEmail) {
-            let contactDetails = [];
-            if (contactName) contactDetails.push(`Name: ${contactName}`);
-            if (contactPhone) contactDetails.push(`Phone: ${contactPhone}`);
-            if (contactEmail) contactDetails.push(`Email: ${contactEmail}`);
-            
-            document.getElementById('review-contact-details').textContent = contactDetails.join(', ');
-            document.getElementById('review-contact').classList.remove('hidden');
-        } else {
-            document.getElementById('review-contact').classList.add('hidden');
-        }
-    }
-    
-    // Next step button handlers
-    document.querySelectorAll('.next-step').forEach(button => {
-        button.addEventListener('click', function() {
-            const nextStep = parseInt(this.getAttribute('data-next'));
-            if (validateStep(currentStep)) {
-                showStep(nextStep);
-            }
-        });
-    });
-    
-    // Previous step button handlers
-    document.querySelectorAll('.prev-step').forEach(button => {
-        button.addEventListener('click', function() {
-            const prevStep = parseInt(this.getAttribute('data-prev'));
-            showStep(prevStep);
-        });
-    });
-    
-    // File upload handling
-    const fileUploadArea = document.getElementById('file-upload-area');
-    const fileInput = document.getElementById('animal_photo');
-    const filePreview = document.getElementById('file-preview');
-    const fileName = document.getElementById('file-name');
-    const fileSize = document.getElementById('file-size');
-    const imagePreview = document.getElementById('image-preview');
-    const removeImageBtn = document.getElementById('remove-image');
-    
-    if (fileUploadArea && fileInput) {
-        fileUploadArea.addEventListener('click', () => {
-            fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                handleFileSelection(this.files[0]);
-            }
-        });
-        
-        fileUploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUploadArea.classList.add('border-cyan-500', 'bg-cyan-500/10');
-        });
-        
-        fileUploadArea.addEventListener('dragleave', () => {
-            fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
-        });
-        
-        fileUploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
-            
-            if (e.dataTransfer.files.length) {
-                fileInput.files = e.dataTransfer.files;
-                handleFileSelection(fileInput.files[0]);
-            }
-        });
-        
-        removeImageBtn.addEventListener('click', function() {
-            filePreview.classList.add('hidden');
-            fileInput.value = '';
-            document.getElementById('image-error').classList.remove('hidden');
-        });
-    }
-    
-    function handleFileSelection(file) {
-        if (!file) return;
-        
-        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-        if (!validTypes.includes(file.type)) {
-            alert('Please upload a valid image file (JPG, PNG, WEBP)');
-            return;
-        }
-        
-        if (file.size > 5 * 1024 * 1024) {
-            alert('File size must be less than 5MB');
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            imagePreview.src = e.target.result;
-            fileName.textContent = file.name;
-            fileSize.textContent = formatFileSize(file.size);
-            filePreview.classList.remove('hidden');
-            document.getElementById('image-error').classList.add('hidden');
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    function formatFileSize(bytes) {
-        if (bytes < 1024) return bytes + ' bytes';
-        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-        else return (bytes / 1048576).toFixed(1) + ' MB';
-    }
-    
-    // Form submission
-    const reportForm = document.getElementById('animal-report-form');
-    
-    // Find this section in your JavaScript and update it:
-if (reportForm) {
-    reportForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        console.log('Form submission started');
-        
-        // Validate all steps
-        let allValid = true;
-        for (let i = 1; i <= 4; i++) {
-            if (!validateStep(i)) {
-                allValid = false;
-                showStep(i);
-                break;
-            }
-        }
-        
-        if (!allValid) {
-            alert('Please complete all required fields before submitting.');
-            return;
-        }
-        
-        // Create FormData
-        const formData = new FormData(this);
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        formData.append('_token', csrfToken);
-        
-        // Show loading
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i> Submitting...';
-        submitBtn.disabled = true;
-        
-        try {
-            console.log('Sending request to:', this.action);
-            
-            const response = await fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.remove('hidden');
+                } else {
+                    backToTopBtn.classList.add('hidden');
                 }
             });
             
-            console.log('Response status:', response.status);
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Form handling
+            let currentStep = 1;
+            const totalSteps = 4;
+            const formProgress = document.getElementById('form-progress');
+            const steps = document.querySelectorAll('.step-indicator');
             
-            const result = await response.json();
-            console.log('Response data:', result);
+            // Update progress bar and step indicators
+            function updateProgress() {
+                const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                formProgress.style.width = `${progressPercentage}%`;
+                
+                steps.forEach((step, index) => {
+                    const stepNumber = index + 1;
+                    if (stepNumber < currentStep) {
+                        step.classList.remove('active');
+                        step.classList.add('completed');
+                        step.innerHTML = '<i class="fas fa-check"></i>';
+                    } else if (stepNumber === currentStep) {
+                        step.classList.add('active');
+                        step.classList.remove('completed');
+                        step.textContent = stepNumber;
+                    } else {
+                        step.classList.remove('active', 'completed');
+                        step.textContent = stepNumber;
+                    }
+                });
+            }
             
-            if (response.ok && result.success) {
-                // Redirect to success page
-                console.log('Redirecting to:', result.redirect_url);
-                window.location.href = result.redirect_url;
-            } else {
-                // Show validation errors
-                if (result.errors) {
-                    let errorMessages = 'Please fix the following errors:\n\n';
-                    Object.values(result.errors).forEach(errorArray => {
-                        errorArray.forEach(error => {
-                            errorMessages += `• ${error}\n`;
-                        });
-                    });
-                    alert(errorMessages);
-                } else {
-                    alert(result.message || 'Failed to submit report. Please try again.');
+            // Show specific step
+            function showStep(stepNumber) {
+                document.querySelectorAll('.form-step').forEach(step => {
+                    step.classList.add('hidden');
+                });
+                
+                const stepToShow = document.getElementById(`step-${stepNumber}`);
+                if (stepToShow) {
+                    stepToShow.classList.remove('hidden');
+                    currentStep = stepNumber;
+                    updateProgress();
+                    
+                    if (stepNumber === 4) {
+                        populateReview();
+                    }
                 }
             }
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert('Network error. Please check your connection and try again.');
-        } finally {
-            // Reset button state
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }
-    });
-}
-    
-    // Copy emergency number
-    function copyEmergencyNumber() {
-        const number = '(555) 911-ANIMAL';
-        navigator.clipboard.writeText(number).then(() => {
-            alert('Emergency number copied to clipboard: ' + number);
-        });
-    }
-    
-    // FAQ toggle
-    document.querySelectorAll('.faq-question').forEach(question => {
-        question.addEventListener('click', () => {
-            const answer = question.nextElementSibling;
-            const icon = question.querySelector('i');
             
-            answer.classList.toggle('hidden');
-            icon.classList.toggle('fa-chevron-down');
-            icon.classList.toggle('fa-chevron-up');
-        });
-    });
-    
-    // Animated counters
-    function animateCounter(element, target) {
-        let current = 0;
-        const increment = target / 100;
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
-            element.textContent = Math.floor(current);
-        }, 20);
-    }
-    
-    // Start counters when in viewport
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counters = document.querySelectorAll('.stats-counter');
-                counters.forEach(counter => {
-                    const target = parseInt(counter.getAttribute('data-count'));
-                    animateCounter(counter, target);
+            // Animal species selection
+            document.querySelectorAll('input[name="animal_species"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const otherContainer = document.getElementById('other-species-container');
+                    const otherInput = document.getElementById('other_species');
+                    
+                    if (this.value === 'Other') {
+                        otherContainer.classList.remove('hidden');
+                        otherInput.required = true;
+                    } else {
+                        otherContainer.classList.add('hidden');
+                        otherInput.required = false;
+                        otherInput.value = '';
+                    }
                 });
-                observer.disconnect();
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    const statsSection = document.querySelector('#report-hero');
-    if (statsSection) {
-        observer.observe(statsSection);
-    }
-    
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
+            });
             
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            // Validate current step
+            function validateStep(stepNumber) {
+                let isValid = true;
+                
+                if (stepNumber === 1) {
+                    const animalSpeciesSelected = document.querySelector('input[name="animal_species"]:checked');
+                    const animalTypeSelected = document.querySelector('input[name="animal_type"]:checked');
+                    const otherSpeciesInput = document.getElementById('other_species');
+                    
+                    // Validate species
+                    if (!animalSpeciesSelected) {
+                        alert('Please select the animal species');
+                        isValid = false;
+                    } else if (animalSpeciesSelected.value === 'Other' && !otherSpeciesInput.value.trim()) {
+                        document.getElementById('other-species-error').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('other-species-error').classList.add('hidden');
+                    }
+                    
+                    // Validate condition
+                    if (!animalTypeSelected) {
+                        document.getElementById('condition-error').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('condition-error').classList.add('hidden');
+                    }
                 }
                 
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
+                if (stepNumber === 2) {
+                    const imageInput = document.getElementById('animal_photo');
+                    const description = document.getElementById('description').value.trim();
+                    
+                    if (!imageInput.files || imageInput.files.length === 0) {
+                        document.getElementById('image-error').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('image-error').classList.add('hidden');
+                    }
+                    
+                    if (!description) {
+                        document.getElementById('description-error').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('description-error').classList.add('hidden');
+                    }
+                }
+                
+                if (stepNumber === 3) {
+                    const location = document.getElementById('location').value.trim();
+                    const lastSeen = document.getElementById('last_seen').value;
+                    
+                    if (!location) {
+                        document.getElementById('location-error').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('location-error').classList.add('hidden');
+                    }
+                    
+                    if (!lastSeen) {
+                        document.getElementById('last-seen-error').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('last-seen-error').classList.add('hidden');
+                    }
+                }
+                
+                if (stepNumber === 4) {
+                    const termsAccepted = document.getElementById('terms').checked;
+                    if (!termsAccepted) {
+                        document.getElementById('terms-error').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('terms-error').classList.add('hidden');
+                    }
+                }
+                
+                return isValid;
+            }
+            
+            // Populate review step
+            function populateReview() {
+                const animalSpecies = document.querySelector('input[name="animal_species"]:checked');
+                if (animalSpecies) {
+                    let speciesValue = animalSpecies.value;
+                    if (speciesValue === 'Other') {
+                        const otherSpecies = document.getElementById('other_species').value;
+                        speciesValue = otherSpecies ? `Other (${otherSpecies})` : 'Other';
+                    }
+                    document.getElementById('review-species').textContent = speciesValue;
+                }
+                
+                const animalType = document.querySelector('input[name="animal_type"]:checked');
+                if (animalType) {
+                    document.getElementById('review-type').textContent = animalType.value;
+                }
+                
+                const location = document.getElementById('location').value;
+                document.getElementById('review-location').textContent = location || 'Not provided';
+                
+                const lastSeen = document.getElementById('last_seen').value;
+                if (lastSeen) {
+                    const date = new Date(lastSeen);
+                    document.getElementById('review-last-seen').textContent = date.toLocaleString();
+                } else {
+                    document.getElementById('review-last-seen').textContent = 'Not provided';
+                }
+                
+                const description = document.getElementById('description').value;
+                document.getElementById('review-description').textContent = description || 'Not provided';
+                
+                const contactName = document.getElementById('contact_name').value;
+                const contactPhone = document.getElementById('contact_phone').value;
+                const contactEmail = document.getElementById('contact_email').value;
+                
+                if (contactName || contactPhone || contactEmail) {
+                    let contactDetails = [];
+                    if (contactName) contactDetails.push(`Name: ${contactName}`);
+                    if (contactPhone) contactDetails.push(`Phone: ${contactPhone}`);
+                    if (contactEmail) contactDetails.push(`Email: ${contactEmail}`);
+                    
+                    document.getElementById('review-contact-details').textContent = contactDetails.join(', ');
+                    document.getElementById('review-contact').classList.remove('hidden');
+                } else {
+                    document.getElementById('review-contact').classList.add('hidden');
+                }
+            }
+            
+            // Next step button handlers
+            document.querySelectorAll('.next-step').forEach(button => {
+                button.addEventListener('click', function() {
+                    const nextStep = parseInt(this.getAttribute('data-next'));
+                    if (validateStep(currentStep)) {
+                        showStep(nextStep);
+                    }
+                });
+            });
+            
+            // Previous step button handlers
+            document.querySelectorAll('.prev-step').forEach(button => {
+                button.addEventListener('click', function() {
+                    const prevStep = parseInt(this.getAttribute('data-prev'));
+                    showStep(prevStep);
+                });
+            });
+            
+            // File upload handling
+            const fileUploadArea = document.getElementById('file-upload-area');
+            const fileInput = document.getElementById('animal_photo');
+            const filePreview = document.getElementById('file-preview');
+            const fileName = document.getElementById('file-name');
+            const fileSize = document.getElementById('file-size');
+            const imagePreview = document.getElementById('image-preview');
+            const removeImageBtn = document.getElementById('remove-image');
+            
+            if (fileUploadArea && fileInput) {
+                fileUploadArea.addEventListener('click', () => {
+                    fileInput.click();
+                });
+                
+                fileInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        handleFileSelection(this.files[0]);
+                    }
+                });
+                
+                fileUploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    fileUploadArea.classList.add('border-cyan-500', 'bg-cyan-500/10');
+                });
+                
+                fileUploadArea.addEventListener('dragleave', () => {
+                    fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
+                });
+                
+                fileUploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    fileUploadArea.classList.remove('border-cyan-500', 'bg-cyan-500/10');
+                    
+                    if (e.dataTransfer.files.length) {
+                        fileInput.files = e.dataTransfer.files;
+                        handleFileSelection(fileInput.files[0]);
+                    }
+                });
+                
+                removeImageBtn.addEventListener('click', function() {
+                    filePreview.classList.add('hidden');
+                    fileInput.value = '';
+                    document.getElementById('image-error').classList.remove('hidden');
                 });
             }
-        });
-    });
-    
-    // Initialize progress bar
-    updateProgress();
-    
-    // Set default date/time
-    const now = new Date();
-    const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-    const lastSeenInput = document.getElementById('last_seen');
-    if (lastSeenInput) {
-        lastSeenInput.value = localDateTime;
-        const minDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000)).toISOString().slice(0, 16);
-        lastSeenInput.min = minDate;
-        lastSeenInput.max = localDateTime;
-    }
-    
-    // Language selector
-    document.querySelectorAll('.language-option, .mobile-language-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const lang = this.getAttribute('data-lang');
-            alert(`Language changed to: ${lang}`);
-        });
-    });
-    
-    // Login function
-    function openLogin() {
-        alert('Login feature coming soon!');
-    }
-</script>
+            
+            function handleFileSelection(file) {
+                if (!file) return;
+                
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Please upload a valid image file (JPG, PNG, WEBP)');
+                    return;
+                }
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    fileName.textContent = file.name;
+                    fileSize.textContent = formatFileSize(file.size);
+                    filePreview.classList.remove('hidden');
+                    document.getElementById('image-error').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+            
+            // Form submission
+            const reportForm = document.getElementById('animal-report-form');
+            
+            if (reportForm) {
+                reportForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    console.log('Form submission started');
+                    
+                    // Validate all steps
+                    let allValid = true;
+                    for (let i = 1; i <= 4; i++) {
+                        if (!validateStep(i)) {
+                            allValid = false;
+                            showStep(i);
+                            break;
+                        }
+                    }
+                    
+                    if (!allValid) {
+                        alert('Please complete all required fields before submitting.');
+                        return;
+                    }
+                    
+                    // Create FormData
+                    const formData = new FormData(this);
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    formData.append('_token', csrfToken);
+                    
+                    // Show loading
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i> Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    try {
+                        console.log('Sending request to:', this.action);
+                        
+                        const response = await fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        console.log('Response status:', response.status);
+                        
+                        const result = await response.json();
+                        console.log('Response data:', result);
+                        
+                        if (response.ok && result.success) {
+                            // Redirect to success page
+                            console.log('Redirecting to:', result.redirect_url);
+                            window.location.href = result.redirect_url;
+                        } else {
+                            // Show validation errors
+                            if (result.errors) {
+                                let errorMessages = 'Please fix the following errors:\n\n';
+                                Object.values(result.errors).forEach(errorArray => {
+                                    errorArray.forEach(error => {
+                                        errorMessages += `• ${error}\n`;
+                                    });
+                                });
+                                alert(errorMessages);
+                            } else {
+                                alert(result.message || 'Failed to submit report. Please try again.');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Fetch error:', error);
+                        alert('Network error. Please check your connection and try again.');
+                    } finally {
+                        // Reset button state
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+            
+            // Reset form function
+            function resetForm() {
+                // Reset species selection
+                document.querySelectorAll('input[name="animal_species"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                // Hide other species input
+                document.getElementById('other-species-container').classList.add('hidden');
+                document.getElementById('other_species').value = '';
+                
+                // Reset condition selection
+                document.querySelectorAll('input[name="animal_type"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                // Reset other form fields
+                document.getElementById('animal_photo').value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('location').value = '';
+                document.getElementById('contact_name').value = '';
+                document.getElementById('contact_phone').value = '';
+                document.getElementById('contact_email').value = '';
+                document.getElementById('terms').checked = false;
+                
+                // Hide file preview
+                document.getElementById('file-preview').classList.add('hidden');
+                
+                // Hide success message and show form
+                document.getElementById('success-message').classList.add('hidden');
+                document.getElementById('animal-report-form').classList.remove('hidden');
+                
+                // Reset to step 1
+                showStep(1);
+                
+                // Reset default date/time
+                const now = new Date();
+                const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+                const lastSeenInput = document.getElementById('last_seen');
+                if (lastSeenInput) {
+                    lastSeenInput.value = localDateTime;
+                }
+            }
+            
+            // Copy emergency number for SMS
+            function copyEmergencyNumber() {
+                const number = '0755027869';
+                navigator.clipboard.writeText(number).then(() => {
+                    alert('Emergency SMS number copied to clipboard: ' + number);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback method
+                    const textArea = document.createElement('textarea');
+                    textArea.value = number;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('Emergency SMS number copied to clipboard: ' + number);
+                });
+            }
+            
+            // Send SMS with location
+            function sendQuickLocationSMS() {
+                if (!navigator.geolocation) {
+                    alert('Geolocation is not supported by your browser. Please enable location services.');
+                    return;
+                }
+                
+                // Show loading
+                alert('Getting your location...');
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        const googleMapsLink = `https://maps.google.com/?q=${lat},${lon}`;
+                        
+                        // Pre-fill SMS with location
+                        const smsBody = `EMERGENCY ANIMAL REPORT%0A%0ALocation: My Current Location%0AGoogle Maps: ${googleMapsLink}%0ALatitude: ${lat}%0ALongitude: ${lon}%0A%0AAnimal: [Describe animal]%0AUrgency: [High/Medium/Low]%0A%0A(Sent via SafePaws Emergency)`;
+                        
+                        // Open SMS app
+                        window.location.href = `sms:0755027869?body=${smsBody}`;
+                    },
+                    (error) => {
+                        console.error('Error getting location:', error);
+                        
+                        // Fallback SMS without location
+                        const fallbackSMS = `sms:0755027869?body=EMERGENCY%20ANIMAL%20REPORT%0A%0ALocation:%20[Please%20describe%20location%20here]%0A%0AAnimal:%20[Describe%20animal]%0AUrgency:%20[High/Medium/Low]%0A%0A(Sent%20via%20SafePaws%20Emergency)`;
+                        
+                        if (error.code === 1) {
+                            // User denied location
+                            if (confirm('Location access denied. Send SMS without location?')) {
+                                window.location.href = fallbackSMS;
+                            }
+                        } else {
+                            alert('Could not get location. Please send SMS manually.');
+                        }
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            }
+            
+            // FAQ toggle
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const icon = question.querySelector('i');
+                    
+                    answer.classList.toggle('hidden');
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
+                });
+            });
+            
+            // Animated counters
+            function animateCounter(element, target) {
+                let current = 0;
+                const increment = target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current);
+                }, 20);
+            }
+            
+            // Start counters when in viewport
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counters = document.querySelectorAll('.stats-counter');
+                        counters.forEach(counter => {
+                            const target = parseInt(counter.getAttribute('data-count'));
+                            animateCounter(counter, target);
+                        });
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const statsSection = document.querySelector('#report-hero');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                        }
+                        
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Initialize progress bar
+            updateProgress();
+            
+            // Set default date/time
+            const now = new Date();
+            const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            const lastSeenInput = document.getElementById('last_seen');
+            if (lastSeenInput) {
+                lastSeenInput.value = localDateTime;
+                const minDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000)).toISOString().slice(0, 16);
+                lastSeenInput.min = minDate;
+                lastSeenInput.max = localDateTime;
+            }
+            
+            // Language selector
+            document.querySelectorAll('.language-option, .mobile-language-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    alert(`Language changed to: ${lang}`);
+                });
+            });
+            
+            // Login function
+            function openLogin() {
+                alert('Login feature coming soon!');
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize any additional functionality
+                console.log('SafePaws Report Page Loaded');
+            });
+        </script>
     </body>
 </html>
