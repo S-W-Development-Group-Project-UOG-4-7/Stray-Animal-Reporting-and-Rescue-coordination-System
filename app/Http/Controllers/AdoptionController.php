@@ -3,48 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
-use App\Models\Adoption;
 use Illuminate\Http\Request;
 
 class AdoptionController extends Controller
 {
-    public function store(Request $request)
+    /**
+     * Display a listing of the available animals.
+     */
+    public function index(Request $request)
     {
-        $validated = $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'dob' => 'required',
-            'address' => 'required',
-            'housing_type' => 'required',
-            'animal_id' => 'required',
-            'previous_pet' => 'required',
-            'adoption_reason' => 'required',
-            'home_environment' => 'required',
-            'terms' => 'required'
-        ]);
+        // 1. Base Query: Only show animals that are 'Adoptable'
+        // This hides animals that have been marked as 'Adopted'
+        $q = Animal::where('status', 'Adoptable');
 
-        Adoption::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'dob' => $request->dob,
-            'address' => $request->address,
-            'housing_type' => $request->housing_type,
-            'animal_id' => $request->animal_id,
-            'previous_pet' => $request->previous_pet,
-            'current_pets' => $request->current_pets,
-            'adoption_reason' => $request->adoption_reason,
-            'home_environment' => $request->home_environment,
-            'vet_info' => $request->vet_info,
-            'terms' => $request->terms ? 1 : 0,
-            'newsletter' => $request->newsletter ? 1 : 0,
-        ]);
+        // 2. Search Filter (Name or Breed)
+        if ($request->filled('search')) {
+            $s = $request->string('search');
+            $q->where(function($qq) use ($s) {
+                $qq->where('name', 'like', "%$s%")
+                   ->orWhere('breed', 'like', "%$s%");
+            });
+        }
 
-        return response()->json([
-            'success' => true
-        ]);
+        // 3. Type Filter (Dog vs Cat)
+        if ($request->filled('type')) {
+            $q->where('type', $request->string('type'));
+        }
+
+        // 4. Gender Filter (Male vs Female)
+        if ($request->filled('gender')) {
+            $q->where('gender', $request->string('gender'));
+        }
+
+        // 5. Sorting
+        $sort = $request->string('sort', 'new');
+        if ($sort === 'age_asc') {
+            $q->orderBy('age', 'asc');
+        } elseif ($sort === 'age_desc') {
+            $q->orderBy('age', 'desc');
+        } else {
+            $q->latest();
+        }
+
+        // 6. Get Results
+        $animals = $q->paginate(9)->withQueryString();
+
+        return view('adoptions.index', compact('animals'));
+    }
+
+    /**
+     * Display the specific pet details.
+     */
+    public function show(Animal $animal)
+    {
+        return view('adoptions.show', compact('animal'));
     }
 }
