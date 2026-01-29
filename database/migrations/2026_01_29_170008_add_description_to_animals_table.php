@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('adoptions', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('animals', function (Blueprint $table) {
+            // Add the description column
+            $table->text('description')->nullable()->after('status');
         });
     }
 
@@ -22,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('adoptions');
+        Schema::table('animals', function (Blueprint $table) {
+            $table->dropColumn('description');
+        });
     }
 };
