@@ -1892,11 +1892,6 @@
                 observer.observe(statsSection);
             }
             
-
-
-
-
-            
             // Smooth scrolling
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {

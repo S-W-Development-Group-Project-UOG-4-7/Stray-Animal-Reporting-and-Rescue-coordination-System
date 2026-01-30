@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $this->call(AnimalSeeder::class);
 
+                $this->call(AnimalReportsSeeder::class);
+
 
         User::factory()->create([
             'name' => 'Test User',
