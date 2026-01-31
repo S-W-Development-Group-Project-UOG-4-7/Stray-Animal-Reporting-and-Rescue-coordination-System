@@ -89,7 +89,7 @@
             <div class="flex justify-between items-center">
                 <h3 class="text-lg font-semibold">Recent Donations</h3>
                 <a href="#" class="btn-primary">
-                    <i class="fas fa-plus"></i> Add Donation
+                    <i class="fas fa-plus"></i> View  Donation
                 </a>
             </div>
 

@@ -149,75 +149,34 @@
                         </tr>
                     </thead>
 
-                    <tbody class="text-sm text-gray-200"><tbody class="text-sm text-gray-200">
-    @foreach($vets as $vet)
-    <tr class="border-b border-white/5 hover:bg-white/10">
-        <td class="py-3">{{ $vet->name }}</td>
-        <td>{{ $vet->clinic }}</td>
-        <td>{{ $vet->phone }}</td>
-        <td>
-            @if($vet->status == 'Active')
-                <span class="text-green-400">{{ $vet->status }}</span>
-            @else
-                <span class="text-red-400">{{ $vet->status }}</span>
-            @endif
-        </td>
-        <td class="text-center">
-            <form action="{{ route('veterinarians.destroy', $vet->id) }}" method="POST" onsubmit="return confirm('Delete this vet?')">
-                @csrf
-                @method('DELETE')
-                <button class="text-red-400 px-2"><i class="fas fa-trash"></i></button>
-            </form>
-        </td>
-    </tr>
-    @endforeach
-</tbody>
-
-
-                       
-
-                        
-
-                    </tbody
+                    <tbody class="text-sm text-gray-200">
+                        @foreach($vets as $vet)
+                        <tr class="border-b border-white/5 hover:bg-white/10">
+                            <td class="py-3">{{ $vet->name }}</td>
+                            <td>{{ $vet->clinic }}</td>
+                            <td>{{ $vet->phone }}</td>
+                            <td>
+                                @if($vet->status == 'Active')
+                                    <span class="text-green-400">{{ $vet->status }}</span>
+                                @else
+                                    <span class="text-red-400">{{ $vet->status }}</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                <form action="{{ route('veterinarians.destroy', $vet->id) }}" method="POST" onsubmit="return confirm('Delete this vet?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="text-red-400 px-2"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
 
         </main>
     </div>
 </div>
-{{-- resources/views/veterinarians/index.blade.php --}}
-
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Clinic</th>
-            <th>Phone</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach($vets as $vet)
-            <tr>
-                <td>{{ $vet->name }}</td>
-                <td>{{ $vet->clinic }}</td>
-                <td>{{ $vet->phone }}</td>
-                <td>
-                    <span class="text-success">{{ $vet->status }}</span>
-                </td>
-                <td>
-                    <form action="{{ route('veterinarians.destroy', $vet->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button>Delete</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-
 </body>
 </html>
