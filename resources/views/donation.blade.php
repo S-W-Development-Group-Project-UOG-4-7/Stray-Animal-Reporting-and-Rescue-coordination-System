@@ -9,6 +9,8 @@
         <title>SafePaws — A Better World for Every Paw</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script src="https://js.stripe.com/v3/"></script>
+
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
         <style type="text/tailwindcss">
             @keyframes float {
@@ -887,44 +889,6 @@
 
                     <!-- Card Payment Content -->
                     <div id="cardContent" class="hidden p-8 rounded-2xl glass-effect">
-                        <div class="mb-8">
-                            <h3 class="mb-4 text-2xl font-bold">Card Details</h3>
-                            <div class="space-y-6">
-                                <div>
-                                    <label class="form-label">Card Number</label>
-                                    <div class="relative">
-                                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" 
-                                               class="form-input">
-                                        <div class="absolute flex space-x-2 transform -translate-y-1/2 right-4 top-1/2">
-                                            <i class="text-blue-500 fab fa-cc-visa"></i>
-                                            <i class="text-red-500 fab fa-cc-mastercard"></i>
-                                        </div>
-                                    </div>
-                                    <p id="cardNumberError" class="form-error">Please enter a valid card number</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="form-label">Expiry Date</label>
-                                        <input type="text" id="expiryDate" placeholder="MM/YY" 
-                                               class="form-input">
-                                        <p id="expiryError" class="form-error">Please enter a valid expiry date (MM/YY)</p>
-                                    </div>
-                                    <div>
-                                        <label class="form-label">CVC</label>
-                                        <input type="text" id="cvc" placeholder="123" 
-                                               class="form-input">
-                                        <p id="cvcError" class="form-error">Please enter a valid CVC (3-4 digits)</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="form-label">Name on Card</label>
-                                    <input type="text" id="cardName" placeholder="John Doe" 
-                                           class="form-input">
-                                    <p id="cardNameError" class="form-error">Please enter the name on card</p>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Donation Amount for Card -->
                         <div class="mb-8">
                             <h4 class="mb-4 text-xl font-bold">Donation Amount</h4>
@@ -949,7 +913,7 @@
                                 <button class="py-3 text-center transition-all duration-300 border card-amount-btn rounded-xl bg-white/5 border-white/10 hover:bg-cyan-500/20 hover:border-cyan-500/50" data-amount="25">
                                     <span class="font-bold text-cyan-400">$25</span>
                                 </button>
-                                <button class="py-3 text-center transition-all duration-300 border card-amount-btn rounded-xl bg-white/5 border-white/10 hover:bg-cyan-500/20 hover:border-cyan-500/50" data-amount="50">
+                                <button class="py-3 text-center transition-all duration-300 border card-amount-btn rounded-xl bg-white/5 border-white/10 hover:bg-cyan-500/20 hover:border-cyan500/50" data-amount="50">
                                     <span class="font-bold text-cyan-400">$50</span>
                                 </button>
                                 <button class="py-3 text-center transition-all duration-300 border card-amount-btn rounded-xl bg-white/5 border-white/10 hover:bg-cyan-500/20 hover:border-cyan-500/50" data-amount="100">
@@ -964,13 +928,55 @@
                             </div>
                             <p id="cardAmountError" class="form-error">Please select or enter a donation amount (minimum $1)</p>
                         </div>
+                        
+                        <!-- STRIPE CARD ELEMENT -->
+                        <div class="mb-8">
+                            <h3 class="mb-4 text-2xl font-bold">Card Details</h3>
+                            
+                            <!-- Stripe Card Element Container -->
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="form-label">Card Information</label>
+                                    <div id="card-element" class="p-4 border border-white/20 rounded-xl bg-white/5">
+                                        <!-- Stripe will inject card fields here -->
+                                    </div>
+                                    <div id="card-errors" class="mt-2 text-sm text-red-400"></div>
+                                </div>
+                                
+                                <div>
+                                    <label class="form-label">Name on Card</label>
+                                    <input type="text" id="cardName" 
+                                           class="form-input"
+                                           placeholder="John Doe"
+                                           required>
+                                    <p id="cardNameError" class="form-error">Please enter the name on your card</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="form-label">Email for Receipt</label>
+                                    <input type="email" id="cardEmail" 
+                                           class="form-input"
+                                           placeholder="your@email.com"
+                                           required>
+                                    <p id="cardEmailError" class="form-error">Please enter a valid email address for your receipt</p>
+                                </div>
+                            </div>
+                        </div>
 
                         <button id="donateCardBtn" class="w-full py-4 text-lg font-bold text-white transition-all duration-300 rounded-2xl gradient-bg hover:shadow-xl hover:shadow-cyan-500/30">
                             <i class="mr-2 fas fa-credit-card"></i>
                             Donate with Card
                             <span id="selectedCardAmount" class="ml-2">$0</span>
                         </button>
-                    </div>
+                        
+                        <!-- Stripe Processing Message -->
+                        <div id="stripeProcessing" class="hidden mt-4 text-center">
+                            <div class="inline-flex items-center gap-2 p-3 rounded-lg bg-cyan-500/20 text-cyan-300">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Processing payment...</span>
+                            </div>
+                        </div>
+                    </div>              
                 </div>
             </div>
         </section>
@@ -1069,6 +1075,75 @@
         </footer>
 
         <script>
+            // ============================================
+            // STRIPE CONFIGURATION
+            // ============================================
+            // Replace with your actual Stripe publishable key
+            const stripe = Stripe('pk_test_51SvdRmD4HwNW5minO9eeBEaCrZlvvXaDQvmm0J6I4BrAugrO5ERzwIoEAO6inIii3JYszNbgPxfjzlmRPC2yg7xw00rk5xuJ0C'); // 👈 REPLACE THIS!
+
+            let elements = null;
+            let cardElement = null;
+
+            // Initialize Stripe Elements
+            function initializeStripe() {
+                console.log('Initializing Stripe...');
+                
+                // Check if Stripe is loaded
+                if (typeof Stripe === 'undefined') {
+                    console.error('Stripe.js not loaded!');
+                    alert('Payment system not loaded. Please refresh the page.');
+                    return;
+                }
+                
+                if (elements) {
+                    elements = null;
+                }
+                
+                elements = stripe.elements();
+                
+                const style = {
+                    base: {
+                        color: '#ffffff',
+                        fontFamily: '"Poppins", sans-serif',
+                        fontSmoothing: 'antialiased',
+                        fontSize: '16px',
+                        '::placeholder': {
+                            color: '#a0aec0'
+                        }
+                    },
+                    invalid: {
+                        color: '#fa755a',
+                        iconColor: '#fa755a'
+                    }
+                };
+                
+                // Clear any existing card element
+                const cardElementContainer = document.getElementById('card-element');
+                cardElementContainer.innerHTML = '';
+                
+                cardElement = elements.create('card', { 
+                    style: style,
+                    hidePostalCode: true 
+                });
+                
+                cardElement.mount('#card-element');
+                
+                console.log('Stripe card element mounted');
+                
+                // Handle real-time validation errors
+                cardElement.on('change', function(event) {
+                    const displayError = document.getElementById('card-errors');
+                    if (event.error) {
+                        displayError.textContent = event.error.message;
+                    } else {
+                        displayError.textContent = '';
+                    }
+                });
+            }
+
+            // ============================================
+            // ORIGINAL CODE
+            // ============================================
             // Update current year in footer
             document.getElementById('current-year').textContent = new Date().getFullYear();
             
@@ -1103,6 +1178,13 @@
                 cardContent.classList.remove('hidden');
                 bankContent.classList.add('hidden');
                 resetErrors();
+                
+                // Initialize Stripe when card tab is clicked
+                setTimeout(() => {
+                    if (!cardElement || document.getElementById('card-element').children.length === 0) {
+                        initializeStripe();
+                    }
+                }, 50);
             });
 
             // Initialize variables
@@ -1137,15 +1219,11 @@
             const selectedCardDisplay = document.getElementById('selectedCardDisplay');
             const cardAmountError = document.getElementById('cardAmountError');
 
-            // Card validation elements
-            const cardNumber = document.getElementById('cardNumber');
-            const expiryDate = document.getElementById('expiryDate');
-            const cvc = document.getElementById('cvc');
+            // Card fields for Stripe
             const cardName = document.getElementById('cardName');
-            const cardNumberError = document.getElementById('cardNumberError');
-            const expiryError = document.getElementById('expiryError');
-            const cvcError = document.getElementById('cvcError');
+            const cardEmail = document.getElementById('cardEmail');
             const cardNameError = document.getElementById('cardNameError');
+            const cardEmailError = document.getElementById('cardEmailError');
 
             // Slip display elements
             const submittedSlipDisplay = document.getElementById('submittedSlipDisplay');
@@ -1335,63 +1413,42 @@
                 this.submit();
             });
 
-            // Card donation button
+            // Card donation button - STRIPE VERSION
             const donateCardBtn = document.getElementById('donateCardBtn');
             donateCardBtn.addEventListener('click', () => {
-                // Validate card details before proceeding
-                if (!validateCardDetails()) {
-                    return;
-                }
-                
+                // Validate amount
                 if (selectedCardAmount < 1) {
                     cardAmountError.classList.remove('hidden');
                     return;
                 }
                 
-                cardAmountError.classList.add('hidden');
-                processCardDonation();
-            });
-
-            // Validate card details
-            function validateCardDetails() {
-                let isValid = true;
+                // Validate card fields
+                const cardNameValue = cardName.value.trim();
+                const cardEmailValue = cardEmail.value.trim();
                 
                 // Reset errors
-                cardNumberError.classList.add('hidden');
-                expiryError.classList.add('hidden');
-                cvcError.classList.add('hidden');
                 cardNameError.classList.add('hidden');
+                cardEmailError.classList.add('hidden');
                 
-                // Validate card number
-                const cardNumberValue = cardNumber.value.replace(/\s/g, '');
-                if (!cardNumberValue || cardNumberValue.length < 15 || cardNumberValue.length > 16 || !/^\d+$/.test(cardNumberValue)) {
-                    cardNumberError.classList.remove('hidden');
-                    isValid = false;
-                }
+                let isValid = true;
                 
-                // Validate expiry date
-                const expiryValue = expiryDate.value;
-                const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
-                if (!expiryValue || !expiryRegex.test(expiryValue)) {
-                    expiryError.classList.remove('hidden');
-                    isValid = false;
-                }
-                
-                // Validate CVC
-                const cvcValue = cvc.value;
-                if (!cvcValue || cvcValue.length < 3 || cvcValue.length > 4 || !/^\d+$/.test(cvcValue)) {
-                    cvcError.classList.remove('hidden');
-                    isValid = false;
-                }
-                
-                // Validate card name
-                if (!cardName.value.trim()) {
+                if (!cardNameValue) {
                     cardNameError.classList.remove('hidden');
                     isValid = false;
                 }
                 
-                return isValid;
-            }
+                if (!cardEmailValue || !/\S+@\S+\.\S+/.test(cardEmailValue)) {
+                    cardEmailError.classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    return;
+                }
+                
+                cardAmountError.classList.add('hidden');
+                processCardDonation(); // Stripe payment processing
+            });
 
             // Create slip preview with donor information
             function createSlipPreview(transactionId, currentDate, responseData) {
@@ -1521,43 +1578,113 @@
                 }
             }
 
-            // Process card donation
-            function processCardDonation() {
-                // In a real app, you would integrate with a payment processor like Stripe
-                const donationData = {
-                    amount: selectedCardAmount,
-                    method: 'card_payment',
-                    cardLast4: cardNumber.value.slice(-4),
-                    timestamp: new Date().toISOString()
-                };
+            // Process card donation with STRIPE
+            async function processCardDonation() {
+                const submitBtn = document.getElementById('donateCardBtn');
+                const originalText = submitBtn.innerHTML;
+                const processingDiv = document.getElementById('stripeProcessing');
                 
-                console.log('Card Donation Submitted:', donationData);
+                // Show processing state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                if (processingDiv) processingDiv.classList.remove('hidden');
                 
-                // Show success message
-                alert(`Thank you for your donation of $${selectedCardAmount.toFixed(2)}! Your payment has been processed successfully.`);
-                
-                // Reset form
-                clearCardSelection();
-                cardNumber.value = '';
-                expiryDate.value = '';
-                cvc.value = '';
-                cardName.value = '';
-                
-                // Reset errors
-                cardNumberError.classList.add('hidden');
-                expiryError.classList.add('hidden');
-                cvcError.classList.add('hidden');
-                cardNameError.classList.add('hidden');
+                try {
+                    // Step 1: Create Payment Intent on your server
+                    // You need to create a backend endpoint for this
+                    const response = await fetch('/create-payment-intent', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            amount: selectedCardAmount,
+                            currency: 'usd',
+                            donor_name: cardName.value.trim(),
+                            donor_email: cardEmail.value.trim()
+                        })
+                    });
+                    
+                    const { clientSecret, error } = await response.json();
+                    
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    
+                    // Step 2: Confirm payment with Stripe
+                    const { paymentIntent, error: stripeError } = await stripe.confirmCardPayment(
+                        clientSecret,
+                        {
+                            payment_method: {
+                                card: cardElement,
+                                billing_details: {
+                                    name: cardName.value.trim(),
+                                    email: cardEmail.value.trim(),
+                                },
+                            },
+                            return_url: window.location.href + '?success=true'
+                        }
+                    );
+                    
+                    if (stripeError) {
+                        throw new Error(stripeError.message);
+                    }
+                    
+                    if (paymentIntent.status === 'succeeded') {
+                        // Step 3: Save donation to your database
+                        const saveResponse = await fetch('/save-donation', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                amount: selectedCardAmount,
+                                payment_method: 'stripe',
+                                stripe_payment_id: paymentIntent.id,
+                                donor_name: cardName.value.trim(),
+                                donor_email: cardEmail.value.trim(),
+                                receipt_url: paymentIntent.charges?.data[0]?.receipt_url || ''
+                            })
+                        });
+                        
+                        const result = await saveResponse.json();
+                        
+                        if (result.success) {
+                            // Success message
+                            alert(`✅ Thank you, ${cardName.value.trim()}! Your $${selectedCardAmount.toFixed(2)} donation was successful.\n\nA receipt has been sent to ${cardEmail.value.trim()}`);
+                            
+                            // Reset form
+                            clearCardSelection();
+                            cardName.value = '';
+                            cardEmail.value = '';
+                            
+                            // Clear Stripe element
+                            if (cardElement) cardElement.clear();
+                            
+                            // Switch back to bank tab
+                            bankTab.click();
+                        }
+                    }
+                    
+                } catch (error) {
+                    console.error('Payment error:', error);
+                    alert(`❌ Payment failed: ${error.message}\n\nPlease try again or use bank transfer.`);
+                } finally {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="mr-2 fas fa-credit-card"></i>Donate with Card<span id="selectedCardAmount" class="ml-2">$0</span>';
+                    if (processingDiv) processingDiv.classList.add('hidden');
+                }
             }
 
             // Reset error messages
             function resetErrors() {
                 bankAmountError.classList.add('hidden');
                 cardAmountError.classList.add('hidden');
-                cardNumberError.classList.add('hidden');
-                expiryError.classList.add('hidden');
-                cvcError.classList.add('hidden');
                 cardNameError.classList.add('hidden');
+                cardEmailError.classList.add('hidden');
                 donorNameError.classList.add('hidden');
                 donorEmailError.classList.add('hidden');
                 bankSlipError.classList.add('hidden');

@@ -212,6 +212,10 @@ Route::get('/awareness', function () {
     return view('awareness');
 })->name('awareness');
 
+// Only this route - using route parameters
+Route::get('/awareness/edit/{id}', function ($id) {
+    return view('edit-posts', ['postId' => $id]);
+})->name('edit-posts');
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');

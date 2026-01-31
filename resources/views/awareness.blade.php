@@ -320,14 +320,24 @@
                 @apply tag bg-gradient-to-r from-green-600 to-green-800 text-white;
             }
 
-            /* Modal Styles */
-            .modal-overlay {
-                @apply fixed inset-0 bg-black/70 z-50 hidden;
-            }
+         /* Modal Styles */
+.modal-overlay {
+    @apply fixed inset-0 bg-black/70 z-50;
+    display: none;
+}
 
-            .modal-content {
-                @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 glass-effect rounded-2xl p-8 z-50 max-w-lg w-full hidden;
-            }
+.modal-overlay.active {
+    display: block;
+}
+
+.modal-content {
+    @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 glass-effect rounded-2xl p-8 z-50 max-w-lg w-full;
+    display: none;
+}
+
+.modal-content.active {
+    display: block;
+}
 
             /* YouTube Video Styles */
             .youtube-input {
@@ -937,12 +947,13 @@
             </div>
         </div>
 
-      <script>
+     <script>
     // ==============================
     // GLOBAL VARIABLES
     // ==============================
     let posts = JSON.parse(localStorage.getItem('safePawsPosts')) || [];
     let currentUser = localStorage.getItem('currentUser') || '';
+    window.uploadedVideos = window.uploadedVideos || {}; // Cache for video object URLs
     
     // Sample initial posts
     const initialPosts = [
@@ -1028,6 +1039,9 @@
         
         // Animate counters
         animateCounters();
+        
+        // Clean up any orphaned video URLs on page load
+        cleanupVideoURLs();
     });
 
     // ==============================
@@ -1142,30 +1156,48 @@
                     return;
                 }
                 
+                // Check file size (50MB limit)
+                if (file.size > 50 * 1024 * 1024) {
+                    alert('File size must be less than 50MB');
+                    fileInput.value = '';
+                    fileName.textContent = '';
+                    fileName.classList.remove('text-cyan-400');
+                    return;
+                }
+                
                 // Show preview
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    if (file.type.startsWith('video/')) {
-                        mediaPreview.innerHTML = `
-                            <video controls class="w-full h-64">
-                                <source src="${e.target.result}" type="${file.type}">
-                                Your browser does not support the video tag.
-                            </video>
-                            <button type="button" onclick="removeMedia()" class="remove-image">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                    } else {
+                if (file.type.startsWith('video/')) {
+                    // For video files, create object URL for preview
+                    const videoUrl = URL.createObjectURL(file);
+                    mediaPreview.innerHTML = `
+                        <video controls class="w-full h-64">
+                            <source src="${videoUrl}" type="${file.type}">
+                            Your browser does not support the video tag.
+                        </video>
+                        <button type="button" onclick="removeMedia()" class="remove-image">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    
+                    // Store the preview URL for cleanup
+                    if (!window.previewVideoURLs) window.previewVideoURLs = [];
+                    window.previewVideoURLs.push(videoUrl);
+                } else {
+                    // For image files, use FileReader
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
                         mediaPreview.innerHTML = `
                             <img src="${e.target.result}" alt="Preview" class="w-full h-64 object-cover">
                             <button type="button" onclick="removeMedia()" class="remove-image">
                                 <i class="fas fa-times"></i>
                             </button>
                         `;
-                    }
-                    mediaPreview.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
+                        mediaPreview.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+                
+                mediaPreview.classList.remove('hidden');
             }
         });
 
@@ -1183,6 +1215,12 @@
                 fileName.classList.remove('text-cyan-400');
                 mediaPreview.classList.add('hidden');
                 mediaPreview.innerHTML = '';
+                
+                // Clean up any preview video URLs
+                if (window.previewVideoURLs && window.previewVideoURLs.length > 0) {
+                    window.previewVideoURLs.forEach(url => URL.revokeObjectURL(url));
+                    window.previewVideoURLs = [];
+                }
             }
             
             if (url) {
@@ -1228,8 +1266,21 @@
             
             if (e.dataTransfer.files.length) {
                 const file = e.dataTransfer.files[0];
-                fileInput.files = e.dataTransfer.files;
-                fileInput.dispatchEvent(new Event('change'));
+                
+                // Check file size before proceeding
+                if (file.size > 50 * 1024 * 1024) {
+                    alert('File size must be less than 50MB');
+                    return;
+                }
+                
+                // Create a new FileList to set on the input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                
+                // Trigger change event
+                const event = new Event('change', { bubbles: true });
+                fileInput.dispatchEvent(event);
             }
         });
 
@@ -1347,10 +1398,13 @@
             } else if (post.media.type === 'uploaded_video') {
                 mediaHTML = `
                     <div class="video-preview mb-4">
-                        <video controls class="w-full h-full">
+                        <video controls class="w-full h-full" poster="https://images.unsplash.com/photo-1536431311719-398b6704d4cc?q=80&w=800&auto=format&fit=crop">
                             <source src="${post.media.url}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        <div class="absolute bottom-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                            ${post.media.fileName || 'Uploaded Video'}
+                        </div>
                     </div>
                 `;
             }
@@ -1491,7 +1545,7 @@
             return;
         }
         
-        // Save current user - FIXED: Always save the name, don't check if it changed
+        // Save current user
         currentUser = authorName;
         localStorage.setItem('currentUser', currentUser);
         
@@ -1508,7 +1562,7 @@
             comments: []
         };
         
-        // Handle media based on content type - FIXED: Both YouTube AND uploaded videos work
+        // Handle media based on content type
         if (contentType === 'video') {
             // For video type: check YouTube first
             if (youtubeUrl) {
@@ -1531,17 +1585,30 @@
                     alert('Please upload a video file for video posts');
                     return;
                 }
-                const reader = new FileReader();
                 
-                reader.onload = function(e) {
-                    newPost.media = {
-                        type: 'uploaded_video',
-                        url: e.target.result
-                    };
-                    savePost(newPost);
+                // Check file size (50MB limit)
+                if (file.size > 50 * 1024 * 1024) {
+                    alert('Video file must be less than 50MB');
+                    return;
+                }
+                
+                // Create object URL for the video file
+                const objectUrl = URL.createObjectURL(file);
+                
+                newPost.media = {
+                    type: 'uploaded_video',
+                    url: objectUrl,
+                    fileName: file.name,
+                    fileSize: file.size
                 };
                 
-                reader.readAsDataURL(file);
+                // Store the video in cache for cleanup
+                window.uploadedVideos[newPost.id] = {
+                    url: objectUrl,
+                    file: file
+                };
+                
+                savePost(newPost);
             } else {
                 // No media for video type (optional)
                 savePost(newPost);
@@ -1573,17 +1640,37 @@
             // For article type, media is optional
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
+                if (file.type.startsWith('video/')) {
+                    // Video for article type
+                    const objectUrl = URL.createObjectURL(file);
                     newPost.media = {
-                        type: file.type.startsWith('video/') ? 'uploaded_video' : 'image',
-                        url: e.target.result
+                        type: 'uploaded_video',
+                        url: objectUrl,
+                        fileName: file.name,
+                        fileSize: file.size
                     };
+                    
+                    // Store the video in cache for cleanup
+                    window.uploadedVideos[newPost.id] = {
+                        url: objectUrl,
+                        file: file
+                    };
+                    
                     savePost(newPost);
-                };
-                
-                reader.readAsDataURL(file);
+                } else {
+                    // Image for article type
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        newPost.media = {
+                            type: 'image',
+                            url: e.target.result
+                        };
+                        savePost(newPost);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
             } else {
                 // No media
                 savePost(newPost);
@@ -1592,8 +1679,6 @@
     }
 
     function savePost(newPost) {
-        console.log('Saving post:', newPost);
-        
         // Add to posts array
         posts.unshift(newPost);
         
@@ -1602,6 +1687,12 @@
         
         // Reset form - BUT DON'T RESET THE NAME FIELD!
         resetForm();
+        
+        // Clean up preview video URLs
+        if (window.previewVideoURLs && window.previewVideoURLs.length > 0) {
+            window.previewVideoURLs.forEach(url => URL.revokeObjectURL(url));
+            window.previewVideoURLs = [];
+        }
         
         // Update posts container
         const postsContainer = document.getElementById('postsContainer');
@@ -1649,13 +1740,13 @@
         const post = posts.find(p => p.id === postId);
         if (!post) return;
         
-        // Check if user is the author - FIXED: Users can only edit their own posts
+        // Check if user is the author
         if (post.author !== currentUser) {
             alert('You can only edit your own posts');
             return;
         }
         
-        // Set values in modal
+        // Set values in edit modal
         document.getElementById('editPostId').value = postId;
         document.getElementById('editTitle').value = post.title;
         document.getElementById('editDescription').value = post.description;
@@ -1710,10 +1801,16 @@
         const postIndex = posts.findIndex(p => p.id === postId);
         if (postIndex === -1) return;
         
-        // Check if user is the author - FIXED: Users can only delete their own posts
+        // Check if user is the author
         if (posts[postIndex].author !== currentUser) {
             alert('You can only delete your own posts');
             return;
+        }
+        
+        // Clean up video object URL if exists
+        if (window.uploadedVideos && window.uploadedVideos[postId]) {
+            URL.revokeObjectURL(window.uploadedVideos[postId].url);
+            delete window.uploadedVideos[postId];
         }
         
         // Remove post from array
@@ -1762,7 +1859,7 @@
         currentUser = author;
         localStorage.setItem('currentUser', currentUser);
         
-        // Also update the name field in the main form - FIXED: Keep name consistent
+        // Also update the name field in the main form
         document.getElementById('authorName').value = author;
         
         // Create new comment
@@ -2020,6 +2117,15 @@
     }
 
     function removeMedia() {
+        // Clean up preview video URL if it exists
+        const videoElement = document.querySelector('#mediaPreview video');
+        if (videoElement) {
+            const source = videoElement.querySelector('source');
+            if (source && source.src.startsWith('blob:')) {
+                URL.revokeObjectURL(source.src);
+            }
+        }
+        
         document.getElementById('fileUpload').value = '';
         document.getElementById('fileName').textContent = '';
         document.getElementById('fileName').classList.remove('text-cyan-400');
@@ -2103,6 +2209,20 @@
         if (postsCounter) {
             postsCounter.setAttribute('data-count', totalPosts);
             postsCounter.textContent = totalPosts;
+        }
+    }
+
+    function cleanupVideoURLs() {
+        // Clean up any orphaned video URLs from previous sessions
+        if (window.uploadedVideos) {
+            Object.keys(window.uploadedVideos).forEach(postId => {
+                // Check if post still exists
+                const postExists = posts.some(post => post.id == postId);
+                if (!postExists) {
+                    URL.revokeObjectURL(window.uploadedVideos[postId].url);
+                    delete window.uploadedVideos[postId];
+                }
+            });
         }
     }
 

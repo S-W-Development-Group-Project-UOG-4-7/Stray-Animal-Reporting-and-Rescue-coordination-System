@@ -9,7 +9,10 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <!-- Google Maps API -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFe5DTF7pQkmaBfKIx_caJsnNz2Bi2tDo&libraries=places&callback=Function.prototype" async defer></script>
         <style type="text/tailwindcss">
+            /* All existing CSS styles remain the same */
             @keyframes float {
                 0%, 100% { transform: translateY(0px); }
                 50% { transform: translateY(-10px); }
@@ -363,6 +366,92 @@
             /* Mobile language selector */
             .mobile-language-btn {
                 @apply flex items-center justify-center gap-2 w-full p-2.5 rounded-lg hover:bg-white/5 text-sm;
+            }
+
+            /* Google Maps Styles */
+            .pac-container {
+                background-color: #071331;
+                border: 1px solid rgba(14, 165, 233, 0.3);
+                border-radius: 8px;
+                margin-top: 5px;
+                z-index: 1000;
+            }
+
+            .pac-item {
+                color: #d1d5db;
+                padding: 8px;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .pac-item:hover {
+                background-color: rgba(14, 165, 233, 0.1);
+            }
+
+            .pac-item-selected {
+                background-color: rgba(14, 165, 233, 0.2);
+            }
+
+            .pac-icon {
+                color: #0ea5e9;
+            }
+
+            .pac-matched {
+                color: #22d3ee;
+                font-weight: 500;
+            }
+
+            #map-container {
+                border-radius: 16px;
+                overflow: hidden;
+                height: 300px;
+                width: 100%;
+                position: relative;
+            }
+
+            #map {
+                height: 100%;
+                width: 100%;
+            }
+
+            .map-controls {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .map-btn {
+                background: rgba(7, 19, 49, 0.9);
+                border: 1px solid rgba(14, 165, 233, 0.5);
+                color: #0ea5e9;
+                padding: 8px 12px;
+                border-radius: 8px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 12px;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .map-btn:hover {
+                background: rgba(14, 165, 233, 0.2);
+                color: white;
+                border-color: #0ea5e9;
+            }
+
+            .map-marker {
+                background: #ef4444;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                border: 3px solid white;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             }
         </style>
     </head>
@@ -952,18 +1041,62 @@
                             
                             <div class="grid gap-8 md:grid-cols-2">
                                 <!-- Location -->
-                                <div>
+                                <div class="md:col-span-2">
                                     <label for="location" class="block mb-4 text-lg font-bold required-field">Location</label>
+                                    
+                                    <!-- Search Bar -->
+                                    <div class="relative mb-4">
+                                        <i class="absolute fas fa-search left-4 top-4 text-cyan-400"></i>
+                                        <input type="text" id="location-search" 
+                                               class="w-full py-4 pl-12 pr-4 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
+                                               placeholder="Search for address or place...">
+                                        <button type="button" id="use-current-location" class="absolute right-4 top-3 map-btn">
+                                            <i class="fas fa-location-crosshairs"></i>
+                                            Current Location
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Hidden location fields -->
+                                    <input type="hidden" id="latitude" name="latitude">
+                                    <input type="hidden" id="longitude" name="longitude">
+                                    
+                                    <!-- Google Maps Container -->
+                                    <div id="map-container" class="mb-4">
+                                        <div id="map"></div>
+                                        <div class="map-controls">
+                                            <button type="button" id="zoom-in" class="map-btn" title="Zoom In">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                            <button type="button" id="zoom-out" class="map-btn" title="Zoom Out">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" id="reset-map" class="map-btn" title="Reset View">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Location Input -->
                                     <div class="relative">
                                         <i class="absolute fas fa-map-marker-alt left-4 top-4 text-cyan-400"></i>
-                                        <input type="text" id="location" name="location" 
+                                        <textarea id="location" name="location" rows="3"
                                                class="w-full py-4 pl-12 pr-4 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
-                                               placeholder="Enter address, landmark, or coordinates"
-                                               required>
+                                               placeholder="Selected address will appear here or type manually..."
+                                               required></textarea>
                                     </div>
+                                    
+                                    <div class="flex gap-2 mt-2">
+                                        <button type="button" id="copy-coordinates" class="small-btn bg-cyan-500/20 hover:bg-cyan-500/30 border-cyan-500/30 text-cyan-300 hover:text-white">
+                                            <i class="fas fa-copy"></i> Copy Coordinates
+                                        </button>
+                                        <button type="button" id="clear-location" class="small-btn bg-red-500/20 hover:bg-red-500/30 border-red-500/30 text-red-300 hover:text-white">
+                                            <i class="fas fa-trash"></i> Clear
+                                        </button>
+                                    </div>
+                                    
                                     <p class="mt-2 text-sm text-gray-300">
                                         <i class="mr-1 fas fa-info-circle text-cyan-400"></i>
-                                        Be as specific as possible for faster response
+                                        Click on the map to pinpoint the exact location or search for an address
                                     </p>
                                     <div id="location-error" class="hidden mt-2 text-sm text-red-400">
                                         Please provide the location
@@ -981,6 +1114,26 @@
                                     </div>
                                     <div id="last-seen-error" class="hidden mt-2 text-sm text-red-400">
                                         Please provide when you last saw the animal
+                                    </div>
+                                </div>
+
+                                <!-- Urgency Level -->
+                                <div>
+                                    <label for="urgency" class="block mb-4 text-lg font-bold required-field">Urgency Level</label>
+                                    <div class="relative">
+                                        <i class="absolute fas fa-exclamation-circle left-4 top-4 text-cyan-400"></i>
+                                        <select id="urgency" name="urgency" 
+                                                class="w-full py-4 pl-12 pr-4 transition-all duration-300 border bg-white/10 border-white/20 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
+                                                required>
+                                            <option value="">Select urgency level</option>
+                                            <option value="low">Low - Animal appears stable, no immediate danger</option>
+                                            <option value="medium">Medium - Animal needs attention but not life-threatening</option>
+                                            <option value="high">High - Animal is injured or in immediate danger</option>
+                                            <option value="emergency">Emergency - Life-threatening situation, aggressive animal</option>
+                                        </select>
+                                    </div>
+                                    <div id="urgency-error" class="hidden mt-2 text-sm text-red-400">
+                                        Please select the urgency level
                                     </div>
                                 </div>
                             </div>
@@ -1032,7 +1185,7 @@
                                 <div class="mb-6 card bg-white/5">
                                     <h4 class="mb-4 text-xl font-bold">Report Summary</h4>
                                     <div class="space-y-4">
-                                        <div class="grid gap-4 md:grid-cols-3">
+                                        <div class="grid gap-4 md:grid-cols-2">
                                             <div>
                                                 <p class="text-gray-400">Animal Species</p>
                                                 <p id="review-species" class="font-bold">-</p>
@@ -1042,13 +1195,18 @@
                                                 <p id="review-type" class="font-bold">-</p>
                                             </div>
                                             <div>
-                                                <p class="text-gray-400">Location</p>
-                                                <p id="review-location" class="font-bold">-</p>
+                                                <p class="text-gray-400">Urgency Level</p>
+                                                <p id="review-urgency" class="font-bold">-</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-gray-400">Last Seen</p>
+                                                <p id="review-last-seen" class="font-bold">-</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <p class="text-gray-400">Last Seen</p>
-                                            <p id="review-last-seen" class="font-bold">-</p>
+                                            <p class="text-gray-400">Location</p>
+                                            <p id="review-location" class="font-bold">-</p>
+                                            <p id="review-coordinates" class="text-sm text-gray-500">-</p>
                                         </div>
                                         <div>
                                             <p class="text-gray-400">Description</p>
@@ -1414,6 +1572,13 @@
                     currentStep = stepNumber;
                     updateProgress();
                     
+                    if (stepNumber === 3) {
+                        // Initialize Google Maps when step 3 is shown
+                        setTimeout(() => {
+                            initMap();
+                        }, 100);
+                    }
+                    
                     if (stepNumber === 4) {
                         populateReview();
                     }
@@ -1488,6 +1653,7 @@
                 if (stepNumber === 3) {
                     const location = document.getElementById('location').value.trim();
                     const lastSeen = document.getElementById('last_seen').value;
+                    const urgency = document.getElementById('urgency').value;
                     
                     if (!location) {
                         document.getElementById('location-error').classList.remove('hidden');
@@ -1501,6 +1667,13 @@
                         isValid = false;
                     } else {
                         document.getElementById('last-seen-error').classList.add('hidden');
+                    }
+                    
+                    if (!urgency) {
+                        document.getElementById('urgency-error').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('urgency-error').classList.add('hidden');
                     }
                 }
                 
@@ -1534,8 +1707,25 @@
                     document.getElementById('review-type').textContent = animalType.value;
                 }
                 
+                const urgency = document.getElementById('urgency').value;
+                const urgencyText = {
+                    'low': 'Low - No immediate danger',
+                    'medium': 'Medium - Needs attention',
+                    'high': 'High - Injured or in danger',
+                    'emergency': 'Emergency - Life-threatening'
+                };
+                document.getElementById('review-urgency').textContent = urgencyText[urgency] || 'Not specified';
+                
                 const location = document.getElementById('location').value;
                 document.getElementById('review-location').textContent = location || 'Not provided';
+                
+                const lat = document.getElementById('latitude').value;
+                const lon = document.getElementById('longitude').value;
+                if (lat && lon) {
+                    document.getElementById('review-coordinates').textContent = `Coordinates: ${lat}, ${lon}`;
+                } else {
+                    document.getElementById('review-coordinates').textContent = 'Coordinates: Not provided';
+                }
                 
                 const lastSeen = document.getElementById('last_seen').value;
                 if (lastSeen) {
@@ -1660,6 +1850,238 @@
                 else return (bytes / 1048576).toFixed(1) + ' MB';
             }
             
+            // Google Maps functionality
+            let map;
+            let marker;
+            let autocomplete;
+            let defaultLocation = { lat: 6.9271, lng: 79.8612 }; // Colombo, Sri Lanka
+            
+            function initMap() {
+                if (!document.getElementById('map')) return;
+                
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: defaultLocation,
+                    zoom: 12,
+                    styles: [
+                        {
+                            elementType: "geometry",
+                            stylers: [{ color: "#1d2c4d" }]
+                        },
+                        {
+                            elementType: "labels.text.fill",
+                            stylers: [{ color: "#8ec3b9" }]
+                        },
+                        {
+                            elementType: "labels.text.stroke",
+                            stylers: [{ color: "#1a3646" }]
+                        },
+                        {
+                            featureType: "administrative.country",
+                            elementType: "geometry.stroke",
+                            stylers: [{ color: "#4b6878" }]
+                        },
+                        {
+                            featureType: "water",
+                            elementType: "geometry",
+                            stylers: [{ color: "#0e1626" }]
+                        },
+                        {
+                            featureType: "water",
+                            elementType: "labels.text.fill",
+                            stylers: [{ color: "#4e6d70" }]
+                        }
+                    ]
+                });
+                
+                // Initialize autocomplete
+                autocomplete = new google.maps.places.Autocomplete(
+                    document.getElementById('location-search'),
+                    {
+                        types: ['geocode'],
+                        componentRestrictions: { country: 'lk' } // Sri Lanka
+                    }
+                );
+                
+                autocomplete.addListener('place_changed', onPlaceChanged);
+                
+                // Add click listener to map
+                map.addListener('click', function(e) {
+                    placeMarker(e.latLng);
+                });
+                
+                // Initialize map controls
+                document.getElementById('zoom-in').addEventListener('click', function() {
+                    map.setZoom(map.getZoom() + 1);
+                });
+                
+                document.getElementById('zoom-out').addEventListener('click', function() {
+                    map.setZoom(map.getZoom() - 1);
+                });
+                
+                document.getElementById('reset-map').addEventListener('click', function() {
+                    map.setCenter(defaultLocation);
+                    map.setZoom(12);
+                });
+                
+                // Current location button
+                document.getElementById('use-current-location').addEventListener('click', getCurrentLocation);
+                
+                // Copy coordinates button
+                document.getElementById('copy-coordinates').addEventListener('click', copyCoordinates);
+                
+                // Clear location button
+                document.getElementById('clear-location').addEventListener('click', clearLocation);
+                
+                // Try to get user's current location
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            const userLocation = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            defaultLocation = userLocation;
+                            map.setCenter(userLocation);
+                            map.setZoom(14);
+                        },
+                        function() {
+                            // User denied location or error occurred
+                            console.log('Geolocation permission denied or not available');
+                        }
+                    );
+                }
+            }
+            
+            function onPlaceChanged() {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    alert("No details available for input: '" + place.name + "'");
+                    return;
+                }
+                
+                // Update map view
+                map.setCenter(place.geometry.location);
+                map.setZoom(16);
+                
+                // Place marker
+                placeMarker(place.geometry.location);
+                
+                // Update location field
+                document.getElementById('location').value = place.formatted_address || place.name;
+                
+                // Update coordinates
+                document.getElementById('latitude').value = place.geometry.location.lat();
+                document.getElementById('longitude').value = place.geometry.location.lng();
+            }
+            
+            function placeMarker(location) {
+                if (marker) {
+                    marker.setMap(null);
+                }
+                
+                marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: "#ef4444",
+                        fillOpacity: 1,
+                        strokeColor: "#ffffff",
+                        strokeWeight: 2
+                    }
+                });
+                
+                // Update coordinates
+                const lat = location.lat();
+                const lng = location.lng();
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+                
+                // Reverse geocode to get address
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ location: location }, function(results, status) {
+                    if (status === 'OK' && results[0]) {
+                        document.getElementById('location').value = results[0].formatted_address;
+                    }
+                });
+                
+                // Center map on marker
+                map.setCenter(location);
+                map.setZoom(16);
+            }
+            
+            function getCurrentLocation() {
+                if (!navigator.geolocation) {
+                    alert('Geolocation is not supported by your browser');
+                    return;
+                }
+                
+                document.getElementById('use-current-location').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting location...';
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const location = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        
+                        placeMarker(location);
+                        
+                        // Update search field
+                        document.getElementById('location-search').value = 'My Current Location';
+                        
+                        document.getElementById('use-current-location').innerHTML = '<i class="fas fa-location-crosshairs"></i> Current Location';
+                    },
+                    function(error) {
+                        alert('Unable to get your location. Please enable location services.');
+                        console.error('Geolocation error:', error);
+                        document.getElementById('use-current-location').innerHTML = '<i class="fas fa-location-crosshairs"></i> Current Location';
+                    }
+                );
+            }
+            
+            function copyCoordinates() {
+                const lat = document.getElementById('latitude').value;
+                const lng = document.getElementById('longitude').value;
+                
+                if (!lat || !lng) {
+                    alert('No coordinates to copy. Please select a location on the map first.');
+                    return;
+                }
+                
+                const coordinates = `${lat}, ${lng}`;
+                navigator.clipboard.writeText(coordinates).then(() => {
+                    alert('Coordinates copied to clipboard: ' + coordinates);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    const textArea = document.createElement('textarea');
+                    textArea.value = coordinates;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('Coordinates copied to clipboard: ' + coordinates);
+                });
+            }
+            
+            function clearLocation() {
+                document.getElementById('location').value = '';
+                document.getElementById('location-search').value = '';
+                document.getElementById('latitude').value = '';
+                document.getElementById('longitude').value = '';
+                
+                if (marker) {
+                    marker.setMap(null);
+                    marker = null;
+                }
+                
+                // Reset map to default view
+                map.setCenter(defaultLocation);
+                map.setZoom(12);
+            }
+            
             // Form submission
             const reportForm = document.getElementById('animal-report-form');
             
@@ -1681,6 +2103,22 @@
                     if (!allValid) {
                         alert('Please complete all required fields before submitting.');
                         return;
+                    }
+                    
+                    // Add hidden field for expires_at (30 days from now)
+                    const expiresAt = new Date();
+                    expiresAt.setDate(expiresAt.getDate() + 30);
+                    
+                    // Create hidden input for expires_at if it doesn't exist
+                    if (!document.getElementById('expires_at')) {
+                        const expiresInput = document.createElement('input');
+                        expiresInput.type = 'hidden';
+                        expiresInput.name = 'expires_at';
+                        expiresInput.id = 'expires_at';
+                        expiresInput.value = expiresAt.toISOString();
+                        this.appendChild(expiresInput);
+                    } else {
+                        document.getElementById('expires_at').value = expiresAt.toISOString();
                     }
                     
                     // Create FormData
@@ -1760,10 +2198,26 @@
                 document.getElementById('animal_photo').value = '';
                 document.getElementById('description').value = '';
                 document.getElementById('location').value = '';
+                document.getElementById('location-search').value = '';
+                document.getElementById('latitude').value = '';
+                document.getElementById('longitude').value = '';
+                document.getElementById('urgency').value = '';
                 document.getElementById('contact_name').value = '';
                 document.getElementById('contact_phone').value = '';
                 document.getElementById('contact_email').value = '';
                 document.getElementById('terms').checked = false;
+                
+                // Clear map marker
+                if (marker) {
+                    marker.setMap(null);
+                    marker = null;
+                }
+                
+                // Reset map view
+                if (map) {
+                    map.setCenter(defaultLocation);
+                    map.setZoom(12);
+                }
                 
                 // Hide file preview
                 document.getElementById('file-preview').classList.add('hidden');
@@ -1944,6 +2398,11 @@
             document.addEventListener('DOMContentLoaded', function() {
                 // Initialize any additional functionality
                 console.log('SafePaws Report Page Loaded');
+                
+                // Initialize Google Maps when page loads
+                if (typeof google !== 'undefined') {
+                    setTimeout(initMap, 1000);
+                }
             });
         </script>
     </body>
