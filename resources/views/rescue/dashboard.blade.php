@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafePaws — Rescue Team Dashboard</title>
+    
+    <!-- Laravel Vite directive for CSS -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style type="text/tailwindcss">
+        /* Animations */
+        @keyframes paw-touch {
+            0%,
+            80%,
+            100% {
+                opacity: 0;
+                transform: translateY(0) scale(1);
+            }
+            10%,
+            50% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.1);
+            }
+        }
+
+        @keyframes paw-tap {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.9);
+            }
+        }
+
+        .animate-paw {
+            animation: paw-touch 2s infinite;
+        }
+
+        /* Typography */
+        .title {
+            @apply text-[1.75rem] md:text-[3.125rem] leading-[1.05] font-semibold tracking-wide;
+        }
+        .subtitle {
+            @apply text-[1.125rem] md:text-[1.625rem] font-light;
+        }
+
+        /* Buttons */
+        .primary-btn {
+            @apply bg-[#0ea5e9] hover:bg-[#0891b2] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition duration-300;
+        }
+        .outline-btn {
+            @apply border border-[#0ea5e9] text-[#0ea5e9] hover:bg-[#0ea5e9] hover:text-white px-5 py-2 rounded-md font-medium transition duration-300;
+        }
+        
+        .success-btn {
+            @apply bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium transition duration-300;
+        }
+        .warning-btn {
+            @apply bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition duration-300;
+        }
+        .danger-btn {
+            @apply bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md font-medium transition duration-300;
+        }
+
+        /* Card styles */
+        .card {
+            @apply bg-white/5 p-6 md:p-8 rounded-xl shadow-md border border-white/10;
+        }
+
+        /* Status badges */
+        .status-badge {
+            @apply px-3 py-1 text-xs font-semibold rounded-full;
+        }
+        .status-pending { @apply bg-yellow-500/20 text-yellow-300; }
+        .status-assigned { @apply bg-blue-500/20 text-blue-300; }
+        .status-in-progress { @apply bg-purple-500/20 text-purple-300; }
+        .status-rescued { @apply bg-green-500/20 text-green-300; }
+        .status-in-treatment { @apply bg-indigo-500/20 text-indigo-300; }
+        .status-ready-for-adoption { @apply bg-emerald-500/20 text-emerald-300; }
+
+        .gray-border {
+            @apply border-t-[8px] border-[#0b2447];
+        }
+
+        body {
+            background-color: #071331;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        /* Table styles */
+        .table-container {
+            @apply overflow-x-auto rounded-lg border border-white/10;
+        }
+        
+        .dashboard-table {
+            @apply min-w-full bg-white/5;
+        }
+        
+        .dashboard-table thead {
+            @apply bg-white/10;
+        }
+        
+        .dashboard-table th {
+            @apply px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider;
+        }
+        
+        .dashboard-table td {
+            @apply px-6 py-4 whitespace-nowrap text-sm text-gray-200;
+        }
+        
+        .dashboard-table tbody tr {
+            @apply hover:bg-white/10 border-b border-white/5 transition duration-150;
+        }
+
+        /* Stats cards */
+        .stats-grid {
+            @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
+        }
+        
+        .stats-card {
+            @apply bg-gradient-to-br from-white/10 to-transparent p-6 rounded-xl border border-white/10;
+        }
+        
+        .stats-value {
+            @apply text-3xl font-bold text-white mb-2;
+        }
+        
+        .stats-label {
+            @apply text-gray-300 text-sm;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-[#071331]/95 backdrop-blur-sm border-b border-white/10">
+        <div class="flex items-center justify-between px-5 py-4 mx-auto max-w-7xl md:px-12">
+            <!-- Logo -->
+            <a href="{{ url('/') }}" class="flex items-center gap-3">
+                <svg width="42" height="42" viewBox="0 0 64 64" fill="none">
+                    <rect width="64" height="64" rx="12" fill="#0ea5e9"></rect>
+                    <path d="M34.5 36c4-1 8.5 0 11 3 2.5 3 1.8 7.4-0.6 10.7C43.9 53 39.6 54 34.5 54c-5 0-9.7-1-12.6-3.8C17.2 47.4 16.4 43 18.9 40c2.7-3.2 6.9-4.2 11.6-4z" fill="#fff"></path>
+                    <circle cx="22.5" cy="20.5" r="6" fill="#fff"></circle>
+                    <circle cx="31.5" cy="14.5" r="5" fill="#fff"></circle>
+                    <circle cx="43.5" cy="18.5" r="4.5" fill="#fff"></circle>
+                </svg>
+                <span class="text-xl font-semibold text-white">SafePaws</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="items-center hidden gap-6 text-sm font-medium text-white md:flex">
+    
+                <a href="{{ route('rescue.dashboard') }}" class="transition hover:text-yellow-300 text-yellow-300">DASHBOARD</a>
+                <a href="{{ route('rescue.reports') }}" class="transition hover:text-yellow-300">ANIMAL REPORTS</a>
+                <a href="{{ route('rescue.animals') }}" class="transition hover:text-yellow-300">ANIMALS</a>
+                <a href="{{ route('rescue.adoptions') }}" class="transition hover:text-yellow-300">ADOPTIONS</a>
+            </nav>
+
+            <!-- Mobile menu button -->
+            <button class="md:hidden" id="mobileMenuBtn">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden" id="mobileMenu">
+            <div class="px-5 py-4 space-y-4 bg-[#0b2447]">
+                <a href="{{ url('/') }}" class="block transition hover:text-yellow-300">HOME</a>
+                <a href="{{ route('rescue.dashboard') }}" class="block transition hover:text-yellow-300 text-yellow-300">DASHBOARD</a>
+                <a href="{{ route('rescue.reports') }}" class="block transition hover:text-yellow-300">ANIMAL REPORTS</a>
+                <a href="{{ route('rescue.animals') }}" class="block transition hover:text-yellow-300">ANIMALS</a>
+                <a href="{{ route('rescue.adoptions') }}" class="block transition hover:text-yellow-300">ADOPTIONS</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="max-w-7xl mx-auto px-5 py-8">
+        <!-- Dashboard Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-white">Rescue Team Dashboard</h1>
+            <p class="text-gray-300 mt-2">Welcome back, Rescue Team Alpha. Manage your rescue operations and assignments.</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid mb-8">
+            <div class="stats-card">
+                <div class="stats-value">{{ $stats['active_assignments'] }}</div>
+                <div class="stats-label">Active Assignments</div>
+                <div class="mt-2 text-xs text-gray-400">In progress rescue missions</div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-value">{{ $stats['completed_today'] }}</div>
+                <div class="stats-label">Completed Today</div>
+                <div class="mt-2 text-xs text-gray-400">Successful rescues</div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-value">{{ $stats['urgent_cases'] }}</div>
+                <div class="stats-label">Urgent Cases</div>
+                <div class="mt-2 text-xs text-gray-400">Require immediate attention</div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-value">{{ $stats['animals_in_shelter'] }}</div>
+                <div class="stats-label">Animals in Shelter</div>
+                <div class="mt-2 text-xs text-gray-400">Under your care</div>
+            </div>
+        </div>
+
+        <!-- Rescue Team Quick Actions -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4 text-white">Quick Actions</h2>
+            <div class="flex flex-wrap gap-4">
+                <!-- Rescue Selection Dropdown and Edit Button -->
+                <div class="flex items-center gap-4">
+                    <select id="rescueSelect" class="bg-[#071331] border border-white/20 rounded-md px-3 py-2 text-white min-w-[250px]">
+                        <option value="">-- Select Rescue to Edit --</option>
+                        <option value="2042">#SP-2042 - Cat (Healthy)</option>
+                        <option value="2043">#SP-2043 - Dog (Infection)</option>
+                        <option value="2045">#SP-2045 - Dog (Leg injury)</option>
+                        <option value="2046">#SP-2046 - Cat (Cornered, scared)</option>
+                        <option value="2047">#SP-2047 - Dog (Severe infection)</option>
+                    </select>
+                    
+                    <button onclick="editSelectedRescue()" class="outline-btn inline-flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Update Rescue Status
+                    </button>
+                </div>
+
+                <button class="success-btn" onclick="viewRescueStatus()">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    View Rescue Status
+</button>
+
+            </div>
+        </div>
+
+        <!-- My Active Assignments -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-white">My Active Assignments</h2>
+                @if($activeAssignments->count() > 5)
+                    <a href="{{ route('rescue.reports') }}" class="text-sm text-[#0ea5e9] hover:text-[#0891b2]">View All →</a>
+                @endif
+            </div>
+
+            @if(session('success'))
+                <div class="bg-green-500/20 border border-green-500 text-green-300 px-4 py-3 rounded mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <div class="table-container">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Report ID</th>
+                            <th>Animal Type</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Assigned</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($activeAssignments as $assignment)
+                            <tr>
+                                <td class="font-medium">#{{ $assignment->report_id }}</td>
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                            </svg>
+                                        </div>
+                                        <span>{{ $assignment->animal_type }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ $assignment->location }}</td>
+                                <td>
+                                    <span class="status-badge status-{{ str_replace('_', '-', $assignment->status) }}">
+                                        {{ ucfirst(str_replace('_', ' ', $assignment->status)) }}
+                                    </span>
+                                </td>
+                                <td class="text-gray-300 text-xs">{{ $assignment->updated_at->diffForHumans() }}</td>
+                                <td>
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('rescue.reports.show', $assignment->id) }}" class="text-xs primary-btn px-3 py-1">View Details</a>
+                                        <button class="text-xs outline-btn px-3 py-1" onclick="updateReportStatus({{ $assignment->id }}, '{{ $assignment->status }}')">Update Status</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-8 text-gray-400">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                        </svg>
+                                        <p class="font-medium">No active assignments yet</p>
+                                        <p class="text-sm">Accept a report from the section below to get started</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Animals Under Your Care -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-white">Animals Under Your Care</h2>
+                <button class="text-sm text-[#0ea5e9] hover:text-[#0891b2]">View All →</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Animal 1 -->
+                <div class="card">
+                    <img src="{{ asset('Buddy.jpg') }}" alt="Buddy"
+                    class="w-full h-48 object-cover rounded-lg mb-4">
+
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Buddy</h3>
+                            <p class="text-gray-300 text-sm">Dog • Report #SP-2043</p>
+                        </div>
+                        <span class="status-badge status-in-treatment">In Treatment</span>
+                    </div>
+                    <p class="text-sm text-gray-300 mt-2">Rescued 2 days ago. Under medication for infection.</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Treatment:</span>
+                            <span class="text-white">Antibiotics</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Next Check:</span>
+                            <span class="text-white">Tomorrow</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button class="primary-btn flex-1 text-center justify-center">Update Health</button>
+                        <button class="outline-btn">Notes</button>
+                    </div>
+                </div>
+                
+                <!-- Animal 2 -->
+                <div class="card">
+                    <img src="{{ asset('Mittens.jpg') }}" 
+                         alt="Mittens - Cat" 
+                         class="w-full h-48 object-cover rounded-lg mb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Mittens</h3>
+                            <p class="text-gray-300 text-sm">Cat • Report #SP-2042</p>
+                        </div>
+                        <span class="status-badge status-ready-for-adoption">Ready for Adoption</span>
+                    </div>
+                    <p class="text-sm text-gray-300 mt-2">Calm and healthy. Completed all vaccinations.</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Vaccinations:</span>
+                            <span class="text-white">Complete</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Adoption Requests:</span>
+                            <span class="text-white">3</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button class="success-btn flex-1 text-center justify-center">Review Requests</button>
+                        <button class="outline-btn">Profile</button>
+                    </div>
+                </div>
+                
+                <!-- Animal 3 -->
+                <div class="card">
+                    <img src="{{ asset('Rocky.jpg') }}" 
+                         alt="Rocky - Dog" 
+                         class="w-full h-48 object-cover rounded-lg mb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Rocky</h3>
+                            <p class="text-gray-300 text-sm">Dog • Report #SP-2041</p>
+                        </div>
+                        <span class="status-badge status-in-treatment">Post-Op Care</span>
+                    </div>
+                    <p class="text-sm text-gray-300 mt-2">Recovering from surgery. Needs daily dressing change.</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Surgery:</span>
+                            <span class="text-white">Leg operation</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Recovery Time:</span>
+                            <span class="text-white">2 weeks</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button class="warning-btn flex-1 text-center justify-center">Update Recovery</button>
+                        <button class="outline-btn">Medical Log</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rescue Process Tracking -->
+        <div class="mb-8 card">
+            <h2 class="text-xl font-bold mb-6 text-white">Rescue Process Status Updates</h2>
+            <div class="space-y-6">
+                @forelse($activeAssignments as $assignment)
+                    @php
+                        $width = '0%';
+                        switch($assignment->status) {
+                            case 'pending': $width = '5%'; break;
+                            case 'assigned': $width = '25%'; break;
+                            case 'in_progress': $width = '50%'; break;
+                            case 'rescued': $width = '75%'; break;
+                            case 'completed': $width = '100%'; break;
+                            default: $width = '5%';
+                        }
+                    @endphp
+                    <div class="p-4 bg-white/5 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="font-medium">Report #{{ $assignment->report_id }} - {{ $assignment->animal_type }}</div>
+                            <span class="text-sm text-gray-400">Last updated: {{ $assignment->updated_at->diffForHumans() }}</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-1">
+                                <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-[#0ea5e9] rounded-full transition-all duration-500" style="width: {{ $width }}"></div>
+                                </div>
+                                <div class="flex justify-between mt-2 text-sm text-gray-300">
+                                    <span class="{{ $assignment->status == 'pending' ? 'text-white font-bold' : '' }}">Reported</span>
+                                    <span class="{{ $assignment->status == 'assigned' ? 'text-white font-bold' : '' }}">Assigned</span>
+                                    <span class="{{ $assignment->status == 'in_progress' ? 'text-white font-bold' : '' }}">In Progress</span>
+                                    <span class="{{ $assignment->status == 'rescued' ? 'text-white font-bold' : '' }}">Rescued</span>
+                                    <span class="{{ $assignment->status == 'completed' ? 'text-white font-bold' : '' }}">Completed</span>
+                                </div>
+                            </div>
+                            <button class="primary-btn text-sm px-3 py-1" onclick="updateReportStatus({{ $assignment->id }}, '{{ $assignment->status }}')">Update Progress</button>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-gray-400 py-4">
+                        <p>No active rescue processes.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- New Reports Needing Assignment -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-white">New Reports Needing Assignment</h2>
+                <a href="{{ route('rescue.reports') }}" class="text-sm text-[#0ea5e9] hover:text-[#0891b2]">View All →</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @forelse($pendingReports as $report)
+                    <!-- Report #{{ $report->id }} -->
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="font-bold">{{ $report->animal_type }}</h3>
+                                <p class="text-sm text-gray-300 mt-1">Location: {{ $report->location }}</p>
+                                <p class="text-sm text-gray-400 mt-2">
+                                    Reported: {{ $report->created_at->diffForHumans() }}
+                                    @if($report->description)
+                                        • {{ Str::limit($report->description, 50) }}
+                                    @endif
+                                </p>
+                            </div>
+                            <span class="status-badge status-pending">Pending</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <form action="{{ route('rescue.reports.accept', $report->id) }}" method="POST" class="flex-1">
+                                @csrf
+                                <button type="submit" class="primary-btn w-full">Accept Assignment</button>
+                            </form>
+                            <a href="{{ route('rescue.reports.show', $report->id) }}" class="outline-btn">View Details</a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-2 text-center text-gray-400 py-8">
+                        <p>No pending reports at the moment.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gray-border">
+        <div class="max-w-[1000px] mx-auto px-5 py-12 text-gray-300">
+            <div class="flex flex-col items-start justify-between gap-6 md:flex-row">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <svg width="34" height="34" viewBox="0 0 64 64" fill="none">
+                            <rect width="64" height="64" rx="12" fill="#0ea5e9"></rect>
+                            <path d="M34.5 36c4-1 8.5 0 11 3 2.5 3 1.8 7.4-0.6 10.7C43.9 53 39.6 54 34.5 54c-5 0-9.7-1-12.6-3.8C17.2 47.4 16.4 43 18.9 40c2.7-3.2 6.9-4.2 11.6-4z" fill="#fff"></path>
+                        </svg>
+                        <div>
+                            <div class="font-semibold">SafePaws Rescue Team</div>
+                            <div class="text-xs text-gray-400">Protecting Every Paw</div>
+                        </div>
+                    </div>
+                    <p class="max-w-sm text-sm text-gray-400">
+                        Dedicated to rescuing and caring for stray animals in our community.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6 mt-4 text-sm md:mt-0">
+                    <div>
+                        <div class="mb-2 font-medium text-white">Quick Links</div>
+                        <div class="text-gray-400">My Assignments</div>
+                        <div class="text-gray-400">Rescue Reports</div>
+                        <div class="text-gray-400">Animal Care</div>
+                    </div>
+
+                    <div>
+                        <div class="mb-2 font-medium text-white">Support</div>
+                        <div class="text-gray-400">Emergency Contact</div>
+                        <div class="text-gray-400">Equipment Request</div>
+                        <div class="text-gray-400">Team Resources</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-xs text-gray-500">
+                © <span id="year"></span> SafePaws Rescue Team. All rights reserved.
+            </div>
+        </div>
+        <!-- Update Rescue Status Modal -->
+        <div id="rescueStatusModal"
+             class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+
+            <div class="bg-[#0b2447] rounded-xl p-6 w-full max-w-md border border-white/10">
+                <h2 class="text-xl font-bold mb-4 text-white">Update Rescue Status</h2>
+
+                <label class="block text-sm text-gray-300 mb-2">Select Status</label>
+                <select id="rescue_status"
+                        class="w-full bg-[#071331] border border-white/20 rounded-md px-3 py-2 text-white">
+                    <option value="assigned">Assigned</option>
+                    <option value="en_route">En Route</option>
+                    <option value="rescued">Rescued</option>
+                    <option value="at_shelter">At Shelter</option>
+                    <option value="completed">Completed</option>
+                </select>
+
+                <div class="flex justify-end gap-3 mt-6">
+                    <button onclick="closeRescueStatusModal()" class="outline-btn">
+                        Cancel
+                    </button>
+                    <button onclick="updateRescueStatus()" class="success-btn">
+                        Update
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+
+    <script>
+        function viewRescueStatus() {
+    fetch('/rescue/status')
+        .then(res => res.json())
+        .then(data => {
+            console.log('Rescue Status:', data); // for debugging
+            
+            // You can dynamically populate your table
+            const tbody = document.querySelector('.dashboard-table tbody');
+            tbody.innerHTML = ''; // clear existing rows
+
+            data.forEach(rescue => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="font-medium">#SP-${rescue.id}</td>
+                    <td>${rescue.animal_name}</td>
+                    <td>${rescue.condition}</td>
+                    <td>${rescue.location}</td>
+                    <td><span class="px-2 py-1 text-xs font-bold text-white ${rescue.priority === 'HIGH' ? 'bg-red-500' : rescue.priority === 'MEDIUM' ? 'bg-yellow-500' : 'bg-green-500'} rounded-full">${rescue.priority}</span></td>
+                    <td><span class="status-badge status-${rescue.status.replace('_','-')}">${rescue.status.replace('_',' ')}</span></td>
+                    <td>Actions here</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => alert('Failed to load rescue status'));
+}
+
+        
+        // Edit Selected Rescue Function
+        function editSelectedRescue() {
+            const rescueSelect = document.getElementById('rescueSelect');
+            const rescueId = rescueSelect.value;
+            const selectedOption = rescueSelect.options[rescueSelect.selectedIndex];
+            const rescueText = selectedOption.text;
+            
+            if (rescueId) {
+                // Show confirmation before redirecting
+                if (confirm(`Edit ${rescueText}?\n\nNote: Make sure rescue ID ${rescueId} exists in your database.`)) {
+                    // Navigate to the edit page for the selected rescue
+                    window.location.href = `/rescue/${rescueId}/edit`;
+                }
+            } else {
+                alert('Please select a rescue from the dropdown first');
+            }
+        }
+        
+        /* =========================
+           Update Rescue Status Logic
+           ========================= */
+
+        let selectedRescueId = 2047; // TEMP: matches #SP-2047
+
+        function openRescueStatusModal() {
+            const modal = document.getElementById('rescueStatusModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeRescueStatusModal() {
+            const modal = document.getElementById('rescueStatusModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function updateRescueStatus() {
+            const status = document.getElementById('rescue_status').value;
+
+            fetch(`/rescue/update-status/${selectedRescueId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status })
+            })
+            .then(res => res.json())
+            .then(() => {
+                alert('Rescue status updated successfully');
+                closeRescueStatusModal();
+                location.reload();
+            })
+            .catch(() => alert('Failed to update rescue status'));
+        }
+
+        // Update Report Status
+        function updateReportStatus(reportId, currentStatus) {
+            const statuses = ['pending', 'assigned', 'in_progress', 'completed'];
+            let statusOptions = '';
+
+            statuses.forEach(status => {
+                const selected = status === currentStatus ? 'selected' : '';
+                const displayStatus = status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                statusOptions += `<option value="${status}" ${selected}>${displayStatus}</option>`;
+            });
+
+            const newStatus = prompt(`Update Report #${reportId} Status\n\nCurrent Status: ${currentStatus.replace('_', ' ').toUpperCase()}\n\nEnter new status:\n- pending\n- assigned\n- in_progress\n- completed`, currentStatus);
+
+            if (newStatus && newStatus !== currentStatus) {
+                // Submit form to update status
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/rescue/reports/${reportId}/update-status`;
+
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = '{{ csrf_token() }}';
+
+                const statusInput = document.createElement('input');
+                statusInput.type = 'hidden';
+                statusInput.name = 'status';
+                statusInput.value = newStatus;
+
+                form.appendChild(csrfInput);
+                form.appendChild(statusInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+
+        // ADD THIS CODE - Hash-based navigation for SPA
+        function navigateTo(section) {
+            console.log('Navigating to:', section);
+            
+            // Update URL hash without page reload
+            window.location.hash = section;
+            
+            // Show the corresponding section
+            showSection(section);
+        }
+
+        function showSection(section) {
+            console.log('Showing section:', section);
+            
+            // Hide all sections first (you'll need to add sections to your HTML)
+            document.querySelectorAll('.dashboard-section').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            // Show the selected section
+            const target = document.getElementById(section + '-section');
+            if (target) {
+                target.style.display = 'block';
+            }
+        }
+
+        // Handle initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if there's a hash in the URL
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                navigateTo(hash);
+            }
+            
+            // Set current year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+
+        // Handle hash changes
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                showSection(hash);
+            }
+        });
+        
+    </script>
+    <script>
+function viewRescueStatus() {
+    fetch('/rescue/status')
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector('.dashboard-table tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(rescue => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td class="font-medium">#SP-${rescue.id}</td>
+                    <td>${rescue.animal_type}</td>
+                    <td>${rescue.condition}</td>
+                    <td>${rescue.location}</td>
+                    <td>
+                        <span class="px-2 py-1 text-xs font-bold text-white
+                        ${getStatusColor(rescue.status)} rounded-full">
+                        ${formatStatus(rescue.status)}
+                        </span>
+                    </td>
+                    <td>${rescue.notes ?? '-'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Failed to load rescue status');
+        });
+}
+
+function formatStatus(status) {
+    return status.replace(/_/g, ' ').toUpperCase();
+}
+
+function getStatusColor(status) {
+    switch (status) {
+        case 'assigned': return 'bg-blue-500';
+        case 'in_progress': return 'bg-yellow-500';
+        case 'rescued': return 'bg-green-600';
+        case 'in_treatment': return 'bg-orange-500';
+        case 'ready_for_adoption': return 'bg-purple-600';
+        default: return 'bg-gray-500';
+    }
+}
+</script>
+
+
+</body>
+</html>
